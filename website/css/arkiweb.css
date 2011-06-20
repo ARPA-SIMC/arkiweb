@@ -1,0 +1,23 @@
+body {
+	font-family: sans-serif;
+	font-size: 0.9em;
+}
+
+.arkiweb-dataset-item {
+}
+
+.arkiweb-dataset-item-title {
+	font-weight: bold;
+	margin-right: 0.5em;
+}
+
+.arkiweb-dataset-item-description {
+	font-size: 0.9em;
+	font-style: italic;
+}
+.arkiweb-dataset-item-allowed {
+	color: green;
+}
+.arkiweb-dataset-item-notallowed {
+	color: red;
+}
