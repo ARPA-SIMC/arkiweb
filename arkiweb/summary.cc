@@ -32,10 +32,6 @@ void MergeSerialiser::serialise() {
        i != fields.end(); ++i) {
     emitter.add(i->first);
     emitter.start_list();
-    emitter.start_mapping();
-    emitter.add("size");
-    emitter.add(i->second.size());
-    emitter.end_mapping();
     for (std::set< arki::UItem<> >::const_iterator j = i->second.begin();
          j != i->second.end(); ++j) {
       emitter.start_mapping();
