@@ -2,15 +2,58 @@
 	<head>
 		<title>arkiweb</title>
 		<link rel="stylesheet" href="css/arkiweb.css"/>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css"/>
+		<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.js"></script>
+		<script type="text/javascript" src="http://plugins.jquery.com/files/jquery.sprintf.js_11.txt"></script>
 		<script type="text/javascript" src="js/arkiweb-conf.js"></script>
+		<script type="text/javascript" src="js/arkiweb-parser.js"></script>
 		<script type="text/javascript" src="js/arkiweb.js"></script>
 	</head>
 	<body>
-		<div id="content">
-			<div id="arkiweb-dataset-container">
+		<div id="header">
+			<div class="arkiweb-menu">
+				<span id="arkiweb-open-help-container">show help</span>
 			</div>
-			<div id="arkiweb-summary-container">
+		</div>
+		<div id="content">
+			<div class="arkiweb-container" id="arkiweb-help-container">
+				<p>Welcome to <b>arkiweb</b>.</p>
+				<p>Someone will write an useful help, someday.</p>
+			</div>
+			<div class="arkiweb-container" id="arkiweb-dataset-container">
+				<div class="arkiweb-menu">
+					<h1 class="arkiweb-menu-title">dataset list</h1>
+					<span id="arkiweb-dataset-menu-show-selected">show selected</span>
+					<span id="arkiweb-dataset-menu-show-allowed"></span>
+					<span id="arkiweb-dataset-menu-process-selected">summary for selected datasets</span>
+				</div>
+				<div class="arkiweb-container-content" id="arkiweb-dataset-container-content">
+				</div>
+			</div>
+			<div class="arkiweb-container" id="arkiweb-summary-container">
+				<div class="arkiweb-menu">
+					<h1 class="arkiweb-menu-title">summary</h1>
+					<span id="arkiweb-summary-menu-back-to-dataset">back to dataset list</span>
+					<span>filter selection</span>
+				</div>
+				<div class="arkiweb-container-content" id="arkiweb-summary-container-content">
+					<div id="arkiweb-summary-query">
+					</div>
+					<div id="arkiweb-summary-stats">
+					</div>
+					<div id="arkiweb-summary-fields">
+					</div>
+				</div>
+			</div>
+			<div class="arkiweb-container" id="arkiweb-map-container">
+				<div class="arkiweb-menu">
+				</div>
+			</div>
+			<div class="arkiweb-container" id="arkiweb-postprocess-container">
+				<div class="arkiweb-menu">
+				</div>
 			</div>
 		</div>
 	</body>
