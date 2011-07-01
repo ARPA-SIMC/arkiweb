@@ -207,7 +207,7 @@ $(document).ready(function() {
 				if (q.length > 0)
 					req.query.push(ArkiwebParser[style].decode(q));
 			} catch (e) {
-				console.error(e);
+				$.error(e);
 			}
 		});
 		req.query = req.query.join("; ");
@@ -290,7 +290,7 @@ $(document).ready(function() {
 							query = ArkiwebParser[f]['styles'][v.s].decode(v);
 						} catch (e) {
 							download.addClass("disabled");
-							console.error(e, v);
+							$.error(e, v);
 						}
 						var li = $("<li>", {
 							text: v.desc,
@@ -328,7 +328,7 @@ $(document).ready(function() {
 				if (q.length > 0)
 					req.query.push(ArkiwebParser[style].decode(q));
 			} catch (e) {
-				console.error(e);
+				$.error(e);
 			}
 		});
 		req.query = req.query.join("; ");
@@ -405,7 +405,7 @@ $(document).ready(function() {
 						try {
 							query = ArkiwebParser[f]['styles'][val.s].decode(val);
 						} catch (e) {
-							console.error(e, val, f);
+							$.error(e, val, f);
 						}
 						td.data('descr', desc);
 						td.data('query', query);
@@ -493,7 +493,7 @@ $(document).ready(function() {
 							value.data('query', query);
 							value.data('descr', d.fields[f][idx].desc);
 						} catch (e) {
-							console.error(e, item, f);
+							$.error(e, item, f);
 							input.prop('disabled', true);
 						}
  
