@@ -13,6 +13,5 @@ LT_INIT
 
 AC_CONFIG_FILES([Makefile
                  arkiweb/Makefile
-		 src/Makefile
-                 website/Makefile])
+		 src/Makefile])
 AC_OUTPUT
