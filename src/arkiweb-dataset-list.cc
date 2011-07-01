@@ -18,14 +18,15 @@ int main(int argc, char **argv) {
     arki::emitter::JSON emitter(out);
 
 
-    arkiweb::datasets::Printer printer(arkiweb::configfile(), 
-                                       arkiweb::restriction(),
-                                       emitter);
+    arkiweb::datasets::JSONPrinter printer(arkiweb::configfile(), 
+                                           arkiweb::restriction(),
+                                           emitter);
 
     out << cgicc::HTTPContentHeader("application/json; charset=UTF-8");
     printer.print();
-  } catch (...) {
-    out << cgicc::HTTPStatusHeader(500, "internal error");
+  } catch (const std::exception &e) {
+    std::cerr << e.what();
+    out << cgicc::HTTPStatusHeader(500, "error");
   }
   return 0;
 }
