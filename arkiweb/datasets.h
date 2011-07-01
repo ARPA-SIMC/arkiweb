@@ -14,10 +14,10 @@ struct JSONPrinter {
   arki::runtime::Restrict restr;
   arki::Emitter &emitter;
 
-  Printer(const arki::ConfigFile &cfg,
+  JSONPrinter(const arki::ConfigFile &cfg,
           const arki::runtime::Restrict &restr,
           arki::Emitter &emitter);
-  ~Printer();
+  ~JSONPrinter();
 
   void print();
 };

@@ -1,0 +1,67 @@
+Arkiweb
+=======
+Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+version 0.1
+
+Compiling
+---------
+Arkiweb is in experimental status. If you want to compile it,
+you need:
+
+* `libcgicc`
+* `libarkimet.la`
+
+Web services
+------------
+The web services are installed in `$libdir/arkiweb/cgi-bin`.
+
+To install the services under a web server, you must configure 
+them. 
+
+Installation of the web services under Apache 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installation of the web services under 
+`/var/www/arkiweb/services`
+----
+# mkdir -p /var/www/arkiweb/services
+# ln -s $libdir/arkiweb/cgi-bin/* /var/www/arkiweb/services/
+----
+
+The services read the environment variable `ARKIWEB_CONF`. You can 
+set it from the `.htacces`:
+----
+# /var/www/arkiweb/services/.htaccess
+SetEnv ARKIWEB_CONF /etc/arkiweb.config
+----
+The configuration file is the result of the command 
+`arki-mergeconf`.
+
+Authentication & authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Arkiweb comes with a very simple authorization system. When the global 
+variable `ARKIWEB_RESTRICT_VAR` is set, the service looks for the global
+variable `${ARKIWEB_RESTRICT_VAR}`. The value of the variable is used for
+restricted access (similar to the `--restrict` option of the arkimet 
+commands).
+
+Example with Apache basic authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----
+# /var/www/arkiweb/services/.htaccess
+...
+AuthType Basic
+AuthName "By Invitation Only"
+AuthUserFile /usr/local/apache/passwd/passwords
+Require valid-user
+SetEnv ARKIWEB_RESTRICT_VAR REMOTE_USER
+----
+
+Website
+-------
+The website is installed under `$datarootdir/arkiweb/website.tar.gz`.
+
+You can untar the file where you want, but you must:
+
+* edit the file `arkiweb-config.js`
+* untar the file `OpenLayers-2.10.tar.gz`
+* create a symbolic link from `OpenLayers-2.10` to `OpenLayers`

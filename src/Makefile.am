@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
-cgidir = $(libdir)/cgi-bin
+cgidir = $(libdir)/$(PACKAGE)/cgi-bin
 
 cgi_PROGRAMS = arkiweb-dataset-list arkiweb-summary arkiweb-extended-summary arkiweb-download
 
@@ -19,4 +19,3 @@ arkiweb_extended_summary_SOURCES = arkiweb-extended-summary.cc
 arkiweb_download_LDADD = $(top_builddir)/arkiweb/libarkiweb.la -lcgicc -larkimet
 
 arkiweb_download_SOURCES = arkiweb-download.cc
-
