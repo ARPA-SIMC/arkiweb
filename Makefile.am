@@ -4,7 +4,7 @@ pkgdatadir = $(datarootdir)/$(PACKAGE)
 
 pkgdata_DATA = website.tar.gz
 
-website.tar.gz:
+website.tar.gz: $(webfiles)
 	tar czf $@ $(webfiles)
 
 webfiles = \
@@ -19,6 +19,7 @@ webfiles = \
 	   website/jquery-ui-timepicker-addon.css \
 	   website/jquery-ui-timepicker-addon.js \
 	   website/jquery.utils.js \
+	   website/loader.gif \
 	   website/OpenLayers-2.10.tar.gz
 	   
 CLEANFILES = website.tar.gz
