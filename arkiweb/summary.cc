@@ -7,10 +7,49 @@ namespace arkiweb {
 
 namespace summary {
 
+Serialiser::Serialiser(arki::Emitter &e, arki::Formatter *f,
+           arki::Summary &summary)
+    : emitter(e), formatter(f), summary(summary) {}
+
+Serialiser::~Serialiser() {}
+
+ExtendedSerialiser::ExtendedSerialiser(arki::Emitter &e, arki::Formatter *f,
+                                       arki::Summary &summary)
+    : Serialiser(e, f, summary) {}
+
+bool ExtendedSerialiser::operator()(const std::vector< arki::UItem<> >& md,
+                                    const arki::UItem<arki::summary::Stats>& stats) {
+  emitter.start_mapping();
+  for (std::vector< arki::UItem<> >::const_iterator i = md.begin();
+       i != md.end(); ++i) {
+    if (!i->defined()) continue;
+    emitter.add((*i)->tag());
+    emitter.start_mapping();
+    if (formatter) emitter.add("desc", (*formatter)(*i));
+    (*i)->serialiseLocal(emitter, formatter);
+     emitter.end_mapping();
+  }
+  emitter.add(stats->tag());
+  emitter.start_mapping();
+  stats->serialiseLocal(emitter, formatter);
+  emitter.end_mapping();
+  emitter.end_mapping();
+
+}
+
+void ExtendedSerialiser::serialise() {
+  emitter.start_mapping();
+  emitter.add("items");
+  emitter.start_list();
+  summary.visit(*this);
+  emitter.end_list();
+  emitter.end_mapping();
+}
+
 MergeSerialiser::MergeSerialiser(arki::Emitter &e, 
                                  arki::Formatter *f,
                                  arki::Summary &summary)
-    : emitter(e), formatter(f), summary(summary) {}
+    : Serialiser(e, f, summary) {}
 
 bool MergeSerialiser::operator()(const std::vector< arki::UItem<> >& md,
                                  const arki::UItem<arki::summary::Stats>& stats) {
@@ -55,8 +94,11 @@ void MergeSerialiser::serialise() {
 Printer::Printer(const arki::ConfigFile &cfg,
           const arki::runtime::Restrict &restr,
           arki::Emitter &emitter,
-          const std::string query)
-    : cfg(cfg), restr(restr), emitter(emitter), query(query) {}
+          const std::string query,
+          const bool &extended)
+    : cfg(cfg), restr(restr), emitter(emitter), 
+    query(query), extended(extended) {
+    }
 
 Printer::~Printer() {}
 
@@ -76,8 +118,19 @@ void Printer::print() {
     delete ds;
   }
 
-  MergeSerialiser serialiser(emitter, arki::Formatter::create(), summary);
-  serialiser.serialise();
+  Serialiser *serialiser = NULL;
+
+  if (extended)
+    serialiser = new ExtendedSerialiser(emitter, 
+                                        arki::Formatter::create(), 
+                                        summary);
+  else
+    serialiser = new MergeSerialiser(emitter, 
+                                     arki::Formatter::create(), 
+                                     summary);
+  serialiser->serialise();
+
+  delete serialiser;
 }
 
 }

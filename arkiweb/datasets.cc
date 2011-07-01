@@ -6,14 +6,14 @@ namespace arkiweb {
 
 namespace datasets {
 
-Printer::Printer(const arki::ConfigFile &cfg,
+JSONPrinter::JSONPrinter(const arki::ConfigFile &cfg,
                  const arki::runtime::Restrict &restr,
                  arki::Emitter &emitter)
     : cfg(cfg), restr(restr), emitter(emitter) {}
 
-Printer::~Printer() {}
+JSONPrinter::~JSONPrinter() {}
 
-void Printer::print() {
+void JSONPrinter::print() {
   using arki::ConfigFile;
 
   std::string k[] = { "name", "description", "bounding" };

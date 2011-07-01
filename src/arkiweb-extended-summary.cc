@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
                                       arkiweb::restriction(),
                                       emitter,
                                       query,
-                                      false);
+                                      true);
 
     out << cgicc::HTTPContentHeader("application/json; charset=UTF-8");
     printer.print();

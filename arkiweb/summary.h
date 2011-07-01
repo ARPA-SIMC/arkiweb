@@ -14,10 +14,29 @@ namespace arkiweb {
 
 namespace summary {
 
-struct MergeSerialiser : public arki::summary::Visitor {
+struct Serialiser {
   arki::Emitter &emitter;
   arki::Formatter *formatter;
   arki::Summary summary;
+
+  Serialiser(arki::Emitter &e, arki::Formatter *f,
+             arki::Summary &summary);
+  ~Serialiser();
+
+  virtual void serialise() = 0;
+};
+
+struct ExtendedSerialiser : public Serialiser, public arki::summary::Visitor {
+  ExtendedSerialiser(arki::Emitter &e, arki::Formatter *f,
+                     arki::Summary &summary);
+
+  virtual bool operator()(const std::vector< arki::UItem<> >& md,
+                          const arki::UItem<arki::summary::Stats>& stats);
+
+  virtual void serialise();
+};
+
+struct MergeSerialiser : public Serialiser, public arki::summary::Visitor {
   arki::summary::Stats statistics;
   std::map<std::string, std::set< arki::UItem<> > > fields;
 
@@ -36,11 +55,13 @@ struct Printer {
   const arki::runtime::Restrict restr;
   arki::Emitter &emitter;
   const std::string query;
+  bool extended;
 
   Printer(const arki::ConfigFile &cfg,
           const arki::runtime::Restrict &restr,
           arki::Emitter &emitter,
-          const std::string query);
+          const std::string query,
+          const bool &extended);
   ~Printer();
 
   void print();

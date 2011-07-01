@@ -1,7 +1,5 @@
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
-#AM_LDFLAGS = -larkimet
-
 noinst_LTLIBRARIES = libarkiweb.la
 
 libarkiweb_la_SOURCES = \

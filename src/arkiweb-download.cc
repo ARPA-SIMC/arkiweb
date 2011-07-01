@@ -56,8 +56,9 @@ int main(int argc, char **argv) {
 
     out << cgicc::HTTPContentHeader("application/binary");
     dsp->process(merged, "");
-  } catch (...) {
-    out << cgicc::HTTPStatusHeader(500, "internal error");
+  } catch (const std::exception &e) {
+    std::cerr << e.what();
+    out << cgicc::HTTPStatusHeader(500, "error");
   }
   return 0;
 }

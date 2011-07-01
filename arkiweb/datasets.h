@@ -9,7 +9,7 @@ namespace arkiweb {
 
 namespace datasets {
 
-struct Printer {
+struct JSONPrinter {
   arki::ConfigFile cfg;
   arki::runtime::Restrict restr;
   arki::Emitter &emitter;
