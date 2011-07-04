@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 SUBDIRS = arkiweb src
 
 pkgdatadir = $(datarootdir)/$(PACKAGE)
