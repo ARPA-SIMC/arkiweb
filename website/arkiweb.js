@@ -251,7 +251,7 @@ $(document).ready(function() {
 				var download = $("<span>download</span>").click(function() {
 					if ($(this).hasClass('disabled'))
 						return;
-					var u = "http://localhost/~emanuele/arkiweb/lib/cgi-bin/arkiweb-download?" + 
+					var u = ArkiwebConfig.servicesbaseurl + "/arkiweb-download?" + 
 						$.param(req);
 					window.open(u);
 				});
