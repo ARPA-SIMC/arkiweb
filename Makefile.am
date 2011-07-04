@@ -20,6 +20,9 @@ webfiles = \
 	   website/jquery-ui-timepicker-addon.js \
 	   website/jquery.utils.js \
 	   website/loader.gif \
+	   website/asc.gif \
+	   website/desc.gif \
+	   website/bg.gif \
 	   website/OpenLayers-2.10.tar.gz
 	   
 CLEANFILES = website.tar.gz
