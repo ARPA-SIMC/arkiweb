@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = arkiweb src
+SUBDIRS = embedded/cgicc arkiweb src
 
 pkgdatadir = $(datarootdir)/$(PACKAGE)
 

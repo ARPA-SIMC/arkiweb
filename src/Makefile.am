@@ -1,4 +1,6 @@
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/embedded/cgicc
+
+AM_LDFLAGS = -L$(top_builddir)/embedded/cgicc/cgicc
 
 DEVEL_LDADD=$(top_builddir)/arkiweb/libarkiweb.la -lcgicc -larkimet
 
