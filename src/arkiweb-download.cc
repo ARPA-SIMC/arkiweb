@@ -38,7 +38,6 @@ int main(int argc, char **argv) {
     if (postprocess.empty()) {
       pmaker.data_only = true;
     }
-    pmaker.summary_restrict = arkiweb::restr::restriction();
     arki::Matcher matcher = arki::Matcher::parse(query);
 
     arki::runtime::Output output;
@@ -48,10 +47,13 @@ int main(int argc, char **argv) {
                                                                      output);
 
     arki::dataset::Merged merged;
+    arki::runtime::Restrict restr = arkiweb::restriction();
     for (arki::ConfigFile::const_section_iterator c = cfg.sectionBegin();
          c != cfg.sectionEnd(); ++c) {
-      arki::ReadonlyDataset *ds = arki::ReadonlyDataset::create(*c->second);
-      merged.addDataset(*ds);
+      if (restr.is_allowed(*c->second)) { 
+        arki::ReadonlyDataset *ds = arki::ReadonlyDataset::create(*c->second);
+        merged.addDataset(*ds);
+      }
     }
 
     out << cgicc::HTTPContentHeader("application/binary");
