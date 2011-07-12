@@ -6,10 +6,7 @@ version 0.1
 Compiling
 ---------
 Arkiweb is in experimental status. If you want to compile it,
-you need:
-
-* `libcgicc`
-* `libarkimet.la`
+you need arkimet.
 
 Web services
 ------------
@@ -60,8 +57,4 @@ Website
 -------
 The website is installed under `$datarootdir/arkiweb/website.tar.gz`.
 
-You can untar the file where you want, but you must:
-
-* edit the file `arkiweb-config.js`
-* untar the file `OpenLayers-2.10.tar.gz`
-* create a symbolic link from `OpenLayers-2.10` to `OpenLayers`
+You can untar the file where you want, but you must edit `arkiweb.js`.

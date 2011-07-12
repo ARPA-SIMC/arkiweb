@@ -1,201 +1,176 @@
 body {
 	font-family: sans-serif;
-	font-size: 0.9em;
-	background-color: #E8EFEF;
-	padding: 0;
+	font-size: small;
+	height: 100%;
 	margin: 0;
 }
-.content-container {
-	margin: 0.5%;
-	padding: 0.5%;
-	border-radius: 1em;
-	background-color: white;
-}
 
-.content-container > .title {
-	padding: 0.5%;
-	font-weight: bold;
-	text-align: center;
-	border-radius: 1em;
+#header, #footer {
 	background-color: #E8EFEF;
-	cursor: pointer;
-	text-decoration: underline;
-}
-
-#map > .title {
-	cursor: auto;
-	text-decoration: none;
-}
-
-.content-container > .menu {
-	height: 10%;
-	padding: 0.3em;
 	text-align: center;
-}
-
-.content-container > .menu > * {
-	padding-right: 0.5em;
-}
-
-.content-container > .menu > label {
-	padding-right: 0;
-}
-
-.content-container > .menu > span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.content-container > .content {
-	padding: 1%;
-	overflow: auto;
-	height: 65%;
-}
-
-#header {
-	padding: 0.5%;
-	background-color: transparent;
-	height: 2%;
-	text-align: center;
-	font-weight: bold;
-}
-
-#content {
-	height: 95%;
-}
-#footer {
-	display: none;
-}
-
-#datasets, #fields, #postprocess {
-	float: left;
-	width: 65%;
-	height: 29%;
-}
-
-.dataset-name {
-	font-family: monospace;
-	padding-right: 0.5em;
-	/*font-weight: bold;*/
-}
-
-.dataset-description {
-	font-style: italic;
-}
-
-#map {
-	float: right;
-	width: 31%;
-	height: 94%;
-}
-
-.allowed {
-	color: black;
-}
-
-.notallowed {
-	color: #B0B0B0;
+	font-size: large;
 }
 
 .error {
-	text-align: center;
-	color: red;
+	display: block;
+	color: white;
 	font-weight: bold;
+	background-color: red;
+	text-align: center;
 }
 
-.loading .title  {
-	color: transparent;
+.disabled {
+	color: silver;
+}
+
+.hidden {
+	display: none;
+}
+
+.arkiweb-section.loading .arkiweb-content {
 	background-image: url('loader.gif');
 	background-repeat: no-repeat;
-	background-position: 50% 50%;
+	background-position: center center;
+	min-height: 30px;
+}
+.arkiweb-section {
+	border-bottom: thin solid #E8EFEF;
+	background-color: white;
+	/*background: #E8EFEF;*/
 }
 
-.field-item {
-	padding: 0% 0.5%;
-}
-
-.field-item-name {
-	text-align: center;
-	/*background-color: #9999FF;*/
-	background-color: #fafafa;
-	padding: 0.3%;
-	border-radius: 0.5em;
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.field-item.selected .field-item-name {
+.arkiweb-title {
 	font-weight: bold;
-}
-
-.field-item-value {
-	font-family: monospace;
-}
-
-.summary {
-	font-size: 0.9em;
-}
-
-.summary dt {
-	font-weight: bold;
-}
-
-.summary dd {
-	font-family: monospace;
-}
-
-.summary .loading {
-	height: 50%;
-	background-image: url('loader.gif');
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-}
-
-.summary .menu {
+	font-size: small;
 	text-align: center;
-	height: 5%;
+	margin: 0;
+	padding: 0 1%;
 }
 
-.summary .menu span {
-	text-decoration: underline;
+.arkiweb-menu {
+	padding: 1% 1%;
+	text-align: center;
+}
+
+.arkiweb-menu .arkiweb-menu-choice {
 	cursor: pointer;
-	padding-right: 0.5em;
-}
-
-.summary .summary-list {
-	overflow: auto;
-	height: 90%;
-}
-
-.summary-list ul {
-	list-style: none;
+	text-decoration: underline;
+	margin: 0 0.5em;
 	padding: 0;
 }
 
-.summary .disabled {
-	color: #B0B0B0;
+.arkiweb-content {
+	padding: 0;
+	background-color: white;
 }
 
-.summary .fields-table {
-	overflow: auto;
+#arkiweb-datasets {
+	float: left;
+	width: 50%;
 	height: 90%;
 }
 
-.summary table {
-	font-size: 0.9em;
+#toggle-not-allowed-datasets.active {
+	font-style: italic;
+}
+
+#arkiweb-datasets-content {
+	height: 92%;
+	overflow: auto;
+}
+
+.arkiweb-datasets-item {
+	padding: 1%;
+	border-bottom: 1px solid silver;
+}
+
+.arkiweb-datasets-item .more-info {
+	cursor: pointer;
+	text-decoration: underline;
+	padding: 0 1em;
+	font-size: 0.8em;
+	float: right;
+}
+
+.arkiweb-datasets-item-title {
+	padding: 0;
+	margin: 0 0.5em 0 0;
+}
+
+.allowed .arkiweb-datasets-item-title {
+	font-weight: bold;
+}
+
+.arkiweb-datasets-item-description {
+	padding: 0;
+	margin: 0;
+	font-style: italic;
+}
+
+#arkiweb-map, #arkiweb-postprocess {
+	width: 49%;
+	height: 45%;
+	float: right;
+}
+#arkiweb-map-content {
+	height: 100%;
+}
+
+#arkiweb-fields {
+	float: left;
+	height: 90%;
+	width: 50%;
+}
+
+#arkiweb-fields-content {
+	height: 90%;
+	overflow: auto;
+}
+
+.arkiweb-fields-item {
+	border-bottom: thin solid silver;
+}
+
+.arkiweb-fields-item-title {
+	display: inline-block;
+	cursor: pointer;
+	margin: 0;
+	padding: 1%;
+	text-align: left;
+	font-weight: normal;
+	font-size: 1em;
+}
+
+.arkiweb-fields-item-value {
+	padding: 0.5% 1% 0.5% 0;
+	padding-left: 2em;
+	text-indent: -1.5em;
+}
+
+.arkiweb-fields-item-value-code {
+	font-family: monospace;
+}
+
+#arkiweb-summary-content dt {
+	font-weight: bold;
+}
+
+.arkiweb-summary-item-value-code {
+	font-family: monospace;
+}
+
+#arkiweb-extendedSummary-content table {
+	font-size: small;
 	border-collapse: collapse;
 }
-
-.summary table thead {
-	background-color: #E8EFEF;
-	font-weight: bold;
+#arkiweb-extendedSummary-content table tr {
+	border: thin solid #E8EFEF;
+}
+#arkiweb-extendedSummary-content table th {
 	text-align: center;
+	background-color: #E8EFEF;
 }
-
-.summary table tbody tr {
-	border-bottom: 1px solid #E8EFEF;
-}
-
-.summary table tbody tr td {
-	padding: 1em;
+#arkiweb-extendedSummary-content table td {
+	border: thin solid #E8EFEF;
+	padding: 0.5em;
 }
