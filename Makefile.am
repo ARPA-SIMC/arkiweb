@@ -10,22 +10,14 @@ website.tar.gz: $(webfiles)
 	tar czf $@ $(webfiles)
 
 webfiles = \
-	   website/arkiweb-config.js \
 	   website/arkiweb.css \
 	   website/arkiweb.js \
 	   website/arkiweb-parser.js \
 	   website/index.html \
-	   website/jquery.js \
-	   website/jquery.tablesorter.css \
-	   website/jquery.tablesorter.js \
 	   website/jquery-ui-timepicker-addon.css \
 	   website/jquery-ui-timepicker-addon.js \
 	   website/jquery.utils.js \
-	   website/loader.gif \
-	   website/asc.gif \
-	   website/desc.gif \
-	   website/bg.gif \
-	   website/OpenLayers-2.10.tar.gz
+	   website/loader.gif
 	   
 CLEANFILES = website.tar.gz
 
