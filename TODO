@@ -1,5 +1,2 @@
-* Add error messages when ajax calls fail in arkiweb.js
 * Add postprocessing objects
-* @title in menu button (arkiweb.js)
-* Remove console functions
 * help.html
