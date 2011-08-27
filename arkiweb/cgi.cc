@@ -29,6 +29,46 @@
 namespace arkiweb {
 namespace cgi {
 
+std::ostream &operator<<(std::ostream &out, const Renderable &r) {
+  r.render(out);
+  return out;
+}
+
+HttpStatusHeader::HttpStatusHeader(const int &status, const std::string &message)
+  : status(status), message(message) {}
+
+void HttpStatusHeader::render(std::ostream &out) const {
+  out << "HTTP/1.1 " << status << " " << message << std::endl;
+}
+
+HttpResponseHeader::HttpResponseHeader() : m_status(200, "OK") {}
+HttpResponseHeader::HttpResponseHeader(const HttpStatusHeader &status) 
+  : m_status(status) {}
+
+HttpResponseHeader::~HttpResponseHeader() {
+  for (std::vector<HttpHeader *>::iterator i = m_headers.begin();
+       i != m_headers.end(); ++i)
+    delete *i;
+  m_headers.empty();
+}
+
+void HttpResponseHeader::setStatus(const HttpStatusHeader &status) {
+  m_status = status;
+}
+
+void HttpResponseHeader::addHeader(HttpHeader *header) {
+  m_headers.push_back(header);
+}
+
+void HttpResponseHeader::render(std::ostream &out) const {
+  m_status.render(out);
+  for (std::vector<HttpHeader *>::const_iterator i = m_headers.begin();
+       i != m_headers.end(); ++i) {
+    (*i)->render(out);
+  }
+  out << std::endl;
+}
+
 Cgi::Cgi() {
   parseQueryString();
 }
