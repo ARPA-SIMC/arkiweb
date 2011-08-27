@@ -38,7 +38,7 @@ HttpStatusHeader::HttpStatusHeader(const int &status, const std::string &message
   : status(status), message(message) {}
 
 void HttpStatusHeader::render(std::ostream &out) const {
-  out << "HTTP/1.1 " << status << " " << message << std::endl;
+  out << "Status: " << status << " " << message << std::endl;
 }
 
 HttpResponseHeader::HttpResponseHeader() : m_status(200, "OK") {}
