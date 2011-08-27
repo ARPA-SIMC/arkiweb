@@ -19,6 +19,10 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
+
+#ifndef ARKIWEB_CGI_H
+#define ARKIWEB_CGI_H
+
 #include <string>
 #include <vector>
 #include <map>
@@ -37,30 +41,34 @@ class Renderable {
 };
 
 class HttpHeader : public Renderable {
+ public:
+  HttpHeader(const std::string &name, const std::string &value);
+  virtual void render(std::ostream &out) const;
+ protected:
+  std::string m_name;
+  std::string m_value;
 };
 
-class HttpStatusHeader : public Renderable {
+class HttpStatusHeader : public HttpHeader {
  public:
-  int status;
-  std::string message;
-
   HttpStatusHeader(const int &status, const std::string &message);
-  virtual void render(std::ostream &out) const;
+ protected:
+  int m_status;
 };
 
-class HttpResponseHeader : public Renderable {
+class HttpContentTypeHeader : public HttpHeader {
  public:
-  HttpResponseHeader();
-  HttpResponseHeader(const HttpStatusHeader &status);
-  ~HttpResponseHeader();
+  HttpContentTypeHeader(const std::string &type);
+};
 
-  void setStatus(const HttpStatusHeader &status);
-  void addHeader(HttpHeader *header);
-  virtual void render(std::ostream &out) const;
+class HttpHtmlContentTypeHeader : public HttpContentTypeHeader {
+ public:
+  HttpHtmlContentTypeHeader();
+};
 
- private:
-  HttpStatusHeader m_status;
-  std::vector<HttpHeader *> m_headers;
+class HttpPlainContentTypeHeader : public HttpContentTypeHeader {
+ public:
+  HttpPlainContentTypeHeader();
 };
 
 class Cgi {
@@ -81,3 +89,5 @@ class Cgi {
 
 }
 }
+
+#endif        /* ARKIWEB_CGI_H */
