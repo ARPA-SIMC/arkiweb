@@ -23,6 +23,6 @@
 #include <arkiweb/cgi.h>
 int main() {
   arkiweb::cgi::Cgi cgi;
-  std::cout << arkiweb::cgi::HttpResponseHeader(arkiweb::cgi::HttpStatusHeader(500, "not yet implemented"));
+  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
   return 0;
 }
