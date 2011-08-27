@@ -22,9 +22,46 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <ostream>
 
 namespace arkiweb {
 namespace cgi {
+
+class Renderable;
+
+std::ostream &operator<<(std::ostream &out, const Renderable &r);
+
+class Renderable {
+ public:
+  virtual void render(std::ostream &out) const = 0;
+};
+
+class HttpHeader : public Renderable {
+};
+
+class HttpStatusHeader : public Renderable {
+ public:
+  int status;
+  std::string message;
+
+  HttpStatusHeader(const int &status, const std::string &message);
+  virtual void render(std::ostream &out) const;
+};
+
+class HttpResponseHeader : public Renderable {
+ public:
+  HttpResponseHeader();
+  HttpResponseHeader(const HttpStatusHeader &status);
+  ~HttpResponseHeader();
+
+  void setStatus(const HttpStatusHeader &status);
+  void addHeader(HttpHeader *header);
+  virtual void render(std::ostream &out) const;
+
+ private:
+  HttpStatusHeader m_status;
+  std::vector<HttpHeader *> m_headers;
+};
 
 class Cgi {
  public:
