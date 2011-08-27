@@ -1,3 +1,4 @@
 2011-08-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* Autotools files
 	* arkiweb/cgi.{h,cc}: cgi classes
+	* src/*.cc: empty web services
