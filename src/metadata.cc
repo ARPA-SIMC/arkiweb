@@ -1,5 +1,5 @@
 /*
- * extended-summary - web service for extended summary
+ * metadata - web service for metadata
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -20,7 +20,8 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <iostream>
+#include <arkiweb/cgi.h>
 int main() {
-  std::cout << "HTTP/1.1 500 not implemented" << std::endl << std::endl;
+  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
   return 0;
 }
