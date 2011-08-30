@@ -1,5 +1,5 @@
 /*
- * summary - web service for summary
+ * summary - summary utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,22 +19,33 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <iostream>
-#include <arkiweb/cgi.h>
-#include <arkiweb/configfile.h>
 #include <arkiweb/summary.h>
-#include <arki/emitter/json.h>
-int main() {
-  arkiweb::cgi::Cgi cgi;
-  std::vector<std::string> datasets = cgi["datasets[]"];
-  std::string query = cgi("query");
-  arki::ConfigFile cfg = arkiweb::configfile(datasets);
-  arki::emitter::JSON emitter(std::cout);
+#include <arki/summary.h>
+#include <arki/summary/stats.h>
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
+namespace arkiweb {
+namespace summary {
 
-  arkiweb::summary::Printer printer(cfg, emitter, query);
-  printer.print();
+Printer::Printer(const arki::ConfigFile &cfg, 
+                 arki::Emitter &emitter,
+                 const std::string &query)
+    : m_cfg(cfg), m_emitter(emitter), 
+    m_matcher(arki::Matcher::parse(query)) {}
+    
 
-  return 0;
+void Printer::print() {
+  m_emitter.start_mapping();
+
+  m_emitter.add("fields");
+  m_emitter.start_mapping();
+  m_emitter.end_mapping();
+
+  m_emitter.add("summarystats");
+  m_emitter.start_mapping();
+  m_emitter.end_mapping();
+  
+  m_emitter.end_mapping();
+}
+
+}
 }

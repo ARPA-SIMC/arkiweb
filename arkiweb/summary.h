@@ -1,5 +1,5 @@
 /*
- * summary - web service for summary
+ * summary - summary utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,22 +19,31 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <iostream>
-#include <arkiweb/cgi.h>
-#include <arkiweb/configfile.h>
-#include <arkiweb/summary.h>
-#include <arki/emitter/json.h>
-int main() {
-  arkiweb::cgi::Cgi cgi;
-  std::vector<std::string> datasets = cgi["datasets[]"];
-  std::string query = cgi("query");
-  arki::ConfigFile cfg = arkiweb::configfile(datasets);
-  arki::emitter::JSON emitter(std::cout);
+#ifndef ARKIWEB_SUMMARY_H
+#define ARKIWEB_SUMMARY_H
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
+#include <arki/configfile.h>
+#include <arki/emitter.h>
+#include <arki/matcher.h>
 
-  arkiweb::summary::Printer printer(cfg, emitter, query);
-  printer.print();
+namespace arkiweb {
+namespace summary {
 
-  return 0;
+class Printer {
+ public:
+  Printer(const arki::ConfigFile &cfg, arki::Emitter &emitter,
+          const std::string &query);
+  void print();
+
+ private:
+  const arki::ConfigFile m_cfg;
+  arki::Emitter &m_emitter;
+  const arki::Matcher m_matcher;
+
+};
+
+
 }
+}
+
+#endif        /* ARKIWEB_SUMMARY_H */
