@@ -86,11 +86,14 @@ void Cgi::parseQueryString() {
   Splitter spl1("&", REG_EXTENDED);
   for (Splitter::const_iterator i1 = spl1.begin(query);
        i1 != spl1.end(); ++i1) {
-    Splitter spl2("=", REG_EXTENDED);
-    Splitter::const_iterator i2 = spl2.begin(*i1);
-    std::string key = *i2;
-    std::string val = *(++i2);
+    using wibble::ERegexp;
+    ERegexp re("([^=]+)=(.*)", 3);
+    if(!re.match(*i1))
+      continue;
+    std::string key = re[1];
+    std::string val = re[2];
     m_entries[key].push_back(val);
+    std::cout << key << ": " << val << std::endl;
   }
 }
 
