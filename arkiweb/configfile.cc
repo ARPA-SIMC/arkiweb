@@ -23,13 +23,15 @@
 
 #include <arki/runtime/config.h>
 #include <arkiweb/restrict.h>
+#include <wibble/exception.h>
 
 namespace arkiweb {
 
 std::string configpath() {
   char *path = ::getenv(ARKIWEB_CONFIG_VAR);
   if (!path)
-    return "";
+    throw wibble::exception::Consistency("Reading " ARKIWEB_CONFIG_VAR,
+                                         ARKIWEB_CONFIG_VAR " not set");
   return path;
 }
 
