@@ -93,7 +93,6 @@ void Cgi::parseQueryString() {
     std::string key = re[1];
     std::string val = re[2];
     m_entries[key].push_back(val);
-    std::cout << key << ": " << val << std::endl;
   }
 }
 
