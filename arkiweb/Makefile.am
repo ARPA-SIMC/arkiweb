@@ -12,4 +12,6 @@ libarkiweb_la_SOURCES = \
 			dataset.cc \
 			dataset.h \
 			restrict.cc \
-			restrict.h
+			restrict.h \
+			summary.cc \
+			summary.h
