@@ -31,7 +31,8 @@ int main() {
   arki::emitter::JSON emitter(std::cout);
   arkiweb::dataset::Printer printer(cfg, emitter);
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
+  std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
+  std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
   
   printer.print();
 
