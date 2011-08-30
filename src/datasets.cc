@@ -26,15 +26,21 @@
 #include <arki/emitter/json.h>
 
 int main() {
-  arkiweb::cgi::Cgi cgi;
-  arki::ConfigFile cfg = arkiweb::configfile();
-  arki::emitter::JSON emitter(std::cout);
-  arkiweb::dataset::Printer printer(cfg, emitter);
+  try {
+    arkiweb::cgi::Cgi cgi;
+    arki::ConfigFile cfg = arkiweb::configfile();
+    arki::emitter::JSON emitter(std::cout);
+    arkiweb::dataset::Printer printer(cfg, emitter);
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
-  std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
-  
-  printer.print();
+    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
+    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
+
+    printer.print();
+
+  } catch (const std::exception &e) {
+    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+    std::cerr << e.what() << std::endl;
+  }
 
   return 0;
 }
