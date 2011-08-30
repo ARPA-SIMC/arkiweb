@@ -1,5 +1,5 @@
 /*
- * datasets - web service for datasets
+ * restrict - restriction utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,21 +19,15 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <iostream>
-#include <arkiweb/cgi.h>
-#include <arkiweb/configfile.h>
-#include <arkiweb/dataset.h>
-#include <arki/emitter/json.h>
+#ifndef ARKIWEB_RESTRICT_H
+#define ARKIWEB_RESTRICT_H
 
-int main() {
-  arkiweb::cgi::Cgi cgi;
-  arki::ConfigFile cfg = arkiweb::configfile();
-  arki::emitter::JSON emitter(std::cout);
-  arkiweb::dataset::Printer printer(cfg, emitter);
+#include <string>
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
-  
-  printer.print();
+#define ARKIWEB_RESTRICT_VAR "ARKIWEB_RESTRICT"
 
-  return 0;
+namespace arkiweb {
+std::string restriction();
 }
+
+#endif        /* ARKIWEB_RESTRICT_H */
