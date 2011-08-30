@@ -24,17 +24,26 @@
 #include <arkiweb/configfile.h>
 #include <arkiweb/summary.h>
 #include <arki/emitter/json.h>
+#include <arki/runtime.h>
 int main() {
-  arkiweb::cgi::Cgi cgi;
-  std::vector<std::string> datasets = cgi["datasets[]"];
-  std::string query = cgi("query");
-  arki::ConfigFile cfg = arkiweb::configfile(datasets);
-  arki::emitter::JSON emitter(std::cout);
+  try {
+    arki::runtime::init();
+    arkiweb::cgi::Cgi cgi;
+    std::vector<std::string> datasets = cgi["datasets[]"];
+    std::string query = cgi("query");
+    arki::ConfigFile cfg = arkiweb::configfile(datasets);
+    arki::emitter::JSON emitter(std::cout);
 
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
+    arkiweb::summary::Printer printer(cfg, emitter, query);
 
-  arkiweb::summary::Printer printer(cfg, emitter, query);
-  printer.print();
+    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
+    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
+
+    printer.print();
+  } catch (const std::exception &e) {
+    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+    std::cerr << e.what() << std::endl;
+  }
 
   return 0;
 }
