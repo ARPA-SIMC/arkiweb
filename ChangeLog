@@ -1,3 +1,10 @@
+2011-08-30 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* src/datasets.cc: implemented
+	* src/summary.cc: implemented
+	* arkiweb/configfile.{cc,h}: configfile utilities
+	* arkiweb/restrict.{cc,h}: restrict utilities
+	* arkiweb/dataset.{cc,h}: dataset utilities
+	* arkiweb/summary.{cc,h}: summary utilities
 2011-08-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* Autotools files
 	* arkiweb/cgi.{h,cc}: cgi classes
