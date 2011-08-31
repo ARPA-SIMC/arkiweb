@@ -50,7 +50,8 @@ void Printer::print() {
     arki::Formatter *formatter;
 
     Serialiser(const arki::Summary &summary, arki::Emitter &emitter)
-        : summary(summary), emitter(emitter), formatter(arki::Formatter::create()) {}
+        : summary(summary), emitter(emitter), 
+        formatter(arki::Formatter::create()) {}
 
     bool operator()(const std::vector< arki::UItem<> >& md,
                     const arki::UItem<arki::summary::Stats>& stats) {
@@ -76,60 +77,6 @@ void Printer::print() {
       emitter.end_list();
     } 
   } serialiser(summary, m_emitter);
-  /*
-  struct Serialiser : public arki::summary::Visitor {
-    const arki::Summary summary;
-    arki::Emitter &emitter;
-
-    std::map<std::string, std::set< arki::UItem<> > > fields;
-    arki::summary::Stats statistics;
-    arki::Formatter *formatter;
-
-    Serialiser(const arki::Summary &summary, arki::Emitter &emitter)
-        : summary(summary), emitter(emitter), formatter(arki::Formatter::create()) {}
-
-    bool operator()(const std::vector< arki::UItem<> >& md,
-                    const arki::UItem<arki::summary::Stats>& stats) {
-      for (std::vector< arki::UItem<> >::const_iterator i = md.begin();
-           i != md.end(); ++i) {
-        if (!i->defined()) continue;
-        fields[(*i)->tag()].insert(*i);
-        statistics.merge(*stats);
-      }
-    }
-
-    void serialise() {
-      summary.visit(*this);
-      emitter.start_mapping();
-
-      emitter.add("fields");
-      emitter.start_mapping();
-      for (std::map<std::string, std::set< arki::UItem<> > >::iterator i = fields.begin();
-           i != fields.end(); ++i) {
-        emitter.add(i->first);
-        emitter.start_list();
-        for (std::set< arki::UItem<> >::const_iterator j = i->second.begin();
-             j != i->second.end(); ++j) {
-          emitter.start_mapping();
-          (*j)->serialiseLocal(emitter, formatter);
-          emitter.add("desc", (*formatter)(*j));
-          emitter.end_mapping();
-        }
-        emitter.end_list();
-      }
-      emitter.end_mapping();
-
-      emitter.add("metadatastats");
-      emitter.start_mapping();
-      statistics.serialiseLocal(emitter, formatter);
-      emitter.end_mapping();
-
-
-      emitter.end_mapping();
-    }
-
-  } serialiser(summary, m_emitter);
-  */
   serialiser.serialise();
 }
 
