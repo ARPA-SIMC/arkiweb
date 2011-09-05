@@ -21,5 +21,6 @@ AC_CONFIG_FILES([Makefile
                  wibble/Makefile
                  arkiweb/Makefile
 		 src/Makefile
-		 httpd/Makefile])
+		 httpd/Makefile
+		 javascript/Makefile])
 AC_OUTPUT

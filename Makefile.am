@@ -1,1 +1,1 @@
-SUBDIRS = wibble arkiweb src httpd
+SUBDIRS = wibble arkiweb src httpd javascript
