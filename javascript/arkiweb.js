@@ -41,6 +41,25 @@ arkiweb.models.Dataset.findAll = function(options) {
 arkiweb.collections = {};
 arkiweb.collections.Datasets = function(selector) {
 	this.selector = $(selector);
+	this.model = arkiweb.models.Datasets;
+	this.fetch();
+};
+arkiweb.collections.Datasets.prototype.fetch = function(options) {
+	var self = this;
+	this.datasets = [];
+	this.model.findAll({
+		success: function(datasets) {
+			this.datasets = datasets;
+			if (options && options.success) {
+				options.success(self);
+			}
+		},
+		error: function(text, status) {
+			if (options && options.error) {
+				options.error(text, status);
+			}
+		}
+	});
 };
 
 (function() {
