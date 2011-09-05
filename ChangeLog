@@ -1,3 +1,6 @@
+2011-09-04 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* src/metadata.cc: implemented
+	* src/data.cc: implemented
 2011-08-30 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* src/datasets.cc: implemented
 	* src/summary.cc: implemented
