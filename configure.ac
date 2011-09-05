@@ -20,5 +20,6 @@ AC_CHECK_HEADER([arki/libconfig.h],
 AC_CONFIG_FILES([Makefile
                  wibble/Makefile
                  arkiweb/Makefile
-		 src/Makefile])
+		 src/Makefile
+		 httpd/Makefile])
 AC_OUTPUT
