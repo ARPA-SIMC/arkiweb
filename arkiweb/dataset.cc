@@ -33,10 +33,8 @@ Printer::Printer(const arki::ConfigFile &cfg,
     m_keys.insert("name"); 
     m_keys.insert("allowed");
     m_keys.insert("description");
-    /*
     m_keys.insert("bounding");
     m_keys.insert("postprocess");
-    */
   }
 
 void Printer::print() {
