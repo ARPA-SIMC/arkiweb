@@ -13,6 +13,10 @@ LT_INIT
 
 AM_CONDITIONAL([WIBBLE_STANDALONE], [false])
 
+AC_CHECK_HEADER([arki/libconfig.h],
+		[],
+		[AC_MSG_ERROR([arkimet headers not found])])
+
 AC_CONFIG_FILES([Makefile
                  wibble/Makefile
                  arkiweb/Makefile
