@@ -1,0 +1,16 @@
+ScriptAlias /arkiweb/services/ /usr/lib/arkiweb/
+<Directory "/usr/lib/arkiweb/">
+	AllowOverride None
+	Options +ExecCGI
+
+	# ARKIWEB_CONFIG is mandatory!
+	# SetEnv ARKIWEB_CONFIG /etc/arkiweb.config
+
+	# Authentication (optional)
+	# 
+	# Basic authentication example:
+	# SetEnv ARKIWEB_RESTRICT REMOTE_USER
+	# AuthType Basic
+	# AuthUserFile /etc/arkiweb.passwords
+	# require valid-user
+</Directory>
