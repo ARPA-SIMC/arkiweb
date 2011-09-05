@@ -1,3 +1,10 @@
+2011-09-05 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: check for arkimet headers
+	* httpd/arkiweb.site: apache configuration
+	* httpd/Makefile.am: automake file for apache configuration
+	* javascript/arkiweb-parser.js: javascript parser for arkimet response
+	in JSON format
+	* javascript/Makefile.am: automake file for javascript files
 2011-09-04 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* src/metadata.cc: implemented
 	* src/data.cc: implemented
