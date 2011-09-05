@@ -5,6 +5,7 @@
 	* javascript/arkiweb-parser.js: javascript parser for arkimet response
 	in JSON format
 	* javascript/Makefile.am: automake file for javascript files
+	* arkiweb/dataset.cc: bounding and postprocess
 2011-09-04 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* src/metadata.cc: implemented
 	* src/data.cc: implemented
