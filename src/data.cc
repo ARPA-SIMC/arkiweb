@@ -1,27 +1,58 @@
-/*
- * data - web service for data
- *
- * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
- */
-#include <iostream>
 #include <arkiweb/cgi.h>
-int main() {
-  std::cout << arkiweb::cgi::HttpStatusHeader(500, "not yet implemented") << std::endl;
+#include <arkiweb/configfile.h>
+#include <arkiweb/restrict.h>
+
+#include <arki/runtime.h>
+#include <arki/runtime/processor.h>
+#include <arki/dataset/merged.h>
+
+int main(int argc, char **argv) {
+  try {
+    arki::runtime::init();
+
+    arkiweb::cgi::Cgi cgi;
+
+    std::string query = cgi("query");
+    std::string postprocess = cgi("postprocess");
+    std::vector<std::string> datasets = cgi["datasets[]"];
+
+    arki::ConfigFile cfg = arkiweb::configfile(datasets);
+
+    arki::runtime::ProcessorMaker pmaker;
+
+    pmaker.postprocess = postprocess;
+
+    if (postprocess.empty()) {
+      pmaker.data_only = true;
+    }
+    arki::Matcher matcher = arki::Matcher::parse(query);
+
+    arki::runtime::Output output;
+    output.openStdout();
+
+    std::auto_ptr<arki::runtime::DatasetProcessor> dsp = pmaker.make(matcher,
+                                                                     output);
+
+    arki::dataset::Merged merged;
+    arki::runtime::Restrict restr = arkiweb::restriction();
+    for (arki::ConfigFile::const_section_iterator c = cfg.sectionBegin();
+         c != cfg.sectionEnd(); ++c) {
+      if (restr.is_allowed(*c->second)) { 
+        arki::ReadonlyDataset *ds = arki::ReadonlyDataset::create(*c->second);
+        merged.addDataset(*ds);
+      }
+    }
+
+    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
+    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/binary") << std::endl;
+
+    dsp->process(merged, "");
+
+    std::cout.flush();
+
+  } catch (const std::exception &e) {
+    std::cerr << e.what();
+    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+  }
   return 0;
 }
