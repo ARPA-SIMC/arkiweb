@@ -40,19 +40,20 @@ arkiweb.models.Dataset.findAll = function(options) {
 };
 arkiweb.collections = {};
 arkiweb.collections.Datasets = function(selector) {
-	this.selector = $(selector);
-	this.model = arkiweb.models.Datasets;
-	this.fetch();
+	this.selector = selector;
+	this.element = $(selector);
+	this.datasets = [];
 };
 arkiweb.collections.Datasets.prototype.fetch = function(options) {
 	var self = this;
 	this.datasets = [];
-	this.model.findAll({
+	arkiweb.models.Dataset.findAll({
 		success: function(datasets) {
-			this.datasets = datasets;
+			self.datasets = datasets;
 			if (options && options.success) {
 				options.success(self);
 			}
+			self.element.trigger("update", self.datasets);
 		},
 		error: function(text, status) {
 			if (options && options.error) {
