@@ -1,0 +1,45 @@
+<script type="text/x-jquery-tmpl" id="arkiweb-tmpl">
+	<div class="header"></div>
+	<div class="datasets">
+		<div class="header">
+			<div class="title"><h2>datasets</h2></div>
+			<div class="menu">
+				<span class="toggle-allowed">toggle allowed</span>
+				<span class="show-fields">show fields for selected datasets</span>
+			</div>
+		</div>
+		<div class="content">
+			<div class="datasets-list"></div>
+		</div>
+	</div>
+	<div class="map">
+	</div>
+	<div class="postprocess">
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-dataset-selection-list-item-tmpl">
+	<div allowed="${allowed}">
+		<input type="checkbox"/>
+		<span class="name">${name}</span>
+		<span class="description">${description}</span>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-dataset-description-tmpl">
+	<div class="arkiweb-description">
+		<dl>
+			<dt>name</dt>
+			<dd>${name}</dd>
+			<dt>description</dt>
+			<dd>${description}</dd>
+			{{if postprocess.length > 0}}
+			<dt>postprocess</dt>
+			<dd>
+			<ul>
+				{{each postprocess}}
+				<li>${$value}</li>
+				{{/each}}
+			</ul>	
+			</dd>
+			{{/if}}
+	</div>
+</script>
