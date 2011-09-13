@@ -1,0 +1,44 @@
+body {
+	font-family: 'Arial', sans-serif;
+	font-size: 0.7em;
+}
+
+.arkiweb .menu {
+	text-align: center;
+}
+
+.arkiweb .menu span {
+	text-decoration: underline;
+	margin: 0 0.5em;
+	cursor: pointer;
+}
+
+.arkiweb .title {
+	text-align: center;
+}
+
+.arkiweb .header {
+	height: 10%;
+}
+
+.arkiweb .content {
+	height: 80%;
+	overflow: auto;
+}
+
+.arkiweb .datasets-list {
+}
+
+.arkiweb .datasets-list div[allowed="false"] {
+	color: silver;
+}
+
+.arkiweb .datasets-list .name {
+	margin: 0 1em;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.arkiweb .datasets-list .description {
+	font-style: italic;
+}
