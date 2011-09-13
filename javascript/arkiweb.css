@@ -42,3 +42,7 @@ body {
 .arkiweb .datasets-list .description {
 	font-style: italic;
 }
+
+.arkiweb-description dt {
+	font-weight: bold;
+}
