@@ -6,12 +6,6 @@
 	};
 
 	arkiweb.models.Dataset = Backbone.Model.extend({
-		initialize: function(attributes) {
-			this.features = new OpenLayers.Format.WKT().read(attributes.bounding);
-		}
-	});
-
-	arkiweb.models.DatasetSelection = arkiweb.models.Dataset.extend({
 		defaults: {
 			selected: false
 		},
@@ -25,15 +19,25 @@
 		}
 	});
 
-	arkiweb.collections.DatasetSelectionList = Backbone.Collection.extend({
+	arkiweb.collections.Datasets = Backbone.Collection.extend({
 		url: 'datasets',
-		model: arkiweb.models.DatasetSelection
+		model: arkiweb.models.Dataset,
+		getSelectedNames: function() {
+			var selected = this.select(function(model) {
+				return model.isSelected();
+			});
+			return _.map(selected, function(model) {
+				return model.get('id');
+			});
+		}
 	});
 
-	arkiweb.views.DatasetSelectionList = Backbone.View.extend({
+	arkiweb.views.Datasets = Backbone.View.extend({
 		events: {
+			'click .show-help': 'showHelp',
 			'click .toggle-allowed': 'toggleAllowed',
-			'click .show-fields': 'showFields'
+			'click .show-fields': 'showFields',
+			'click .toggle-selected': 'toggleSelected'
 		},
 		initialize: function(options) {
 			this.collection.bind('reset', this.render, this);
@@ -45,7 +49,7 @@
 			this.collection.each(function(model) {
 				var div = $("<div>");
 				el.append(div);
-				var view = new arkiweb.views.DatasetSelectionListItem({
+				var view = new arkiweb.views.DatasetsItem({
 					model: model,
 					el: div
 				});
@@ -56,12 +60,18 @@
 		toggleAllowed: function() {
 			$(this.el).find(".datasets-list *[allowed='false']").toggle();
 		},
+		toggleSelected: function() {
+			alert("TODO");
+		},
 		showFields: function() {
+			this.trigger("showFields");
+		},
+		showHelp: function() {
 			alert("TODO");
 		}
 	});
 
-	arkiweb.views.DatasetSelectionListItem = Backbone.View.extend({
+	arkiweb.views.DatasetsItem = Backbone.View.extend({
 		tmpl: '#arkiweb-dataset-selection-list-item-tmpl',
 		events: {
 			'click input': 'toggleSelection',
@@ -122,6 +132,228 @@
 		}
 	});
 
+	arkiweb.models.FieldValue = Backbone.Model.extend({
+		defaults: {
+			selected: false
+		},
+		initialize: function(attributes) {
+			var query = null;
+			try {
+				query = ArkiwebParser[attributes.type].styles[attributes.value.s].decode(attributes.value);
+			} catch (e) {
+			}
+			this.attributes.query = query;
+		},
+		isSelected: function() {
+			return this.get('selected');
+		},
+		toggleSelection: function() {
+			return this.set({
+				selected: !this.get('selected')
+			});
+		}
+	});
+
+	arkiweb.collections.FieldValues = Backbone.Collection.extend({
+		initialize: function(attributes, options) {
+			this.type = options.type;
+		},
+		model: arkiweb.models.FieldValue,
+		url: '/',
+		fetch: function() {
+		},
+		query: function() {
+			var queries = this.select(function(model) {
+				return model.isSelected();
+			});
+			var query = null;
+			try {
+				query = ArkiwebParser[this.type].decode(_.map(queries, function(model) {
+					model.get('query');
+				}));
+			} catch (e) {
+			}
+		}
+	});
+
+	arkiweb.models.Field = Backbone.Model.extend({
+		initialize: function(attributes) {
+			this.collection = new arkiweb.collections.FieldValues([], {
+				type: attributes.type
+			});
+			_.each(attributes.values, function(value) {
+				var val = new arkiweb.models.FieldValue({
+					type: attributes.type,
+					value: value
+				});
+				this.collection.add(val);
+			}, this);
+		}
+	});
+	arkiweb.collections.Fields = Backbone.Collection.extend({
+		model: arkiweb.models.Field,
+		url: 'fields',
+		parse: function(resp) {
+			this.stats = resp.stats;
+			return resp.fields;
+		}
+	});
+	arkiweb.views.FieldsSelection = Backbone.View.extend({
+		initialize: function(options) {
+			this.collection.bind("reset", this.render, this);
+		},
+		events: {
+			'click .show-help': 'showHelp',
+			'click .show-datasets': 'showDatasets',
+			'click .toggle-query': 'toggleQuery'
+		},
+		render: function() {
+			$(this.el).find(".content").empty();
+			this.views = [];
+			this.collection.each(function(model) {
+				var view = new arkiweb.views.FieldsSelectionSection({
+					model: model,
+					el: $(this.el).find(".content")
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+			$(this.el).find(".query").hide();
+		},
+		showHelp: function() {
+			alert("TODO");
+		},
+		showDatasets: function() {
+			this.trigger("showDatasets");
+		},
+		toggleQuery: function() {
+			$(this.el).find(".field-item span").toggle();
+		}
+	});
+	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
+		tmpl: "#arkiweb-field-selection-sections-tmpl",
+		render: function() {
+			this.views = [];
+			var tmpl  = $(this.tmpl).tmpl(this.model.toJSON());
+			$(this.el).append(tmpl);
+			this.model.collection.each(function(model) {
+				var view = new arkiweb.views.FieldsSelectionSectionItem({
+					model: model,
+					el: $(tmpl).find(".field-section-values")
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+		}
+	});
+	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
+		tmpl: "#arkiweb-field-selection-sections-item-tmpl",
+		events: {
+			'click input': 'toggleSelection'
+		},
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+			if (!this.model.get('query')) {
+				$(tmpl).find("input").attr('disabled', true);
+				$(tmpl).find(".query").text("-");
+			}
+			$(this.el).append(tmpl);
+		},
+		toggleSelection: function() {
+			this.model.toggleSelection();
+		}
+	});
+
+	arkiweb.Router = Backbone.Router.extend({
+		initialize: function(options) {
+			this.el = options.el;
+			$(this.el).addClass("arkiweb");
+			$(this.el).append($("#arkiweb-tmpl").tmpl());
+			$(this.el).css('height', '100%');
+			var self = this;
+			$(this.el).layout({
+				center: {
+					applyDefaultStyles: true,
+					paneSelector: '.map'
+				},
+				west: {
+					size: '30%',
+					applyDefaultStyles: true,
+					paneSelector: '.datasets'
+				},
+				east: {
+					size: '30%',
+					applyDefaultStyles: true,
+					initHidden: true,
+					paneSelector: '.fields'
+				},
+				south: {
+					applyDefaultStyles: true,
+					paneSelector: '.postprocess'
+				},
+				north: {
+					applyDefaultStyles: true,
+					paneSelector: '.header'
+				},
+			});
+			$(this.el).find(".datasets").layout({
+				north: {
+					paneSelector: '.header'
+				},
+				center: {
+					applyDefaultStyles: true,
+					paneSelector: '.content'
+				}
+			});
+			$(this.el).find(".fields").layout({
+				north: {
+					paneSelector: '.header'
+				},
+				center: {
+					applyDefaultStyles: true,
+					paneSelector: '.content'
+				}
+			});
+			this.el = options.el;
+			this.datasets = new arkiweb.collections.Datasets();
+			this.dataset_view = new arkiweb.views.Datasets({
+				collection: this.datasets,
+				el: $(this.el).find(".datasets")
+			});
+			this.map_view = new arkiweb.views.Map({
+				collection: this.datasets,
+				el: $(this.el).find(".map")
+			});
+			this.datasets.fetch();
+			this.map_view.render();
+			this.dataset_view.bind("showFields", this.showFields, this);
+			this.fields = new arkiweb.collections.Fields();
+			this.fields_view = new arkiweb.views.FieldsSelection({
+				collection: this.fields,
+				el: $(this.el).find(".fields")
+			});
+			this.fields_view.bind("showDatasets", this.showDatasets, this);
+		},
+		routes: {
+			"": "index"
+		},
+		index: function() {
+		},
+		showFields: function() {
+			this.fields.fetch({
+				data: {
+					datasets: this.datasets.getSelectedNames()
+				}
+			});
+			$(this.el).layout().close("west");
+			$(this.el).layout().open("east");
+		},
+		showDatasets: function() {
+			$(this.el).layout().close("east");
+			$(this.el).layout().open("west");
+		}
+	});
+
 	arkiweb.init = function(root) {
 		$.ajax({
 			url: 'arkiweb.html',
@@ -129,41 +361,11 @@
 				if ($("#arkiweb-tmpl").length == 0) {
 					$("body").append(data);
 				}
-				$(root).addClass("arkiweb");
-				$(root).append($("#arkiweb-tmpl").tmpl());
-				$(root).css('height', '80%');
-				arkiweb.datasets = new arkiweb.collections.DatasetSelectionList();
-				arkiweb.datasetsview = new arkiweb.views.DatasetSelectionList({
-					collection: arkiweb.datasets,
-					el: $(root).find(".datasets")
+				var router = new arkiweb.Router({
+					el: $(root)
 				});
-				arkiweb.mapview = new arkiweb.views.Map({
-					collection: arkiweb.datasets,
-					el: $(root).find(".map")
-				});
-				$(root).layout({
-					center: {
-						applyDefaultStyles: 	true,
-						paneSelector: '.map'
-					},
-					west: {
-						applyDefaultStyles: 	true,
-						paneSelector: '.datasets'
-					},
-					south: {
-						applyDefaultStyles: 	true,
-						paneSelector: '.postprocess'
-					},
-					north: {
-						applyDefaultStyles: 	true,
-						paneSelector: '.header'
-					},
-					onresize: function(name, element, state, options, layout) {
-						arkiweb.mapview.resize();
-					}
-				});
-				arkiweb.mapview.render();
-				arkiweb.datasets.fetch();
+				$(root).data('arkiweb-router', router);
+				Backbone.history.start();
 			},
 			error: function() {
 			}

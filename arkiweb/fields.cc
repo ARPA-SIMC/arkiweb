@@ -67,12 +67,13 @@ void Printer::print() {
     void serialise() {
       summary.visit(*this);
       emitter.start_mapping();
-
       emitter.add("fields");
-      emitter.start_mapping();
+      emitter.start_list();
       for (std::map<std::string, std::set< arki::UItem<> > >::iterator i = fields.begin();
            i != fields.end(); ++i) {
-        emitter.add(i->first);
+        emitter.start_mapping();
+        emitter.add("type", i->first);
+        emitter.add("values");
         emitter.start_list();
         for (std::set< arki::UItem<> >::const_iterator j = i->second.begin();
              j != i->second.end(); ++j) {
@@ -82,8 +83,9 @@ void Printer::print() {
           emitter.end_mapping();
         }
         emitter.end_list();
+        emitter.end_mapping();
       }
-      emitter.end_mapping();
+      emitter.end_list();
 
       emitter.add("stats");
       emitter.start_mapping();

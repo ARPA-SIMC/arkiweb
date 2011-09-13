@@ -7,23 +7,8 @@ body {
 	text-align: center;
 }
 
-.arkiweb .menu span {
-	text-decoration: underline;
-	margin: 0 0.5em;
-	cursor: pointer;
-}
-
 .arkiweb .title {
 	text-align: center;
-}
-
-.arkiweb .header {
-	height: 10%;
-}
-
-.arkiweb .content {
-	height: 80%;
-	overflow: auto;
 }
 
 .arkiweb .datasets-list {
