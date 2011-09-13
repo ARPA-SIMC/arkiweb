@@ -271,7 +271,7 @@
 			$(this.el).append($("#arkiweb-tmpl").tmpl());
 			$(this.el).css('height', '100%');
 			var self = this;
-			$(this.el).layout({
+			this.main_layout = $(this.el).layout({
 				center: {
 					applyDefaultStyles: true,
 					paneSelector: '.map'
@@ -345,12 +345,12 @@
 					datasets: this.datasets.getSelectedNames()
 				}
 			});
-			$(this.el).layout().close("west");
-			$(this.el).layout().open("east");
+			this.main_layout.hide("west");
+			this.main_layout.show("east");
 		},
 		showDatasets: function() {
-			$(this.el).layout().close("east");
-			$(this.el).layout().open("west");
+			this.main_layout.hide("east");
+			this.main_layout.show("west");
 		}
 	});
 
