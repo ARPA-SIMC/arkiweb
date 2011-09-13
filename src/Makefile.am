@@ -4,7 +4,7 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
 LDADD = $(top_builddir)/arkiweb/libarkiweb.la $(top_builddir)/wibble/libwibble.la -larkimet
 
-cgi_PROGRAMS = datasets summary metadata data
+cgi_PROGRAMS = datasets summary fields data
 
 datasets_SOURCES = datasets.cc
 
@@ -14,9 +14,9 @@ summary_SOURCES = summary.cc
 
 summary_LDADD = $(LDADD)
 
-metadata_SOURCES = metadata.cc
+fields_SOURCES = fields.cc
 
-metadata_LDADD = $(LDADD)
+fields_LDADD = $(LDADD)
 
 data_SOURCES = data.cc
 

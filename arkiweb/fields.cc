@@ -1,5 +1,5 @@
 /*
- * metadata - metadata utilities
+ * fields - fields utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,14 +19,14 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <arkiweb/metadata.h>
+#include <arkiweb/fields.h>
 #include <arki/summary.h>
 #include <arki/summary/stats.h>
 #include <arki/runtime.h>
 #include <arki/formatter.h>
 
 namespace arkiweb {
-namespace metadata {
+namespace fields {
 
 Printer::Printer(const arki::ConfigFile &cfg, arki::Emitter &emitter,
                  const std::string &query)
@@ -85,7 +85,7 @@ void Printer::print() {
       }
       emitter.end_mapping();
 
-      emitter.add("metadatastats");
+      emitter.add("stats");
       emitter.start_mapping();
       statistics.serialiseLocal(emitter, formatter);
       emitter.end_mapping();

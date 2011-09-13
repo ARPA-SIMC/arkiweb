@@ -1,5 +1,5 @@
 /*
- * metadata - metadata utilities
+ * fields - fields utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -27,7 +27,7 @@
 #include <arki/matcher.h>
 
 namespace arkiweb {
-namespace metadata {
+namespace fields {
 
 class Printer {
  public:
