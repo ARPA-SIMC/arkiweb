@@ -142,11 +142,22 @@
 					el: $(root).find(".map")
 				});
 				$(root).layout({
-					applyDefaultStyles: 	true,
-					center__paneSelector: 	".map",
-					west__paneSelector:	".datasets",
-					east__paneSelector:	".postprocess",
-					north__paneSelector:	".header",
+					center: {
+						applyDefaultStyles: 	true,
+						paneSelector: '.map'
+					},
+					west: {
+						applyDefaultStyles: 	true,
+						paneSelector: '.datasets'
+					},
+					south: {
+						applyDefaultStyles: 	true,
+						paneSelector: '.postprocess'
+					},
+					north: {
+						applyDefaultStyles: 	true,
+						paneSelector: '.header'
+					},
 					onresize: function(name, element, state, options, layout) {
 						arkiweb.mapview.resize();
 					}
