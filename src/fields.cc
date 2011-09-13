@@ -1,5 +1,5 @@
 /*
- * metadata - web service for metadata
+ * fields - web service for fields
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -22,7 +22,7 @@
 #include <iostream>
 #include <arkiweb/cgi.h>
 #include <arkiweb/configfile.h>
-#include <arkiweb/metadata.h>
+#include <arkiweb/fields.h>
 #include <arki/emitter/json.h>
 #include <arki/runtime.h>
 int main() {
@@ -34,7 +34,7 @@ int main() {
     arki::ConfigFile cfg = arkiweb::configfile(datasets);
     arki::emitter::JSON emitter(std::cout);
 
-    arkiweb::metadata::Printer printer(cfg, emitter, query);
+    arkiweb::fields::Printer printer(cfg, emitter, query);
 
     std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
     std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;

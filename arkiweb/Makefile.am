@@ -11,8 +11,8 @@ libarkiweb_la_SOURCES = \
 			cgi.h \
 			dataset.cc \
 			dataset.h \
-			metadata.cc \
-			metadata.h \
+			fields.cc \
+			fields.h \
 			restrict.cc \
 			restrict.h \
 			summary.cc \
