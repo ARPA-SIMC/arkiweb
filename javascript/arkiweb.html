@@ -4,12 +4,26 @@
 		<div class="header">
 			<div class="title"><h2>datasets</h2></div>
 			<div class="menu">
-				<span class="toggle-allowed">toggle allowed</span>
-				<span class="show-fields">show fields for selected datasets</span>
+				<button class="show-help">help</button>
+				<button class="toggle-allowed">toggle allowed</button>
+				<button class="toggle-selected">toggle selected</button>
+				<button class="show-fields">show fields</button>
 			</div>
 		</div>
 		<div class="content">
 			<div class="datasets-list"></div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="header">
+			<div class="title"><h2>fields</h2></div>
+			<div class="menu">
+				<button class="show-help">help</button>
+				<button class="show-datasets">show datasets</button>
+				<button class="toggle-query">toggle query/description</button>
+			</div>
+		</div>
+		<div class="content">
 		</div>
 	</div>
 	<div class="map">
@@ -41,5 +55,20 @@
 			</ul>	
 			</dd>
 			{{/if}}
+		</dl>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-field-selection-sections-tmpl">
+	<div class="field-section">
+		<h3>${type}</h3>
+		<div class="field-section-values">
+		</div>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-field-selection-sections-item-tmpl">
+	<div class="field-item">
+		<input type="checkbox"/>
+		<span class="description">${value.desc}</span>
+		<span class="query">${query}</span>
 	</div>
 </script>
