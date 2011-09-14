@@ -334,19 +334,41 @@
 			});
 			this.fields_view.bind("showDatasets", this.showDatasets, this);
 		},
+		block: function() {
+			var img = "<div><img src='ajax-loader.gif' alt='loading'/></div>";
+			$.blockUI.defaults.css = {};
+			$(this.el).block({
+				message: img
+			});
+		},
+		unblock: function() {
+			$(this.el).unblock();
+		},
 		routes: {
 			"": "index"
 		},
 		index: function() {
 		},
 		showFields: function() {
+			var self = this;
 			this.fields.fetch({
 				data: {
 					datasets: this.datasets.getSelectedNames()
+				},
+				beforeSend: function() {
+					self.block();
+				},
+				success: function() {
+					self.main_layout.hide("west");
+					self.main_layout.show("east");
+					self.unblock();
+				},
+				error: function() {
+					self.main_layout.hide("west");
+					self.main_layout.show("east");
+					self.unblock();
 				}
 			});
-			this.main_layout.hide("west");
-			this.main_layout.show("east");
 		},
 		showDatasets: function() {
 			this.main_layout.hide("east");
