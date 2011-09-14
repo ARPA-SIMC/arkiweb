@@ -234,11 +234,11 @@
 			this.collection.bind("change", this.update, this);
 		},
 		events: {
-			'click .show-help': 'showHelp',
-			'click .show-datasets': 'showDatasets',
-			'click .toggle-query': 'toggleQuery',
-			'click .show-query': 'showQuery',
-			'click .clear-selection': 'clearSelection'
+			'click .menu .show-help': 'showHelp',
+			'click .menu .show-datasets': 'showDatasets',
+			'click .menu .toggle-query': 'toggleQuery',
+			'click .menu .show-query': 'showQuery',
+			'click .menu .clear-selection': 'clearSelection'
 		},
 		render: function() {
 			$(this.el).find(".content").empty();
@@ -273,13 +273,13 @@
 			_.each(this.views, function(view) {
 				view.reset();
 			});
-			//$(this.el).find("input:checked").click();
 		}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
 		tmpl: "#arkiweb-field-selection-sections-tmpl",
 		events: {
-			'click h3':	'toggleView'
+			'click h3':	'toggleView',
+			'click .clear-selection': 'reset'
 		},
 		render: function() {
 			this.views = [];

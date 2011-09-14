@@ -38,7 +38,17 @@ body {
 }
 
 .arkiweb .field-section h3 {
-	text-align: center;
+	display: inline;
 	text-decoration: underline;
 	cursor: pointer;
+	margin-right: 1em;
+}
+
+.arkiweb .field-section h3 ~ span {
+	font-size: 0.9em;
+	cursor: pointer;
+}
+
+.arkiweb .field-section-values {
+	margin-top: 1em;
 }
