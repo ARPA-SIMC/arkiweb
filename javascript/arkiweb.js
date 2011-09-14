@@ -270,7 +270,10 @@
 		update: function() {
 		},
 		clearSelection: function() {
-			$(this.el).find("input:checked").click();
+			_.each(this.views, function(view) {
+				view.reset();
+			});
+			//$(this.el).find("input:checked").click();
 		}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
@@ -296,6 +299,11 @@
 		},
 		toggleView: function() {
 			$(this.el).find(".field-section-values").toggle();
+		},
+		reset: function() {
+			_.each(this.views, function(view) {
+				view.reset();
+			});
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
@@ -314,6 +322,9 @@
 		toggleSelection: function() {
 			console.log(this.model);
 			this.model.toggleSelection();
+		},
+		reset: function() {
+			$(this.el).find("input:checked").click();
 		}
 	});
 
