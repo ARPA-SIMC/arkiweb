@@ -256,7 +256,9 @@
 			'click .menu .show-datasets': 'showDatasets',
 			'click .menu .toggle-query': 'toggleQuery',
 			'click .menu .show-query': 'showQuery',
-			'click .menu .clear-selection': 'clearSelection'
+			'click .menu .clear-selection': 'clearSelection',
+			'click .menu .show-summary': 'showSummary',
+			'click .menu .download-selection': 'downloadSelection'
 		},
 		render: function() {
 			$(this.el).find(".content").empty();
@@ -283,7 +285,7 @@
 			this.views.push(stats);
 			stats.render();
 			
-			$(this.el).find(".content .query").hide();
+			$(this.el).find(".field-item span.query").hide();
 		},
 		showHelp: function() {
 			alert("TODO");
@@ -303,6 +305,12 @@
 			_.each(this.views, function(view) {
 				view.reset();
 			});
+		},
+		showSummary: function() {
+			this.trigger("showSummary");
+		},
+		downloadSelection: function() {
+			this.trigger("downloadSelection");
 		}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
@@ -462,6 +470,8 @@
 				el: $(this.el).find(".fields")
 			});
 			this.fields_view.bind("showDatasets", this.showDatasets, this);
+			this.fields_view.bind("showSummary", this.showSummary, this);
+			this.fields_view.bind("downloadSelection", this.download, this);
 		},
 		block: function() {
 			var img = "<div><img src='ajax-loader.gif' alt='loading'/></div>";
@@ -502,6 +512,12 @@
 		showDatasets: function() {
 			this.main_layout.hide("east");
 			this.main_layout.show("west");
+		},
+		showSummary: function() {
+			alert("TODO");
+		},
+		download: function() {
+			alert("TODO");
 		}
 	});
 
