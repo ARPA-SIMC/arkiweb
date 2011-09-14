@@ -232,6 +232,7 @@
 			var queries = this.map(function(model) {
 				return model.query();
 			});
+			// TODO reftime
 			return queries.join("; ");
 		}
 	});
@@ -325,23 +326,30 @@
 			});
 		}
 	});
-	arkiweb.views.FieldsSelectionStats = arkiweb.views.FieldsSelectionSection.extend({
+	arkiweb.views.FieldsSelectionStats = Backbone.View.extend({
 		tmpl: "#arkiweb-field-selection-sections-tmpl",
+		events: {
+			'change input': 'setReftime'
+		},
 		render: function() {
 			var stats = this.model.stats;
 			var div = $(this.tmpl).tmpl({ type: 'stats' });
 			div.find(".field-section-values").append($("#arkiweb-field-selection-stats-tmpl").tmpl(stats));
 			$(this.el).append(div);
-			var opts = {
-				minDate: stats.begin,
-				minDate: stats.end,
-				dateFormat: 'yy-mm-dd',
-				timeFormat: 'hh:mm:ss'
-			};
-			div.find("input[name=begin]").datetimepicker(opts).datetimepicker('setDate', stats.begin);
-			div.find("input[name=end]").datetimepicker(opts).datetimepicker('setDate', stats.end);
+			this.reset();
 		},
 		reset: function() {
+			var opts = {
+				minDate: this.model.stats.begin,
+				maxDate: this.model.stats.end,
+				timeFormat: 'hh:mm:ss',
+				dateFormat: 'yy-mm-dd'
+			};
+			$(this.el).find("input[name=begin]").datetimepicker(opts).datetimepicker('setDate', this.model.stats.begin);
+			$(this.el).find("input[name=end]").datetimepicker(opts).datetimepicker('setDate', this.model.stats.end);
+		},
+		setReftime: function() {
+			console.log("setReftime");
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
