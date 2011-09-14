@@ -226,14 +226,24 @@
 				count: resp.stats.c,
 				size: resp.stats.s
 			};
+			this.reftime = {
+				from: this.stats.begin,
+				until: this.stats.end
+			};
 			return resp.fields;
 		},
 		query: function() {
 			var queries = this.map(function(model) {
 				return model.query();
 			});
-			// TODO reftime
+			queries.push("reftime: >= " + this.reftime.from.strftime("%Y-%m-%d %H:%M:%S") + ", <= " + this.reftime.until.strftime("%Y-%m-%d %H:%M:%S"));
 			return queries.join("; ");
+		},
+		setReftime: function(reftime) {
+			if (reftime.from)
+				this.reftime.from = reftime.from;
+			if (reftime.until)
+				this.reftime.until = reftime.until;
 		}
 	});
 	arkiweb.views.FieldsSelection = Backbone.View.extend({
@@ -329,7 +339,8 @@
 	arkiweb.views.FieldsSelectionStats = Backbone.View.extend({
 		tmpl: "#arkiweb-field-selection-sections-tmpl",
 		events: {
-			'change input': 'setReftime'
+			'change input[name=begin]': 'setFrom',
+			'change input[name=end]': 'setUntil'
 		},
 		render: function() {
 			var stats = this.model.stats;
@@ -348,8 +359,17 @@
 			$(this.el).find("input[name=begin]").datetimepicker(opts).datetimepicker('setDate', this.model.stats.begin);
 			$(this.el).find("input[name=end]").datetimepicker(opts).datetimepicker('setDate', this.model.stats.end);
 		},
-		setReftime: function() {
-			console.log("setReftime");
+		setFrom: function() {
+			var reftime = {
+				from: $(this.el).find("input[name=begin]").datetimepicker("getDate")
+			};
+			this.model.setReftime(reftime);
+		},
+		setUntil: function() {
+			var reftime = {
+				until: $(this.el).find("input[name=end]").datetimepicker("getDate")
+			};
+			this.model.setReftime(reftime);
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
