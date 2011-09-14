@@ -31,3 +31,14 @@ body {
 .arkiweb-description dt {
 	font-weight: bold;
 }
+
+.arkiweb .field-section {
+	padding: 1em;
+	border-bottom: thin solid silver;
+}
+
+.arkiweb .field-section h3 {
+	text-align: center;
+	text-decoration: underline;
+	cursor: pointer;
+}
