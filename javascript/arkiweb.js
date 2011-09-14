@@ -218,7 +218,14 @@
 		model: arkiweb.models.Field,
 		url: 'fields',
 		parse: function(resp) {
-			this.stats = resp.stats;
+			resp.stats.b[1] -= 1;
+			resp.stats.e[1] -= 1;
+			this.stats = {
+				begin: eval("new Date(" + resp.stats.b.join(",") + ")"),
+				end: eval("new Date(" + resp.stats.e.join(",") + ")"),
+				count: resp.stats.c,
+				size: resp.stats.s
+			};
 			return resp.fields;
 		},
 		query: function() {
@@ -243,6 +250,15 @@
 		render: function() {
 			$(this.el).find(".content").empty();
 			this.views = [];
+
+
+			var div = $("<div>");
+			$(this.el).find(".content").append(div);
+			var stats = new arkiweb.views.FieldsSelectionStats({
+				model: this.collection,
+				el: div
+			});
+
 			this.collection.each(function(model) {
 				var div = $("<div>");
 				$(this.el).find(".content").append(div);
@@ -253,6 +269,9 @@
 				view.render();
 				this.views.push(view);
 			}, this);
+			this.views.push(stats);
+			stats.render();
+			
 			$(this.el).find(".content .query").hide();
 		},
 		showHelp: function() {
@@ -304,6 +323,25 @@
 			_.each(this.views, function(view) {
 				view.reset();
 			});
+		}
+	});
+	arkiweb.views.FieldsSelectionStats = arkiweb.views.FieldsSelectionSection.extend({
+		tmpl: "#arkiweb-field-selection-sections-tmpl",
+		render: function() {
+			var stats = this.model.stats;
+			var div = $(this.tmpl).tmpl({ type: 'stats' });
+			div.find(".field-section-values").append($("#arkiweb-field-selection-stats-tmpl").tmpl(stats));
+			$(this.el).append(div);
+			var opts = {
+				minDate: stats.begin,
+				minDate: stats.end,
+				dateFormat: 'yy-mm-dd',
+				timeFormat: 'hh:mm:ss'
+			};
+			div.find("input[name=begin]").datetimepicker(opts).datetimepicker('setDate', stats.begin);
+			div.find("input[name=end]").datetimepicker(opts).datetimepicker('setDate', stats.end);
+		},
+		reset: function() {
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
