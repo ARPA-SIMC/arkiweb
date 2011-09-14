@@ -6,6 +6,9 @@
 	};
 
 	arkiweb.models.Dataset = Backbone.Model.extend({
+		initialize: function(attributes) {
+			this.features = new OpenLayers.Format.WKT().read(attributes.bounding);
+		},
 		defaults: {
 			selected: false
 		},
@@ -327,12 +330,12 @@
 					paneSelector: '.map'
 				},
 				west: {
-					size: '30%',
+					size: '50%',
 					applyDefaultStyles: true,
 					paneSelector: '.datasets'
 				},
 				east: {
-					size: '30%',
+					size: '50%',
 					applyDefaultStyles: true,
 					initHidden: true,
 					paneSelector: '.fields'
