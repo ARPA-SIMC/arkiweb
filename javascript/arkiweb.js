@@ -386,7 +386,6 @@
 			$(this.el).append(tmpl);
 		},
 		toggleSelection: function() {
-			console.log(this.model);
 			this.model.toggleSelection();
 		},
 		reset: function() {
