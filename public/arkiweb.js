@@ -227,6 +227,8 @@
 					}
 				});
 			}
+			var tmpl = $(tmpl).tmpl();
+			$(this.root).append(tmpl);
 		},
 		routes: {
 			"":	"index"
