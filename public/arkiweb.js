@@ -54,10 +54,12 @@
 	// When a dataset is selected (or unselected), the view triggers
 	// the event `change:selection`. The arguments for the callback
 	// is the inner view that changed its state.
+	//
+	// When the submit button is clicked, this view triggers the `submit` event.
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
 			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-clear-selection': 'clearSelection',
-			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-show-fields': 'showFields'
+			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-submit-selection': 'submitSelection'
 		},
 		initialize: function() {
 			this.content = $(this.el).find(".arkiweb-datasets-selection-list");
@@ -94,8 +96,8 @@
 		notifyChange: function(view) {
 			this.trigger("change:selection", view);
 		},
-		showFields: function() {
-			this.trigger('showFields');
+		submitSelection: function() {
+			this.trigger('submit');
 		},
 		clearSelection: function() {
 			alert("TODO");
@@ -219,7 +221,8 @@
 				collection: this.datasets,
 				el: $(this.root).find(".arkiweb-datasets-selection")
 			});
-			this.datasets_view.bind("showFields", this.showFields, this);
+			// Listen to `submit` event of the datasets view
+			this.datasets_view.bind("submit", this.showFieldsSelection, this);
 			this.map_view = new arkiweb.views.Map({
 				view: this.datasets_view,
 				el: $(this.root).find(".arkiweb-map")
@@ -253,7 +256,9 @@
 			this.map_view.render();
 			this.datasets.fetch();
 		},
-		showFields: function() {
+		// Show the fields selection of the selected datasets
+		showFieldsSelection: function() {
+			alert("TODO");
 		}
 	});
 	window.arkiweb = arkiweb;
