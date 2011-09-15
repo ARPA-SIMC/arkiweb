@@ -181,16 +181,18 @@
 	// - *datasets_view*: the datasets view
 	// - *datasets_url*: the datasets url
 	// - *map_view*: the map view
+	// - *tmpl_url*: template url
 	//
 	// This is a *fake* router, because it has only one route (the index).
 	// The router listens to the views events and does its job.
 	arkiweb.routers.Router = Backbone.Router.extend({
-		// ### Options
-		// - *root*: the jQuery selector for the root element of the application
-		// - *datasets_url*: url for the datasets collection (default: `datasets`)
+		// ### options
+		// - *root*: the jQuery selector for the root element of the application (default: `"body"`)
+		// - *datasets_url*: url for the datasets collection (default: `"datasets"`)
+		// - *tmpl_url*: template url (default: `"arkiweb.html"`)
 		initialize: function(options) {
-			this.root = options.root;
-			this.datasets_url = options.datasets_url || 'datasets'
+			this.root = options.root || 'body';
+			this.datasets_url = options.datasets_url || 'datasets';
 			this.datasets = new arkiweb.collections.Datasets({
 				url: this.datasets_url
 			});
@@ -203,6 +205,23 @@
 				view: this.datasets_view,
 				el: $(this.root)
 			});
+		},
+		// Load the templates 
+		loadTemplates: function() {
+			var self = this;
+			if ($("#arkiweb-tmpl").length == 0) {
+				$.ajax({
+					url: self.tmpl_url,
+					async: false,
+					dataType: 'html',
+					success: function(data) {
+						$("body").append(data);
+					},
+					error: function() {
+						alert("error");
+					}
+				});
+			}
 		},
 		routes: {
 			"":	"index"
