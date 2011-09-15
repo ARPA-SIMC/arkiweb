@@ -61,6 +61,7 @@
 		initialize: function() {
 			this.content = $(this.el).find(".arkiweb-datasets-selection-list");
 			this.collection.bind('reset', this.render, this);
+			this.collection.bind('error', this.renderError, this);
 		},
 		views: [],
 		// Empty the container of the view
@@ -83,6 +84,9 @@
 				view.bind("change", this.notifyChange, this);
 			}, this);
 			return this;
+		},
+		renderError: function(model, error) {
+			$(this.content).append($("<div class='arkiweb-error'>" + error.statusText + "</div>"));
 		},
 		notifyChange: function(view) {
 			this.trigger("change:selection", view);
