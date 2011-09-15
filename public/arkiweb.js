@@ -56,6 +56,7 @@
 	// is the inner view that changed its state.
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
+			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-clear-selection': 'clearSelection',
 			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-show-fields': 'showFields'
 		},
 		initialize: function() {
@@ -95,6 +96,9 @@
 		},
 		showFields: function() {
 			this.trigger('showFields');
+		},
+		clearSelection: function() {
+			alert("TODO");
 		},
 		// Get the selected views
 		getSelected: function() {
