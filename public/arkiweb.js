@@ -60,7 +60,9 @@
 		},
 		initialize: function() {
 			this.content = $(this.el).find(".arkiweb-datasets-selection-list");
+			// Bind the `reset` event of the collection to its `render` function
 			this.collection.bind('reset', this.render, this);
+			// Bind the `error` event of the collection to its `renderError` function
 			this.collection.bind('error', this.renderError, this);
 		},
 		views: [],
