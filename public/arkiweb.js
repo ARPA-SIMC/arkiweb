@@ -206,22 +206,25 @@
 				el: $(this.root)
 			});
 		},
+		tmpl: "#arkiweb-tmpl",
 		// Load the templates 
 		loadTemplates: function() {
 			var self = this;
-			if ($("#arkiweb-tmpl").length == 0) {
+			if ($(tmpl).length == 0) {
 				$.ajax({
 					url: self.tmpl_url,
 					async: false,
 					dataType: 'html',
 					success: function(data) {
-						$("body").append(data);
+						$(document).ready(function() {
+							$("body").append(data);
+						});
 					},
 					error: function() {
 						alert("error");
 					}
 				});
-			}
+			},
 		},
 		routes: {
 			"":	"index"
