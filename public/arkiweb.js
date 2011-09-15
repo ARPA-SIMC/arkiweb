@@ -138,6 +138,11 @@
 	arkiweb.views.Map = Backbone.View.extend({
 		initialize: function(options) {
 			this.map = new OpenLayers.Map();
+			var layer = new OpenLayers.Layer.WMS("OpenLayers WMS",
+							     "http://vmap0.tiles.osgeo.org/wms/vmap0", {
+								     layers: 'basic'
+							     });
+			this.map.addLayer(layer);
 			this.blayer = new OpenLayers.Layer.Vector("datasets bounding box");
 			this.map.addLayer(this.blayer);
 			this.view = options.view;
