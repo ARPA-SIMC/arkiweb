@@ -214,7 +214,7 @@
 		// Load the templates 
 		loadTemplates: function() {
 			var self = this;
-			if ($(tmpl).length == 0) {
+			if ($(this.tmpl).length == 0) {
 				$.ajax({
 					url: self.tmpl_url,
 					async: false,
@@ -227,7 +227,7 @@
 					}
 				});
 			}
-			var tmpl = $(tmpl).tmpl();
+			var tmpl = $(this.tmpl).tmpl();
 			$(this.root).append(tmpl);
 		},
 		routes: {
