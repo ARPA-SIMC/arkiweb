@@ -1,84 +1,8 @@
 <script type="text/x-jquery-tmpl" id="arkiweb-tmpl">
-	<div class="header"></div>
-	<div class="datasets">
-		<div class="header">
-			<div class="title"><h2>datasets</h2></div>
-			<div class="menu">
-				<button class="show-help">help</button>
-				<button class="toggle-allowed">toggle allowed</button>
-				<button class="show-selected">show selected</button>
-				<button class="clear-selection">clear selection</button>
-				<button class="show-fields">show fields</button>
-			</div>
-		</div>
-		<div class="content">
-			<div class="datasets-list"></div>
-		</div>
+	<div class="arkiweb-datasets-selection">
 	</div>
-	<div class="fields">
-		<div class="header">
-			<div class="title"><h2>fields</h2></div>
-			<div class="menu">
-				<button class="show-help">help</button>
-				<button class="show-datasets">show datasets</button>
-				<button class="toggle-query">toggle query/description</button>
-				<button class="show-query">show query</button>
-				<button class="clear-selection">clear selection</button>
-				<button class="show-summary">show summary</button>
-				<button class="download-selection">download</button>
-			</div>
-		</div>
-		<div class="content">
-		</div>
+	<div class="arkiweb-map">
 	</div>
-	<div class="map">
+	<div class="arkiweb-fields-selection">
 	</div>
-	<div class="postprocess">
-	</div>
-</script>
-<script type="text/x-jquery-tmpl" id="arkiweb-dataset-selection-list-item-tmpl">
-	<div allowed="${allowed}">
-		<input type="checkbox"/>
-		<span class="name">${name}</span>
-		<span class="description">${description}</span>
-	</div>
-</script>
-<script type="text/x-jquery-tmpl" id="arkiweb-dataset-description-tmpl">
-	<div class="arkiweb-description">
-		<dl>
-			<dt>name</dt>
-			<dd>${name}</dd>
-			<dt>description</dt>
-			<dd>${description}</dd>
-			{{if postprocess.length > 0}}
-			<dt>postprocess</dt>
-			<dd>
-			<ul>
-				{{each postprocess}}
-				<li>${$value}</li>
-				{{/each}}
-			</ul>	
-			</dd>
-			{{/if}}
-		</dl>
-	</div>
-</script>
-<script type="text/x-jquery-tmpl" id="arkiweb-field-selection-sections-tmpl">
-	<div class="field-section">
-		<h3>${type}</h3>
-		<span class="clear-selection">clear selection</span>
-		<div class="field-section-values">
-		</div>
-	</div>
-</script>
-<script type="text/x-jquery-tmpl" id="arkiweb-field-selection-sections-item-tmpl">
-	<div class="field-item">
-		<input type="checkbox"/>
-		<span class="description">${value.desc}</span>
-		<span class="query">${query}</span>
-	</div>
-</script>
-<script type="text/x-jquery-tmpl" id="arkiweb-field-selection-stats-tmpl">
-	<div>${count} items, ${size} bytes</div>
-	<div>from <input type="text" name="begin"/> until <input type="text" name="end"/></div>
 </script>

@@ -202,12 +202,12 @@
 			});
 			this.datasets_view = new arkiweb.views.DatasetsSelection({
 				collection: this.datasets,
-				el: $(this.root)
+				el: $(this.root).find(".arkiweb-datasets-selection")
 			});
 			this.datasets_view.bind("showFields", this.showFields, this);
 			this.map_view = new arkiweb.views.Map({
 				view: this.datasets_view,
-				el: $(this.root)
+				el: $(this.root).find(".arkiweb-map")
 			});
 		},
 		tmpl: "#arkiweb-tmpl",
