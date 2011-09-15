@@ -45,6 +45,7 @@
 	// ### attributes
 	// - *views*: array of arkiweb.views.DatasetsSelectionItem
 	// - *tmpl*: jquery selector for the template item
+	// - *content*: jquery object for content 
 	//
 	// This view shows the datasets loaded and allows the user to 
 	// select one or more datasets.
@@ -58,24 +59,24 @@
 			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-show-fields': 'showFields'
 		},
 		initialize: function() {
+			this.content = $(this.el).find(".arkiweb-datasets-selection-list");
 			this.collection.bind('reset', this.render, this);
 		},
 		views: [],
 		// Empty the container of the view
 		empty: function() {
-			return $(this.el).empty();
+			return this.content.empty();
 		},
 		// Render the view. For each model in the collection, creates
 		// a new `arkiweb.views.DatasetsSelectionItem` and renders it.
 		// The collection of the views is stored in the *views* attribute.
 		render: function() {
 			this.empty();
-			var el = $(this.el).find(".arkiweb-datasets-selection-list");
 			this.views = [];
 			this.collection.each(function(model) {
 				var view = new arkiweb.views.DatasetsSelectionItem({
 					model: model,
-					el: el
+					el: this.content
 				});
 				view.render();
 				this.views.push(view);
