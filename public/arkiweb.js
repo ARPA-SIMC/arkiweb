@@ -55,13 +55,12 @@
 	// is the inner view that changed its state.
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
-			'click .menu .arkiweb-datasets-selection-show-fields': 'showFields'
+			'click .arkiweb-datasets-selection-menu .arkiweb-datasets-selection-show-fields': 'showFields'
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
 		},
 		views: [],
-		tmpl: "#arkiweb-datasets-selection-tmpl",
 		// Empty the container of the view
 		empty: function() {
 			return $(this.el).empty();
@@ -71,13 +70,12 @@
 		// The collection of the views is stored in the *views* attribute.
 		render: function() {
 			this.empty();
-			var tmpl = $(this.tmpl).tmpl();
-			$(this.el).append(tmpl);
+			var el = $(this.el).find(".arkiweb-datasets-selection-list");
 			this.views = [];
 			this.collection.each(function(model) {
 				var view = new arkiweb.views.DatasetsSelectionItem({
 					model: model,
-					el: $(this.el).find(".arkiweb-datasets-selection-items")
+					el: el
 				});
 				view.render();
 				this.views.push(view);
@@ -194,8 +192,9 @@
 		// **NOTE**: the router *must* be initialized when the document is ready 
 		// (`$(document).ready` function).
 		initialize: function(options) {
-			this.loadTemplates();
 			this.root = options.root || 'body';
+			this.tmpl_url = options.tmpl_url || 'arkiweb.html';
+			this.loadTemplates();
 			this.datasets_url = options.datasets_url || 'datasets';
 			this.datasets = new arkiweb.collections.Datasets({
 				url: this.datasets_url
