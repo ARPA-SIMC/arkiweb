@@ -190,7 +190,11 @@
 		// - *root*: the jQuery selector for the root element of the application (default: `"body"`)
 		// - *datasets_url*: url for the datasets collection (default: `"datasets"`)
 		// - *tmpl_url*: template url (default: `"arkiweb.html"`)
+		//
+		// **NOTE**: the router *must* be initialized when the document is ready 
+		// (`$(document).ready` function).
 		initialize: function(options) {
+			this.loadTemplates();
 			this.root = options.root || 'body';
 			this.datasets_url = options.datasets_url || 'datasets';
 			this.datasets = new arkiweb.collections.Datasets({
@@ -216,15 +220,13 @@
 					async: false,
 					dataType: 'html',
 					success: function(data) {
-						$(document).ready(function() {
-							$("body").append(data);
-						});
+						$("body").append(data);
 					},
 					error: function() {
 						alert("error");
 					}
 				});
-			},
+			}
 		},
 		routes: {
 			"":	"index"
