@@ -93,7 +93,13 @@
 			return this;
 		},
 		renderError: function(model, error) {
-			$(this.content).append($("<div class='arkiweb-error'>" + error.statusText + "</div>"));
+			var view = new arkiweb.views.Error({ 
+				el: $(this.content),
+				message: error.statusText
+			});
+			view.render();
+			this.views.push(view);
+			return this;
 		},
 		notifyChange: function(view) {
 			this.trigger("change:selection", view);
@@ -189,6 +195,18 @@
 			} else {
 				this.map.zoomToMaxExtent();
 			}
+		}
+	});
+	// Error view
+	// ----------
+	// This view is useful to show a message error
+	arkiweb.views.Error = Backbone.View.extend({
+		// The parameter `message` will be rendered
+		initialize: function(options) {
+			this.message = options.message
+		},
+		render: function() {
+			$(this.el).append("<div class='error'>" + this.message + "</div>");
 		}
 	});
 	// Router
