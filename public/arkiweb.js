@@ -143,7 +143,7 @@
 		render: function() {
 			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
 			$(this.el).append(tmpl);
-			this.checkbox = $(this.el).find("input:checkbox");
+			this.checkbox = $(this.el).find("input:checkbox").get(0);
 			return this;
 		},
 		notifyChange: function() {
@@ -151,11 +151,11 @@
 		},
 		// `true` if the dataset is selected, otherwise `false`.
 		isSelected: function() {
-			return $(this.checkbox).attr('checked');
+			return $(this.checkbox).is(':checked');
 		},
 		setSelection: function(value) {
 			if ((value && !this.isSelected()) || (!value && this.isSelected())) {
-				$(this.checkbox).click();
+				this.checkbox.click();
 			}
 			return this;
 		}
