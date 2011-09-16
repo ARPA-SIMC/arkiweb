@@ -105,8 +105,11 @@
 			return this;
 		},
 		showDataset: function() {
-			$("#arkiweb-dataset-description-tmpl").tmpl(this.model.toJSON()).dialog({
-				title: this.model.name,
+			var div = $("<div>");
+			var tmpl = $("#arkiweb-dataset-description-tmpl").tmpl(this.model.toJSON());
+			div.append(tmpl);
+			div.dialog({
+				title: "", //this.model.name,
 				autoOpen: true,
 				modal: true,
 				close: function() {
@@ -163,6 +166,7 @@
 	arkiweb.routers.Router = Backbone.Router.extend({
 		initialize: function(options) {
 			this.root = options.root || 'body';
+			this.root.addClass('arkiweb');
 			this.tmpl_url = options.tmpl_url || 'arkiweb.html';
 			this.loadTemplates();
 			this.datasets_url = options.datasets_url || 'datasets';
