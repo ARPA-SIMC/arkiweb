@@ -1,7 +1,4 @@
 // Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
-//
-// jQuery plugin for Arkiweb. Requires **Arkiweb.js**.
-//
 (function($) {
 	$.fn.arkiweb = function(options) {
 		var settings = {};
