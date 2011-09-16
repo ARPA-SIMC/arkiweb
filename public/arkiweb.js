@@ -33,7 +33,11 @@
 			this.description = attributes.description;
 			this.postprocess = attributes.postprocess;
 			this.bounding = attributes.bounding;
-			this.features = new OpenLayers.Format.WKT().read(this.bounding);
+			try {
+				this.features = new OpenLayers.Format.WKT().read(this.bounding);
+			} catch (e) {
+				this.features = null;
+			}
 		}
 	});
 	// Dataset collection
