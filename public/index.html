@@ -17,7 +17,9 @@
 		<script src="jquery.arkiweb.js"></script>
 		<script>
 			$(document).ready(function() {
-				$("#arkiweb").arkiweb();
+				$("#arkiweb").arkiweb({
+					datasets_url: 'fixtures/datasets'
+				});
 			});
 		</script>
 	</head>

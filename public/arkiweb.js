@@ -238,9 +238,8 @@
 			this.tmpl_url = options.tmpl_url || 'arkiweb.html';
 			this.loadTemplates();
 			this.datasets_url = options.datasets_url || 'datasets';
-			this.datasets = new arkiweb.collections.Datasets({
-				url: this.datasets_url
-			});
+			this.datasets = new arkiweb.collections.Datasets();
+			this.datasets.url = this.datasets_url;
 			this.datasets_view = new arkiweb.views.DatasetsSelection({
 				collection: this.datasets,
 				el: $(this.root).find(".arkiweb-datasets-selection")
