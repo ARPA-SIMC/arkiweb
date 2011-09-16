@@ -136,6 +136,7 @@
 	// is the view itself.
 	arkiweb.views.DatasetsSelectionItem = Backbone.View.extend({
 		events: {
+			'click .arkiweb-dataset-name': 'showDataset',
 			'click input:checkbox': 'notifyChange'
 		},
 		tmpl: "#arkiweb-datasets-selection-item-tmpl",
@@ -158,6 +159,16 @@
 				this.checkbox.click();
 			}
 			return this;
+		},
+		showDataset: function() {
+			$("#arkiweb-dataset-description-tmpl").tmpl(this.model.toJSON()).dialog({
+				title: this.model.name,
+				autoOpen: true,
+				modal: true,
+				close: function() {
+					$(this).remove();
+				}
+			});
 		}
 	});
 	// OpenLayers map view
