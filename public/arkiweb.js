@@ -114,7 +114,9 @@
 			this.trigger('submit');
 		},
 		clearSelection: function() {
-			alert("TODO");
+			_.each(this.views, function(view) {
+				view.setSelection(false);
+			});
 		},
 		// Get the selected views
 		getSelected: function() {
@@ -141,13 +143,21 @@
 		render: function() {
 			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
 			$(this.el).append(tmpl);
+			this.checkbox = $(this.el).find("input:checkbox");
+			return this;
 		},
 		notifyChange: function() {
 			this.trigger("change", this);
 		},
 		// `true` if the dataset is selected, otherwise `false`.
 		isSelected: function() {
-			return $(this.el).find("input:checkbox").attr('checked');
+			return $(this.checkbox).attr('checked');
+		},
+		setSelection: function(value) {
+			if ((value && !this.isSelected()) || (!value && this.isSelected())) {
+				$(this.checkbox).click();
+			}
+			return this;
 		}
 	});
 	// OpenLayers map view
