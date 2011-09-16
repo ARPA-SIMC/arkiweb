@@ -58,7 +58,7 @@
 	// 
 	// When the associated collection is loaded (`reset` event), the view is rendered.
 	// When a dataset is selected (or unselected), the view triggers
-	// the event `change:selection`. The arguments for the callback
+	// the event `change`. The arguments for the callback
 	// is the inner view that changed its state.
 	//
 	// When the submit button is clicked, this view triggers the `submit` event.
@@ -86,9 +86,11 @@
 			this.empty();
 			this.views = [];
 			this.collection.each(function(model) {
+				var el = $("<div>");
+				this.content.append(el);
 				var view = new arkiweb.views.DatasetsSelectionItem({
 					model: model,
-					el: this.content
+					el: el
 				});
 				view.render();
 				this.views.push(view);
@@ -106,7 +108,7 @@
 			return this;
 		},
 		notifyChange: function(view) {
-			this.trigger("change:selection", view);
+			this.trigger("change", view);
 		},
 		submitSelection: function() {
 			this.trigger('submit');
@@ -128,7 +130,7 @@
 	// This view renders a single dataset model.
 	// 
 	// When the associated model is selected, the view triggers
-	// then event `change:selection`. The argument for the callback
+	// then event `change`. The argument for the callback
 	// is the view itself.
 	arkiweb.views.DatasetsSelectionItem = Backbone.View.extend({
 		events: {
@@ -141,7 +143,7 @@
 			$(this.el).append(tmpl);
 		},
 		notifyChange: function() {
-			this.trigger("change:selection", this);
+			this.trigger("change", this);
 		},
 		// `true` if the dataset is selected, otherwise `false`.
 		isSelected: function() {
@@ -185,7 +187,7 @@
 		updateDatasetsFeatures: function(view) {		
 			var features = view.model.features;
 			if (features) {
-				if (views.isSelected()) {
+				if (view.isSelected()) {
 					this.blayer.addFeatures([features]);
 				} else {
 					this.blayer.removeFeatures([features]);
