@@ -3,11 +3,15 @@
 // jQuery plugin for Arkiweb. Requires **Arkiweb.js**.
 //
 (function($) {
-	$.fn.arkiweb = function() {
+	$.fn.arkiweb = function(options) {
+		var settings = {};
+
 		return this.each(function() {
-			var router = new arkiweb.routers.Router({
-				root: $(this)
-			});
+			if (options) {
+				$.extend(settings, options);
+			}
+			settings.root = $(this);
+			var router = new arkiweb.routers.Router(settings);
 			Backbone.history.start();
 		});
 	};
