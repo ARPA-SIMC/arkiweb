@@ -20,3 +20,17 @@
 		<span class="arkiweb-dataset-description">${description}</span>
 	</div>
 </script>
+<script type="text/x-jquery-tmpl" id="arkiweb-dataset-description-tmpl">
+	<div class="arkiweb-dataset-description">
+		<p><b>name</b>: ${name}</b></p>
+		{{if description}}
+		<p><b>description</b>: ${description}</p>
+		{{/if}}
+		{{if postprocess.length > 0}}
+		<p><b>postprocess</b>: ${postprocess.join(",")}</p>
+		{{/if}}
+		{{if bounding}}
+		<p><b>bounding</b>: <code>${bounding}</code></p>
+		{{/if}}
+	</div>
+</script>
