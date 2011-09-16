@@ -137,6 +137,8 @@
 		tmpl: "#arkiweb-datasets-selection-item-tmpl",
 		// Render the view
 		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+			$(this.el).append(tmpl);
 		},
 		notifyChange: function() {
 			this.trigger("change:selection", this);
