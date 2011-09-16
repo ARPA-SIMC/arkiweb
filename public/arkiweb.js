@@ -177,6 +177,30 @@
 				view: this.datasets_view,
 				el: $(this.root).find(".arkiweb-map")
 			});
+			this.map_view.render();
+			/*
+			this.height = options.height || '100%';
+			$(this.root).css('height', this.height);
+			this.root_layout = $(this.root).layout({
+				//applyDefaultStyles: true,
+				west__paneSelector: '.arkiweb-datasets-selection',
+				center__paneSelector: '.arkiweb-map',
+				east__paneSelector: '.arkiweb-fields-selection',
+				south__paneSelector: '.arkiweb-postprocess',
+				size: '30%'
+
+			});
+			this.datasets_layout = $(this.datasets_view.el).layout({
+				north__paneSelector: '.arkiweb-datasets-selection-header',
+				center__paneSelector: '.arkiweb-datasets-selection-content',
+				center__applyDefaultStyles: true
+			});
+			this.fields_layout = $(this.root).find('.arkiweb-fields-selection').layout({
+				north__paneSelector: '.arkiweb-fields-selection-header',
+				center__paneSelector: '.arkiweb-fields-selection-content',
+				center__applyDefaultStyles: true
+			});
+			*/
 		},
 		tmpl: "#arkiweb-tmpl",
 		loadTemplates: function() {
@@ -201,7 +225,6 @@
 			"":	"index"
 		},
 		index: function() {
-			this.map_view.render();
 			this.datasets.fetch();
 		},
 		showFieldsSelection: function() {
