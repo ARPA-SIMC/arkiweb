@@ -24,12 +24,14 @@
 		// - *id*: model identifier
 		// - *name*: model name
 		// - *description*: human readable description of the dataset
+		// - *postprocess*: array of postprocessors available for this dataset
 		// - *bounding*: bounding box
 		// - *features*: OpenLayers.Feature.Vector object created from bounding attribute
 		initialize: function(attributes) {
 			this.id = attributes.id;
 			this.name = attributes.name;
 			this.description = attributes.description;
+			this.postprocess = attributes.postprocess;
 			this.bounding = attributes.bounding;
 			this.features = new OpenLayers.Format.WKT().read(this.bounding);
 		}
