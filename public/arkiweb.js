@@ -20,9 +20,27 @@
 			}
 		}
 	});
-	arkiweb.models.FieldValue = Backbone.Model.extend({	
+	arkiweb.models.FieldValue = Backbone.Model.extend({
+		initialize: function(attributes) {
+			try {
+				this.query = ArkiwebParser[attributes.type].styles[attributes.value.s].decode(attributes.value);
+			} catch (e) {
+				this.query = undefined;
+			}
+		}
 	});
 	arkiweb.models.Field = Backbone.Model.extend({
+		initialize: function(attributes) {
+			this.collection = new arkiweb.collections.FieldValues();
+			_.each(attributes.values, function(value) {
+				var value = {
+					type: this.get('type'),
+					value: value
+				};
+				var model = new arkiweb.models.FieldValue(value);
+				this.collection.add(model);
+			}, this);
+		}
 	});
 	arkiweb.collections.Datasets = Backbone.Collection.extend({
 		model: arkiweb.models.Dataset,
@@ -34,7 +52,11 @@
 	});
 	arkiweb.collections.Fields = Backbone.Collection.extend({
 		model: arkiweb.models.Field,
-		url: 'fields'
+		url: 'fields',
+		parse: function(response) {
+			this.stats = response.stats;
+			return response.fields;
+		}
 	});
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
@@ -180,6 +202,60 @@
 		}
 	});
 	arkiweb.views.FieldsSelection = Backbone.View.extend({
+		initialize: function() {
+			this.collection.bind('reset', this.render, this);
+			this.content = $(this.el).find('.arkiweb-fields-selection-content');
+		},
+		views: [],
+		render: function() {
+			this.content.empty();
+			this.views = [];
+			this.collection.each(function(model) {
+				var div = $("<div>");
+				this.content.append(div);
+				var view = new arkiweb.views.FieldsSelectionSection({
+					model: model,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+		}
+	});
+	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
+		tmpl: '#arkiweb-fields-selection-section-tmpl',
+		views: [],
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+			$(this.el).append(tmpl);
+			this.views = [];
+			this.model.collection.each(function(model) {
+				var div = $("<div>");
+				$(this.el).find(".arkiweb-fields-selection-section-list").append(div);
+				var view = new arkiweb.views.FieldsSelectionSectionItem({
+					model: model,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+		}
+	});
+	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
+		tmpl: '#arkiweb-fields-selection-section-item-tmpl',
+		render: function() {
+			var description = this.model.get('value').desc;
+			var query = this.model.query || "-";
+			var tmpl = $(this.tmpl).tmpl({
+				description: this.model.get('value').desc,
+				query: this.model.query
+			});
+			$(this.el).append(tmpl);
+
+			if (!this.model.query) {
+				tmpl.find("input").attr('disabled', true);
+			}
+		}
 	});
 	arkiweb.views.Error = Backbone.View.extend({
 		initialize: function(options) {
@@ -270,30 +346,7 @@
 				$.extend(true, this.settings, options);
 			this.loadTemplates();
 			this.mainview = new arkiweb.views.Main(this.settings);
-			/*
-			this.height = options.height || '100%';
-			$(this.root).css('height', this.height);
-			this.root_layout = $(this.root).layout({
-				//applyDefaultStyles: true,
-				west__paneSelector: '.arkiweb-datasets-selection',
-				center__paneSelector: '.arkiweb-map',
-				east__paneSelector: '.arkiweb-fields-selection',
-				south__paneSelector: '.arkiweb-postprocess',
-				size: '30%'
-
-			});
-			this.datasets_layout = $(this.datasets_view.el).layout({
-				north__paneSelector: '.arkiweb-datasets-selection-header',
-				center__paneSelector: '.arkiweb-datasets-selection-content',
-				center__applyDefaultStyles: true
-			});
-			this.fields_layout = $(this.root).find('.arkiweb-fields-selection').layout({
-				north__paneSelector: '.arkiweb-fields-selection-header',
-				center__paneSelector: '.arkiweb-fields-selection-content',
-				center__applyDefaultStyles: true
-			});
-			*/
-		},
+		},	
 		loadTemplates: function() {
 			var self = this;
 			if ($(this.tmpl).length == 0) {
