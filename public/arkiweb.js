@@ -304,7 +304,8 @@
 			var begin = $(this.el).find("input[name=from]").val();
 			var end = $(this.el).find("input[name=until]").val();
 			return 'reftime: >= ' + begin + ", <= " + end;
-		}
+		},
+		toggleQuery: function() {}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
 		tmpl: '#arkiweb-fields-selection-section-tmpl',
