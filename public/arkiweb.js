@@ -448,9 +448,7 @@
 			});
 		},
 		toggleQuery: function() {
-			_.each(this.views, function(view) {
-				$(view.el).find(".arkiweb-summary-query, .arkiweb-summary-description").toggleClass("hidden");
-			});
+			$(this.el).find(".arkiweb-summary-query, .arkiweb-summary-description").toggleClass("hidden");
 		}
 	});
 	arkiweb.views.SummaryStats = Backbone.View.extend({
