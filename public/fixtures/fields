@@ -22,7 +22,7 @@
             ]
         }, 
         {
-            "type": "level", 
+            "type": "leve", 
             "values": [
                 {
                     "desc": "sfc Surface (of the Earth, which includes sea surface) 0 0", 
