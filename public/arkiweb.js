@@ -210,7 +210,8 @@
 	arkiweb.views.FieldsSelection = Backbone.View.extend({
 		events: {
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery',
-			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query': 'showQuery'
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query': 'showQuery',
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-clear-selection': 'clearSelection'
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
@@ -250,6 +251,11 @@
 		},
 		showQuery: function() {
 			alert(this.query());
+		},
+		clearSelection: function() {
+			_.each(this.views, function(view) {
+				view.clearSelection();
+			});
 		},
 		query: function() {
 			var queries = _.select(_.map(this.views, function(view) {
@@ -309,6 +315,11 @@
 				query = null;
 			}
 			return query;
+		},
+		clearSelection: function() {
+			_.each(this.views, function(view) {
+				view.setSelection(false);
+			});
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
@@ -333,6 +344,12 @@
 		},
 		toggleQuery: function() {
 			$(this.el).find(".arkiweb-field-description, .arkiweb-field-query").toggleClass("hidden");
+		},
+		setSelection: function(value) {
+			var checkbox = $(this.el).find("input");
+			if ((value && !this.isSelected()) || (!value && this.isSelected())) {
+				checkbox.click();
+			}
 		}
 	});
 	arkiweb.views.Error = Backbone.View.extend({
