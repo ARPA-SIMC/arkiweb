@@ -42,8 +42,6 @@
 			}, this);
 		}
 	});
-	arkiweb.models.SummaryItem = Backbone.Model.extend({
-	});
 	arkiweb.collections.Datasets = Backbone.Collection.extend({
 		model: arkiweb.models.Dataset,
 		url: 'datasets'
@@ -64,10 +62,6 @@
 			};
 			return response.fields;
 		}
-	});
-	arkiweb.collections.Summary = Backbone.Collection.extend({
-		model: arkiweb.models.SummaryItem,
-		url: 'summary'
 	});
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
@@ -404,22 +398,91 @@
 		}
 	});
 
-	arkiweb.views.SummaryTable = Backbone.View.extend({
-		initialize: function() {
+	arkiweb.views.Summary = Backbone.View.extend({
+		tmpl: '#arkiweb-summary-tmpl',
+		events: {
+			'click button': 'toggleQuery'
+		},
+		initialize: function(options) {
 			this.collection.bind("reset", this.render, this);
 		},
-		tmpl: "#arkiweb-summary-table-tmpl",
 		render: function() {
-			this.el = $(this.tmpl).tmpl();
+			this.el.empty();
+			this.views = [];
+
+			var tmpl = $(this.tmpl).tmpl();
+			this.el.append(tmpl);
+
+			var div = $(this.el).find(".arkiweb-summary-stats");
+			var view = new arkiweb.views.SummaryStats({
+				model: this.collection,
+				el: div
+			});
+			view.render();
+			this.views.push(view);
+
+			this.collection.each(function(model) {
+				var div = $("<div>");
+				tmpl.find(".arkiweb-summary-content").append(div);
+				var view = new arkiweb.views.SummarySection({
+					model: model,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+
 			$(this.el).dialog({
+				title: 'summary',
 				autoOpen: true,
 				modal: true,
-				title: 'summary',
 				close: function() {
-					$(this).remove();
-				}
+					$(this).remove()
+				},
+				height: $(document).height() * 2 / 3,
+				width: $(document).width() * 2 / 3
 			});
-			console.log(this.collection.length);
+		},
+		toggleQuery: function() {
+			_.each(this.views, function(view) {
+				$(view.el).find(".arkiweb-summary-query, .arkiweb-summary-description").toggleClass("hidden");
+			});
+		}
+	});
+	arkiweb.views.SummaryStats = Backbone.View.extend({
+		tmpl: '#arkiweb-summary-stats-tmpl',
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.stats);
+			$(this.el).append(tmpl);
+		}
+	});
+	arkiweb.views.SummarySection = Backbone.View.extend({
+		tmpl: '#arkiweb-summary-section-tmpl',
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+			$(this.el).append(tmpl);
+			this.views = [];
+			this.model.collection.each(function(model) {
+				var div = $("<div>");
+				$(this.el).find('.arkiweb-summary-section-list').append(div);
+				var view = new arkiweb.views.SummarySectionItem({
+					model: model,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}, this);
+		}
+	});
+	arkiweb.views.SummarySectionItem = Backbone.View.extend({
+		tmpl: '#arkiweb-summary-section-item-tmpl',
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl({
+				description: this.model.get('value').desc,
+				query: this.model.query
+			});
+			$(this.el).append(tmpl);
+			tmpl.find(".arkiweb-summary-query").addClass("hidden");
 		}
 	});
 
@@ -443,7 +506,7 @@
 			this.collections.fields = new arkiweb.collections.Fields();
 			this.collections.fields.url = options.urls.fields || this.collections.fields.url;
 
-			this.collections.summary = new arkiweb.collections.Summary();
+			this.collections.summary = new arkiweb.collections.Fields();
 			this.collections.summary.url = options.urls.summary || this.collections.summary.url;
 
 			this.views = {};
@@ -473,8 +536,9 @@
 			
 			this.views.fields.bind("submit", this.loadSummary, this);
 
-			this.views.summary = new arkiweb.views.SummaryTable({
-				collection: this.collections.summary
+			this.views.summary = new arkiweb.views.Summary({
+				collection: this.collections.summary,
+				el: $("<div>")
 			});
 
 			this.layouts = {};

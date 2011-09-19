@@ -16,7 +16,7 @@
 	font-weight: bold;
 }
 
-.arkiweb .hidden {
+.arkiweb .hidden, .arkiweb-summary .hidden {
 	display: none;
 }
 
@@ -27,4 +27,8 @@
 .arkiweb .arkiweb-fields-selection-section h3 {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+.arkiweb-summary {
+	font-size: 0.7em;
 }
