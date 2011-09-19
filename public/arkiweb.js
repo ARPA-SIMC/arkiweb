@@ -179,7 +179,7 @@
 			this.datasets_view.bind("submit", this.showFieldsSelection, this);
 			this.map_view = new arkiweb.views.Map({
 				view: this.datasets_view,
-				el: $(this.root).find(".arkiweb-map")
+				el: $(this.root).find(".arkiweb-map-content")
 			});
 			this.map_view.render();
 			/*
