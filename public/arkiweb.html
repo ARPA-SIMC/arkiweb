@@ -18,6 +18,7 @@
 		<div class="arkiweb-fields-selection-header">
 			<h2 class="arkiweb-title">fields selection</h2>
 			<div class="arkiweb-menu arkiweb-fields-selection-menu">
+				<button class="arkiweb-fields-selection-toggle-query">toggle query/description</button>
 			</div>
 		</div>
 		<div class="arkiweb-fields-selection-content">
@@ -60,6 +61,12 @@
 	<div>
 		<input type="checkbox">
 		<span class="arkiweb-field-description">${description}</span>
-		<code class="arkiweb-field-query">${query}</code>
+		<span class="arkiweb-field-query">
+			{{if query}}
+			${query}
+			{{else}}
+			-
+			{{/if}}
+		</span>
 	</div>
 </script>
