@@ -348,11 +348,13 @@
 			this.layouts = {};
 			this.layouts.main = $(this.el).layout({
 				applyDefaultStyles: true,
-				north__paneSelector: '.arkiweb-datasets-selection',
-				west__paneSelector: '.arkiweb-fields-selection',
+				west__paneSelector: '.arkiweb-datasets-selection',
+				east__paneSelector: '.arkiweb-fields-selection',
 				center__paneSelector: '.arkiweb-map',
-				east__paneSelector: '.arkiweb-postprocess',
-				north__size: '50%'
+				south__paneSelector: '.arkiweb-postprocess',
+				south__size: '40%',
+				west__size: '33%',
+				east__size: '33%'
 			});
 			this.layouts.datasets = $(this.views.datasets.el).layout({
 				center__applyDefaultStyles: true,
