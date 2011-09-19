@@ -202,6 +202,9 @@
 		}
 	});
 	arkiweb.views.FieldsSelection = Backbone.View.extend({
+		events: {
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery'
+		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
 			this.content = $(this.el).find('.arkiweb-fields-selection-content');
@@ -219,6 +222,12 @@
 				});
 				view.render();
 				this.views.push(view);
+			}, this);
+			return this;
+		},
+		toggleQuery: function() {
+			_.each(this.views, function(view) {
+				view.toggleQuery();
 			}, this);
 		}
 	});
@@ -239,13 +248,18 @@
 				view.render();
 				this.views.push(view);
 			}, this);
+		},
+		toggleQuery: function() {
+			_.each(this.views, function(view) {
+				view.toggleQuery();
+			}, this);
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
 		tmpl: '#arkiweb-fields-selection-section-item-tmpl',
 		render: function() {
 			var description = this.model.get('value').desc;
-			var query = this.model.query || "-";
+			var query = this.model.query;
 			var tmpl = $(this.tmpl).tmpl({
 				description: this.model.get('value').desc,
 				query: this.model.query
@@ -257,6 +271,9 @@
 			}
 
 			tmpl.find('.arkiweb-field-query').addClass("hidden");
+		},
+		toggleQuery: function() {
+			$(this.el).find(".arkiweb-field-description, .arkiweb-field-query").toggleClass("hidden");
 		}
 	});
 	arkiweb.views.Error = Backbone.View.extend({
