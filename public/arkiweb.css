@@ -1,0 +1,17 @@
+.arkiweb {
+	font-family: 'Arial', sans-serif;
+	font-size: 0.7em;
+}
+
+.arkiweb-datasets-selection-list *[allowed=false] {
+	color: silver;
+}
+
+.arkiweb-dataset-name {
+	font-weight: bold;
+}	
+
+.arkiweb .error {
+	color: red;
+	font-weight: bold;
+}

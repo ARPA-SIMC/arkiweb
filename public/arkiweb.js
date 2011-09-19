@@ -20,9 +20,21 @@
 			}
 		}
 	});
+	arkiweb.models.FieldValue = Backbone.Model.extend({	
+	});
+	arkiweb.models.Field = Backbone.Model.extend({
+	});
 	arkiweb.collections.Datasets = Backbone.Collection.extend({
 		model: arkiweb.models.Dataset,
 		url: 'datasets'
+	});
+	arkiweb.collections.FieldValues = Backbone.Collection.extend({
+		model: arkiweb.models.FieldValue,
+		url: ""
+	});
+	arkiweb.collections.Fields = Backbone.Collection.extend({
+		model: arkiweb.models.Field,
+		url: 'fields'
 	});
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
@@ -67,7 +79,7 @@
 		renderError: function(model, error) {
 			var view = new arkiweb.views.Error({ 
 				el: $(this.content),
-				message: error.statusText
+				message: "Error while loading datasets: " + error.statusText
 			});
 			view.render();
 			this.views.push(view);
@@ -121,7 +133,7 @@
 			var tmpl = $("#arkiweb-dataset-description-tmpl").tmpl(this.model.toJSON());
 			div.append(tmpl);
 			div.dialog({
-				title: "", //this.model.name,
+				title: this.model.name,
 				autoOpen: true,
 				modal: true,
 				close: function() {
@@ -167,6 +179,8 @@
 			}
 		}
 	});
+	arkiweb.views.FieldsSelection = Backbone.View.extend({
+	});
 	arkiweb.views.Error = Backbone.View.extend({
 		initialize: function(options) {
 			this.message = options.message
@@ -183,6 +197,9 @@
 				
 			this.collections.datasets = new arkiweb.collections.Datasets()
 			this.collections.datasets.url = options.urls.datasets || this.collections.datasets.url;
+
+			this.collections.fields = new arkiweb.collections.Fields();
+			this.collections.fields.url = options.urls.fields || this.collections.fields.url;
 
 			this.views = {};
 		},
@@ -204,6 +221,11 @@
 				el: $(this.el).find('.arkiweb-map')
 			});
 
+			this.views.fields = new arkiweb.views.FieldsSelection({
+				collection: this.collections.fields,
+				el: $(this.el).find('.arkiweb-fields-selection')
+			});
+
 			this.layouts = {};
 			this.layouts.main = $(this.el).layout({
 				applyDefaultStyles: true,
@@ -220,10 +242,14 @@
 			});
 
 			this.views.map.render();
+
+			this.loadDatasets();
+		},
+		loadDatasets: function() {
 			this.collections.datasets.fetch();
 		},
 		loadFields: function() {
-			alert("TODO");
+			this.collections.fields.fetch();
 		}
 	});
 	arkiweb.routers.Router = Backbone.Router.extend({
