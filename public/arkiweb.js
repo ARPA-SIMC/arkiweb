@@ -209,7 +209,8 @@
 	});
 	arkiweb.views.FieldsSelection = Backbone.View.extend({
 		events: {
-			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery'
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery',
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query': 'showQuery'
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
@@ -246,6 +247,17 @@
 			_.each(this.views, function(view) {
 				view.toggleQuery();
 			}, this);
+		},
+		showQuery: function() {
+			alert(this.query());
+		},
+		query: function() {
+			var queries = _.select(_.map(this.views, function(view) {
+				return view.query();
+			}, this), function(query) {
+				return query;
+			}, this);
+			return queries.join(";");
 		}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
@@ -277,6 +289,26 @@
 		},
 		toggleSection: function() {
 			$(this.el).find(".arkiweb-fields-selection-section-list").toggleClass("hidden");
+		},
+		getSelected: function() {
+			return _.select(this.views, function(view) {
+				return view.isSelected();
+			});
+		},
+		query: function() {
+			var selected = this.getSelected();
+			if (selected.length == 0)
+				return null;
+			var queries = _.map(selected, function(view) {
+				return view.model.query
+			});
+			var query;
+			try {
+				query = ArkiwebParser[this.model.get('type')].decode(queries);
+			} catch (e) {
+				query = null;
+			}
+			return query;
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
@@ -295,6 +327,9 @@
 			}
 
 			tmpl.find('.arkiweb-field-query').addClass("hidden");
+		},
+		isSelected: function() {
+			return $(this.el).find("input").is(":checked");
 		},
 		toggleQuery: function() {
 			$(this.el).find(".arkiweb-field-description, .arkiweb-field-query").toggleClass("hidden");
