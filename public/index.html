@@ -18,7 +18,10 @@
 		<script>
 			$(document).ready(function() {
 				$("#arkiweb").arkiweb({
-					datasets_url: 'fixtures/datasets'
+					urls: {
+						datasets: 'fixtures/datasets'
+					}
+					//height: '100%'
 				});
 			});
 		</script>

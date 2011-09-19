@@ -34,6 +34,9 @@
 			this.buttons.submit = $(this.el).find(".arkiweb-datasets-selection-menu .arkiweb-datasets-selection-submit-selection");
 			this.buttons.clear = $(this.el).find(".arkiweb-datasets-selection-menu .arkiweb-datasets-selection-clear-selection");
 
+			this.buttons.submit.attr('disabled', true);
+			this.buttons.clear.attr('disabled', true);
+
 			this.collection.bind('reset', this.render, this);
 			this.collection.bind('error', this.renderError, this);
 		},
@@ -59,8 +62,6 @@
 				this.views.push(view);
 				view.bind("change", this.notifyChange, this);
 			}, this);
-			this.buttons.submit.attr('disabled', true);
-			this.buttons.clear.attr('disabled', true);
 			return this;
 		},
 		renderError: function(model, error) {
@@ -174,25 +175,75 @@
 			$(this.el).append("<div class='error'>" + this.message + "</div>");
 		}
 	});
-	arkiweb.routers.Router = Backbone.Router.extend({
+	arkiweb.views.Main = Backbone.View.extend({
+		tmpl: "#arkiweb-tmpl",
 		initialize: function(options) {
-			this.root = options.root || 'body';
-			this.root.addClass('arkiweb');
-			this.tmpl_url = options.tmpl_url || 'arkiweb.html';
+			this.options = options;
+			this.collections = {};
+				
+			this.collections.datasets = new arkiweb.collections.Datasets()
+			this.collections.datasets.url = options.urls.datasets || this.collections.datasets.url;
+
+			this.views = {};
+		},
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl();
+			$(this.el).append(tmpl);
+			$(this.el).addClass("arkiweb");
+			$(this.el).css('height', this.options.height);
+
+			this.views.datasets = new arkiweb.views.DatasetsSelection({
+				collection: this.collections.datasets,
+				el: $(this.el).find('.arkiweb-datasets-selection')
+			});
+
+			this.views.datasets.bind('submit', this.loadFields, this);
+
+			this.views.map = new arkiweb.views.Map({
+				view: this.views.datasets,
+				el: $(this.el).find('.arkiweb-map')
+			});
+
+			this.layouts = {};
+			this.layouts.main = $(this.el).layout({
+				applyDefaultStyles: true,
+				north__paneSelector: '.arkiweb-datasets-selection',
+				west__paneSelector: '.arkiweb-fields-selection',
+				center__paneSelector: '.arkiweb-map',
+				east__paneSelector: '.arkiweb-postprocess',
+				north__size: '50%'
+			});
+			this.layouts.north = $(this.el).find(".arkiweb-datasets-selection").layout({
+				center__applyDefaultStyles: true,
+				north__paneSelector: '.arkiweb-datasets-selection-header',
+				center__paneSelector: '.arkiweb-datasets-selection-content'
+			});
+
+			this.views.map.render();
+			this.collections.datasets.fetch();
+		},
+		loadFields: function() {
+			alert("TODO");
+		}
+	});
+	arkiweb.routers.Router = Backbone.Router.extend({
+		tmpl: '#arkiweb-tmpl',
+		settings: {
+			el: 'body',
+			urls: {
+				tmpl: 'arkiweb.html',
+				datasets: 'datasets',
+				fields: 'fields',
+				summary: 'summary',
+				download: 'download'
+			},
+			height: '100%'
+		},
+		initialize: function(options) {
+			if (options)
+				$.extend(true, this.settings, options);
 			this.loadTemplates();
-			this.datasets_url = options.datasets_url || 'datasets';
-			this.datasets = new arkiweb.collections.Datasets();
-			this.datasets.url = this.datasets_url;
-			this.datasets_view = new arkiweb.views.DatasetsSelection({
-				collection: this.datasets,
-				el: $(this.root).find(".arkiweb-datasets-selection")
-			});
-			this.datasets_view.bind("submit", this.loadFieldsSelection, this);
-			this.map_view = new arkiweb.views.Map({
-				view: this.datasets_view,
-				el: $(this.root).find(".arkiweb-map-content")
-			});
-			this.map_view.render();
+			this.mainview = new arkiweb.views.Main(this.settings);
 			/*
 			this.height = options.height || '100%';
 			$(this.root).css('height', this.height);
@@ -217,12 +268,11 @@
 			});
 			*/
 		},
-		tmpl: "#arkiweb-tmpl",
 		loadTemplates: function() {
 			var self = this;
 			if ($(this.tmpl).length == 0) {
 				$.ajax({
-					url: self.tmpl_url,
+					url: self.settings.urls.tmpl,
 					async: false,
 					dataType: 'html',
 					success: function(data) {
@@ -233,17 +283,12 @@
 					}
 				});
 			}
-			var tmpl = $(this.tmpl).tmpl();
-			$(this.root).append(tmpl);
 		},
 		routes: {
 			"":	"index"
 		},
 		index: function() {
-			this.datasets.fetch();
-		},
-		loadFieldsSelection: function() {
-			alert("TODO");
+			this.mainview.render();
 		}
 	});
 	window.arkiweb = arkiweb;
