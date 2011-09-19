@@ -207,6 +207,7 @@
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
+			this.collection.bind('error', this.renderError, this);
 			this.content = $(this.el).find('.arkiweb-fields-selection-content');
 		},
 		views: [],
@@ -223,6 +224,16 @@
 				view.render();
 				this.views.push(view);
 			}, this);
+			return this;
+		},
+		renderError: function(model, error) {
+			this.content.empty();
+			var view = new arkiweb.views.Error({ 
+				el: $(this.content),
+				message: "Error while loading fields: " + error.statusText
+			});
+			view.render();
+			this.views.push(view);
 			return this;
 		},
 		toggleQuery: function() {
