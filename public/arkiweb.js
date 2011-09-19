@@ -31,10 +31,17 @@
 		},
 		initialize: function() {
 			this.content = $(this.el).find(".arkiweb-datasets-selection-list");
+			this.buttons.submit = $(this.el).find(".arkiweb-datasets-selection-menu .arkiweb-datasets-selection-submit-selection");
+			this.buttons.clear = $(this.el).find(".arkiweb-datasets-selection-menu .arkiweb-datasets-selection-clear-selection");
+
 			this.collection.bind('reset', this.render, this);
 			this.collection.bind('error', this.renderError, this);
 		},
 		views: [],
+		buttons: {
+			submit: null,
+			clear: null
+		},
 		empty: function() {
 			return this.content.empty();
 		},
@@ -52,6 +59,8 @@
 				this.views.push(view);
 				view.bind("change", this.notifyChange, this);
 			}, this);
+			this.buttons.submit.attr('disabled', true);
+			this.buttons.clear.attr('disabled', true);
 			return this;
 		},
 		renderError: function(model, error) {
@@ -64,6 +73,8 @@
 			return this;
 		},
 		notifyChange: function(view) {
+			this.buttons.submit.attr('disabled', this.getSelected().length == 0);
+			this.buttons.clear.attr('disabled', this.getSelected().length == 0);
 			this.trigger("change", view);
 		},
 		submitSelection: function() {
