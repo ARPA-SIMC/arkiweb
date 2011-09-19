@@ -22,7 +22,8 @@
 				<button class="arkiweb-fields-selection-toggle-query">toggle query/description</button>
 				<button class="arkiweb-fields-selection-clear-selection">clear selection</button>
 				<button class="arkiweb-fields-selection-show-query">show query</button>
-				<button class="arkiweb-fields-selection-submit-selection">submit</button>
+				<button class="arkiweb-fields-selection-submit-selection">summary</button>
+				<button class="arkiweb-fields-selection-download-selection">download</button>
 			</div>
 		</div>
 		<div class="arkiweb-fields-selection-content">
@@ -44,7 +45,7 @@
 	</div>
 </script>
 <script type="text/x-jquery-tmpl" id="arkiweb-dataset-description-tmpl">
-	<div class="arkiweb-dataset-description">
+	<div class="arkiweb-dataset-description-dialog">
 		<p><b>name</b>: ${name}</p>
 		{{if description}}
 		<p><b>description</b>: ${description}</p>
@@ -53,7 +54,7 @@
 		<p><b>postprocess</b>: ${postprocess.join(",")}</p>
 		{{/if}}
 		{{if bounding}}
-		<p><b>bounding</b>: <code>${bounding}</code></p>
+		<p><b>bounding</b>: ${bounding}</p>
 		{{/if}}
 	</div>
 </script>
