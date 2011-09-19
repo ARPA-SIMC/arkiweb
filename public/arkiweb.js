@@ -330,10 +330,15 @@
 				east__paneSelector: '.arkiweb-postprocess',
 				north__size: '50%'
 			});
-			this.layouts.north = $(this.el).find(".arkiweb-datasets-selection").layout({
+			this.layouts.datasets = $(this.views.datasets.el).layout({
 				center__applyDefaultStyles: true,
 				north__paneSelector: '.arkiweb-datasets-selection-header',
 				center__paneSelector: '.arkiweb-datasets-selection-content'
+			});
+			this.layouts.fields = $(this.views.fields.el).layout({
+				center__applyDefaultStyles: true,
+				north__paneSelector: '.arkiweb-fields-selection-header',
+				center__paneSelector: '.arkiweb-fields-selection-content'
 			});
 
 			this.views.map.render();
