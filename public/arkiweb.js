@@ -255,6 +255,8 @@
 			if (!this.model.query) {
 				tmpl.find("input").attr('disabled', true);
 			}
+
+			tmpl.find('.arkiweb-field-query').addClass("hidden");
 		}
 	});
 	arkiweb.views.Error = Backbone.View.extend({

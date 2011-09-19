@@ -15,3 +15,7 @@
 	color: red;
 	font-weight: bold;
 }
+
+.arkiweb .hidden {
+	display: none;
+}
