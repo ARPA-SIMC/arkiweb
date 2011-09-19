@@ -346,17 +346,42 @@
 			this.loadDatasets();
 		},
 		loadDatasets: function() {
-			this.collections.datasets.fetch();
+			var self = this;
+			this.collections.datasets.fetch({
+				beforeSend: function() {
+					self.block();
+				},
+				complete: function() {
+					self.unblock();
+				}
+			});
 		},
 		loadFields: function() {
+			var self = this;
 			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
 				return view.model.get('id');
 			});
 			this.collections.fields.fetch({
+				beforeSend: function() {
+					self.block();
+				},
+				complete: function() {
+					self.unblock();
+				},
 				data: {
 					datasets: datasets
 				}
 			});
+		},
+		block: function() {
+			var img = "<div><img src='ajax-loader.gif' alt='loading'/></div>";
+			$.blockUI.defaults.css = {};
+			$(this.el).block({
+				message: img
+			});
+		},
+		unblock: function() {
+			$(this.el).unblock();
 		}
 	});
 	arkiweb.routers.Router = Backbone.Router.extend({
