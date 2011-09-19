@@ -7,7 +7,7 @@
 			if (options) {
 				$.extend(settings, options);
 			}
-			settings.root = $(this);
+			settings.el = $(this);
 			var router = new arkiweb.routers.Router(settings);
 			Backbone.history.start();
 		});
