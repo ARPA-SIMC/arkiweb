@@ -217,7 +217,8 @@
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery',
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query': 'showQuery',
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-clear-selection': 'clearSelection',
-			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-submit-selection': 'submitSelection'
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-submit-selection': 'submitSelection',
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-download-selection': 'downloadSelection'
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
@@ -284,6 +285,9 @@
 		},
 		submitSelection: function() {
 			this.trigger('submit');
+		},
+		downloadSelection: function() {
+			this.trigger('download');
 		}
 	});
 	arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
@@ -510,6 +514,8 @@
 			this.collections.summary.url = options.urls.summary || this.collections.summary.url;
 
 			this.views = {};
+
+			this.options.urls.data = this.options.urls.data || 'data';
 		},
 		render: function() {
 			var tmpl = $(this.tmpl).tmpl();
@@ -535,6 +541,7 @@
 			});
 			
 			this.views.fields.bind("submit", this.loadSummary, this);
+			this.views.fields.bind("download", this.downloadData, this);
 
 			this.views.summary = new arkiweb.views.Summary({
 				collection: this.collections.summary,
@@ -567,6 +574,16 @@
 
 			this.loadDatasets();
 		},
+		getParams: function() {
+			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
+				return view.model.get('id');
+			});
+			var query = this.views.fields.query();
+			return {
+				datasets: datasets,
+				query: query
+			};
+		},
 		loadDatasets: function() {
 			var self = this;
 			this.collections.datasets.fetch({
@@ -580,9 +597,6 @@
 		},
 		loadFields: function() {
 			var self = this;
-			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
-				return view.model.get('id');
-			});
 			this.collections.fields.fetch({
 				beforeSend: function() {
 					self.block();
@@ -590,9 +604,8 @@
 				complete: function() {
 					self.unblock();
 				},
-				data: {
-					datasets: datasets
-				}
+				data: this.getParams()
+			
 			});
 		},
 		loadSummary: function() {
@@ -608,11 +621,12 @@
 				complete: function() {
 					self.unblock();
 				},
-				data: {
-					datasets: datasets,
-					query: query
-				}
+				data: this.getParams()
 			});
+		},
+		downloadData: function() {
+			console.log(this.options.urls.data);
+			console.log(this.getParams());
 		},
 		block: function() {
 			var img = "<div><img src='ajax-loader.gif' alt='loading'/></div>";
