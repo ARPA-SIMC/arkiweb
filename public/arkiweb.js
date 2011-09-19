@@ -325,7 +325,14 @@
 			this.collections.datasets.fetch();
 		},
 		loadFields: function() {
-			this.collections.fields.fetch();
+			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
+				return view.model.get('id');
+			});
+			this.collections.fields.fetch({
+				data: {
+					datasets: datasets
+				}
+			});
 		}
 	});
 	arkiweb.routers.Router = Backbone.Router.extend({
