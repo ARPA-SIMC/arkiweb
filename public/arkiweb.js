@@ -244,10 +244,14 @@
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
 		tmpl: '#arkiweb-fields-selection-section-tmpl',
+		events: {
+			'click h3': 'toggleSection'
+		},
 		views: [],
 		render: function() {
 			var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
 			$(this.el).append(tmpl);
+			$(this.el).find(".arkiweb-fields-selection-section-list").addClass("hidden");
 			this.views = [];
 			this.model.collection.each(function(model) {
 				var div = $("<div>");
@@ -264,6 +268,9 @@
 			_.each(this.views, function(view) {
 				view.toggleQuery();
 			}, this);
+		},
+		toggleSection: function() {
+			$(this.el).find(".arkiweb-fields-selection-section-list").toggleClass("hidden");
 		}
 	});
 	arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({

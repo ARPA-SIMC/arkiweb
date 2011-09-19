@@ -19,3 +19,12 @@
 .arkiweb .hidden {
 	display: none;
 }
+
+.arkiweb .arkiweb-fields-selection-section {
+	border-bottom: 1px solid silver;
+}
+
+.arkiweb .arkiweb-fields-selection-section h3 {
+	text-decoration: underline;
+	cursor: pointer;
+}
