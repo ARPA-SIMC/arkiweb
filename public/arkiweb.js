@@ -42,6 +42,8 @@
 			}, this);
 		}
 	});
+	arkiweb.models.SummaryItem = Backbone.Model.extend({
+	});
 	arkiweb.collections.Datasets = Backbone.Collection.extend({
 		model: arkiweb.models.Dataset,
 		url: 'datasets'
@@ -62,6 +64,10 @@
 			};
 			return response.fields;
 		}
+	});
+	arkiweb.collections.Summary = Backbone.Collection.extend({
+		model: arkiweb.models.SummaryItem,
+		url: 'summary'
 	});
 	arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		events: {
@@ -216,7 +222,8 @@
 		events: {
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query': 'toggleQuery',
 			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query': 'showQuery',
-			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-clear-selection': 'clearSelection'
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-clear-selection': 'clearSelection',
+			'click .arkiweb-fields-selection-menu .arkiweb-fields-selection-submit-selection': 'submitSelection'
 		},
 		initialize: function() {
 			this.collection.bind('reset', this.render, this);
@@ -280,6 +287,9 @@
 				return query;
 			}, this);
 			return queries.join(";");
+		},
+		submitSelection: function() {
+			this.trigger('submit');
 		}
 	});
 	arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
@@ -393,6 +403,26 @@
 			}
 		}
 	});
+
+	arkiweb.views.SummaryTable = Backbone.View.extend({
+		initialize: function() {
+			this.collection.bind("reset", this.render, this);
+		},
+		tmpl: "#arkiweb-summary-table-tmpl",
+		render: function() {
+			this.el = $(this.tmpl).tmpl();
+			$(this.el).dialog({
+				autoOpen: true,
+				modal: true,
+				title: 'summary',
+				close: function() {
+					$(this).remove();
+				}
+			});
+			console.log(this.collection.length);
+		}
+	});
+
 	arkiweb.views.Error = Backbone.View.extend({
 		initialize: function(options) {
 			this.message = options.message
@@ -412,6 +442,9 @@
 
 			this.collections.fields = new arkiweb.collections.Fields();
 			this.collections.fields.url = options.urls.fields || this.collections.fields.url;
+
+			this.collections.summary = new arkiweb.collections.Summary();
+			this.collections.summary.url = options.urls.summary || this.collections.summary.url;
 
 			this.views = {};
 		},
@@ -436,6 +469,12 @@
 			this.views.fields = new arkiweb.views.FieldsSelection({
 				collection: this.collections.fields,
 				el: $(this.el).find('.arkiweb-fields-selection')
+			});
+			
+			this.views.fields.bind("submit", this.loadSummary, this);
+
+			this.views.summary = new arkiweb.views.SummaryTable({
+				collection: this.collections.summary
 			});
 
 			this.layouts = {};
@@ -489,6 +528,25 @@
 				},
 				data: {
 					datasets: datasets
+				}
+			});
+		},
+		loadSummary: function() {
+			var self = this;
+			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
+				return view.model.get('id');
+			});
+			var query = this.views.fields.query();
+			this.collections.summary.fetch({
+				beforeSend: function() {
+					self.block();
+				},
+				complete: function() {
+					self.unblock();
+				},
+				data: {
+					datasets: datasets,
+					query: query
 				}
 			});
 		},
