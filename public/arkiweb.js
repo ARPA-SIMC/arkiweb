@@ -54,7 +54,12 @@
 		model: arkiweb.models.Field,
 		url: 'fields',
 		parse: function(response) {
-			this.stats = response.stats;
+			this.stats = {
+				begin: eval("new Date(" + response.stats.b.join(",") + ")"),
+				end: eval("new Date(" + response.stats.e.join(",") + ")"),
+				count: response.stats.c,
+				size: response.stats.s
+			};
 			return response.fields;
 		}
 	});
@@ -222,6 +227,16 @@
 		render: function() {
 			this.content.empty();
 			this.views = [];
+
+			var div = $("<div>");
+			this.content.append(div);
+			var view = new arkiweb.views.FieldsSelectionStatsSection({
+				model: this.collection,
+				el: div
+			});
+			view.render();
+			this.views.push(view);
+
 			this.collection.each(function(model) {
 				var div = $("<div>");
 				this.content.append(div);
@@ -232,6 +247,7 @@
 				view.render();
 				this.views.push(view);
 			}, this);
+
 			return this;
 		},
 		renderError: function(model, error) {
@@ -264,6 +280,30 @@
 				return query;
 			}, this);
 			return queries.join(";");
+		}
+	});
+	arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
+		tmpl: '#arkiweb-fields-selection-stats-section-tmpl',
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl(this.model.stats);
+			$(this.el).append(tmpl);
+			$(this.el).find("input").datetimepicker({
+				minDate: this.model.stats.begin,
+				maxDate: this.model.stats.end,
+				timeFormat: 'hh:mm:ss',
+				dateFormat: 'yy-mm-dd'
+			});
+			$(this.el).find("input[name=from]").datetimepicker('setDate', this.model.stats.begin);
+			$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
+		},
+		clearSelection: function() {
+			$(this.el).find("input[name=from]").datetimepicker('setDate', this.model.stats.begin);
+			$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
+		},
+		query: function() {
+			var begin = $(this.el).find("input[name=from]").val();
+			var end = $(this.el).find("input[name=until]").val();
+			return 'reftime: >= ' + begin + ", <= " + end;
 		}
 	});
 	arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
