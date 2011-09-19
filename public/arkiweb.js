@@ -176,7 +176,7 @@
 				collection: this.datasets,
 				el: $(this.root).find(".arkiweb-datasets-selection")
 			});
-			this.datasets_view.bind("submit", this.showFieldsSelection, this);
+			this.datasets_view.bind("submit", this.loadFieldsSelection, this);
 			this.map_view = new arkiweb.views.Map({
 				view: this.datasets_view,
 				el: $(this.root).find(".arkiweb-map-content")
@@ -231,7 +231,7 @@
 		index: function() {
 			this.datasets.fetch();
 		},
-		showFieldsSelection: function() {
+		loadFieldsSelection: function() {
 			alert("TODO");
 		}
 	});
