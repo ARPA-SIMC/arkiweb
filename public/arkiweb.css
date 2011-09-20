@@ -35,3 +35,16 @@
 .arkiweb-dataset-description-dialog {
 	font-size: 0.7em;
 }
+
+.arkiweb-postprocessor-item {
+	border-bottom: 1px solid silver;
+	padding: 0.5em;
+}
+.arkiweb-postprocessor-item-header {
+	margin: 0.2em;
+}
+.arkiweb-postprocessor-name {
+	text-decoration: underline;
+	cursor: pointer;
+	font-weight: bold;
+}
