@@ -1,75 +1,49 @@
+/*
+ * summary - summary utilities
+ *
+ * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+ */
 #ifndef ARKIWEB_SUMMARY_H
 #define ARKIWEB_SUMMARY_H
 
 #include <arki/configfile.h>
-#include <arki/runtime.h>
 #include <arki/emitter.h>
-#include <arki/summary.h>
-#include <arki/summary/stats.h>
-
-#include <string>
-#include <set>
+#include <arki/matcher.h>
 
 namespace arkiweb {
-
 namespace summary {
 
-struct Serialiser {
-  arki::Emitter &emitter;
-  arki::Formatter *formatter;
-  arki::Summary summary;
-
-  Serialiser(arki::Emitter &e, arki::Formatter *f,
-             arki::Summary &summary);
-  ~Serialiser();
-
-  virtual void serialise() = 0;
-};
-
-struct ExtendedSerialiser : public Serialiser, public arki::summary::Visitor {
-  ExtendedSerialiser(arki::Emitter &e, arki::Formatter *f,
-                     arki::Summary &summary);
-
-  virtual bool operator()(const std::vector< arki::UItem<> >& md,
-                          const arki::UItem<arki::summary::Stats>& stats);
-
-  virtual void serialise();
-};
-
-struct MergeSerialiser : public Serialiser, public arki::summary::Visitor {
-  arki::summary::Stats statistics;
-  std::map<std::string, std::set< arki::UItem<> > > fields;
-
-
-  MergeSerialiser(arki::Emitter &e, arki::Formatter *f,
-                  arki::Summary &summary);
-
-  virtual bool operator()(const std::vector< arki::UItem<> >& md,
-                          const arki::UItem<arki::summary::Stats>& stats);
-
-  void serialise();
-};
-
-struct Printer {
-  const arki::ConfigFile cfg;
-  const arki::runtime::Restrict restr;
-  arki::Emitter &emitter;
-  const std::string query;
-  bool extended;
-
-  Printer(const arki::ConfigFile &cfg,
-          const arki::runtime::Restrict &restr,
-          arki::Emitter &emitter,
-          const std::string query,
-          const bool &extended);
-  ~Printer();
-
+class Printer {
+ public:
+  Printer(const arki::ConfigFile &cfg, arki::Emitter &emitter,
+          const std::string &query);
   void print();
 
+ private:
+  const arki::ConfigFile m_cfg;
+  arki::Emitter &m_emitter;
+  const arki::Matcher m_matcher;
+
 };
 
-}
 
+}
 }
 
 #endif        /* ARKIWEB_SUMMARY_H */

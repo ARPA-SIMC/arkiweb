@@ -1,5 +1,5 @@
 /*
- * configfile - configuration file
+ * fields - fields utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,23 +19,29 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#ifndef ARKIWEB_CONFIGFILE_H
-#define ARKIWEB_CONFIGFILE_H
-
-#include <string>
-#include <vector>
+#ifndef ARKIWEB_METADATA_H
+#define ARKIWEB_METADATA_H
 
 #include <arki/configfile.h>
-
-#define ARKIWEB_CONFIG_VAR "ARKIWEB_CONFIG"
+#include <arki/emitter.h>
+#include <arki/matcher.h>
 
 namespace arkiweb {
-std::string configpath();
+namespace fields {
 
-arki::ConfigFile configfile();
+class Printer {
+ public:
+  Printer(const arki::ConfigFile &cfg, arki::Emitter &emitter,
+          const std::string &query);
+  void print();
 
-arki::ConfigFile configfile(const std::vector<std::string> &datasets);
+ private:
+  const arki::ConfigFile m_cfg;
+  arki::Emitter &m_emitter;
+  const arki::Matcher m_matcher;
+};
 
 }
+}
 
-#endif        /* ARKIWEB_CONFIGFILE_H */
+#endif        /* ARKIWEB_METADATA_H */

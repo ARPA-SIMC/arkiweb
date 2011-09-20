@@ -1,5 +1,5 @@
 /*
- * configfile - configuration file
+ * dataset - dataset utilities
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,23 +19,27 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#ifndef ARKIWEB_CONFIGFILE_H
-#define ARKIWEB_CONFIGFILE_H
-
-#include <string>
-#include <vector>
+#ifndef ARKIWEB_DATASET_H
+#define ARKIWEB_DATASET_H
 
 #include <arki/configfile.h>
-
-#define ARKIWEB_CONFIG_VAR "ARKIWEB_CONFIG"
+#include <arki/emitter.h>
 
 namespace arkiweb {
-std::string configpath();
+namespace dataset {
 
-arki::ConfigFile configfile();
-
-arki::ConfigFile configfile(const std::vector<std::string> &datasets);
+class Printer {
+ public:
+  Printer(const arki::ConfigFile &cfg,
+          arki::Emitter &emitter);
+  void print();
+ private:
+  const arki::ConfigFile m_cfg;
+  arki::Emitter &m_emitter;
+  std::set<std::string> m_keys;
+};
 
 }
+}
 
-#endif        /* ARKIWEB_CONFIGFILE_H */
+#endif        /* ARKIWEB_DATASET_H */

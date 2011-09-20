@@ -1,5 +1,5 @@
 /*
- * configfile - configuration file
+ * datasets - web service for datasets
  *
  * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
@@ -19,23 +19,28 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#ifndef ARKIWEB_CONFIGFILE_H
-#define ARKIWEB_CONFIGFILE_H
+#include <iostream>
+#include <arkiweb/cgi.h>
+#include <arkiweb/configfile.h>
+#include <arkiweb/dataset.h>
+#include <arki/emitter/json.h>
 
-#include <string>
-#include <vector>
+int main() {
+  try {
+    arkiweb::cgi::Cgi cgi;
+    arki::ConfigFile cfg = arkiweb::configfile();
+    arki::emitter::JSON emitter(std::cout);
+    arkiweb::dataset::Printer printer(cfg, emitter);
 
-#include <arki/configfile.h>
+    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
+    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
 
-#define ARKIWEB_CONFIG_VAR "ARKIWEB_CONFIG"
+    printer.print();
 
-namespace arkiweb {
-std::string configpath();
+  } catch (const std::exception &e) {
+    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+    std::cerr << e.what() << std::endl;
+  }
 
-arki::ConfigFile configfile();
-
-arki::ConfigFile configfile(const std::vector<std::string> &datasets);
-
+  return 0;
 }
-
-#endif        /* ARKIWEB_CONFIGFILE_H */

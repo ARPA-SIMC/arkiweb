@@ -1,7 +1,11 @@
+/_darcs
+/autoscan.log
+/wibble
 Makefile
 Makefile.in
 aclocal.m4
 .deps
+.libs
 autom4te.cache
 config.guess
 config.h
@@ -17,8 +21,6 @@ libtool
 ltmain.sh
 missing
 stamp-h1
-/wibble
-*.o
-*.lo
 *.la
-.libs
+*.lo
+*.o
