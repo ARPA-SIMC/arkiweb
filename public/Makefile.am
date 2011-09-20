@@ -8,3 +8,5 @@ public_DATA = \
 	      arkiweb.js \
 	      index.html \
 	      jquery.arkiweb.js
+
+EXTRA_DIST = $(public_DATA)
