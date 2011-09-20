@@ -1,25 +1,23 @@
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/embedded/cgicc
+cgidir = $(pkglibdir)
 
-AM_LDFLAGS = -L$(top_builddir)/embedded/cgicc/cgicc
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
-DEVEL_LDADD=$(top_builddir)/arkiweb/libarkiweb.la -lcgicc -larkimet
+LDADD = $(top_builddir)/arkiweb/libarkiweb.la $(top_builddir)/wibble/libwibble.la -larkimet
 
-cgidir = $(libdir)/$(PACKAGE)/cgi-bin
+cgi_PROGRAMS = datasets summary fields data
 
-cgi_PROGRAMS = arkiweb-dataset-list arkiweb-summary arkiweb-extended-summary arkiweb-download
+datasets_SOURCES = datasets.cc
 
-arkiweb_dataset_list_LDADD = $(DEVEL_LDADD)
+datasets_LDADD = $(LDADD)
 
-arkiweb_dataset_list_SOURCES = arkiweb-dataset-list.cc
+summary_SOURCES = summary.cc
 
-arkiweb_summary_LDADD = $(DEVEL_LDADD)
+summary_LDADD = $(LDADD)
 
-arkiweb_summary_SOURCES = arkiweb-summary.cc
+fields_SOURCES = fields.cc
 
-arkiweb_extended_summary_LDADD = $(DEVEL_LDADD)
+fields_LDADD = $(LDADD)
 
-arkiweb_extended_summary_SOURCES = arkiweb-extended-summary.cc
+data_SOURCES = data.cc
 
-arkiweb_download_LDADD = $(DEVEL_LDADD)
-
-arkiweb_download_SOURCES = arkiweb-download.cc
+data_LDADD = $(LDADD)

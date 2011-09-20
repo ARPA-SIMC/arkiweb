@@ -1,0 +1,129 @@
+<script type="text/x-jquery-tmpl" id="arkiweb-tmpl">
+	<div class="arkiweb-datasets-selection">
+		<div class="arkiweb-datasets-selection-header">
+			<h2 class="arkiweb-title">datasets selection</h2>
+			<div class="arkiweb-menu arkiweb-datasets-selection-menu">
+				<button class="arkiweb-datasets-seclection-toggle-allowed">toggle allowed</button>
+				<button class="arkiweb-datasets-selection-clear-selection">clear</button>
+				<button class="arkiweb-datasets-selection-submit-selection">submit</button>
+			</div>
+		</div>
+		<div class="arkiweb-datasets-selection-content">
+			<div class="arkiweb-datasets-selection-list">
+			</div>
+		</div>
+	</div>
+	<div class="arkiweb-map">
+	</div>
+	<div class="arkiweb-fields-selection">
+		<div class="arkiweb-fields-selection-header">
+			<h2 class="arkiweb-title">fields selection</h2>
+			<div class="arkiweb-menu arkiweb-fields-selection-menu">
+				<button class="arkiweb-fields-selection-toggle-query">toggle query/description</button>
+				<button class="arkiweb-fields-selection-clear-selection">clear selection</button>
+				<button class="arkiweb-fields-selection-show-query">show query</button>
+				<button class="arkiweb-fields-selection-submit-selection">summary</button>
+				<button class="arkiweb-fields-selection-download-selection">download</button>
+			</div>
+		</div>
+		<div class="arkiweb-fields-selection-content">
+		</div>
+	</div>
+	<div class="arkiweb-postprocess">
+		<div class="arkiweb-postprocess-header">
+			<h2 class="arkiweb-title">postprocessors</h2>
+		</div>
+		<div class="arkiweb-postprocess-content">
+		</div>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-datasets-selection-item-tmpl">
+	<div allowed="${allowed}">
+		<input type="checkbox"/>
+		<span class="arkiweb-dataset-name">${name}</span>
+		<span class="arkiweb-dataset-description">${description}</span>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-dataset-description-tmpl">
+	<div class="arkiweb-dataset-description-dialog">
+		<p><b>name</b>: ${name}</p>
+		{{if description}}
+		<p><b>description</b>: ${description}</p>
+		{{/if}}
+		{{if postprocess.length > 0}}
+		<p><b>postprocess</b>: ${postprocess.join(",")}</p>
+		{{/if}}
+		{{if bounding}}
+		<p><b>bounding</b>: ${bounding}</p>
+		{{/if}}
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-fields-selection-section-tmpl">
+	<div class="arkiweb-fields-selection-section"><h3>${type}</h3></div>
+	<div class="arkiweb-fields-selection-section-list"></div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-fields-selection-section-item-tmpl">
+	<div>
+		<input type="checkbox">
+		<span class="arkiweb-field-description">${description}</span>
+		<span class="arkiweb-field-query">
+			{{if query}}
+			${query}
+			{{else}}
+			-
+			{{/if}}
+		</span>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-fields-selection-stats-section-tmpl">
+	<div class="arkiweb-fields-selection-section"><h3>stats</h3></div>
+	<div class="arkiweb-fields-selection-section-list">
+		from  <input type="text" name="from"/>
+		until <input type="text" name="until"/>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-summary-tmpl">
+	<div class="arkiweb-summary">
+		<div class="arkiweb-summary-menu">
+			<button class="arkiweb-summary-toggle-query">toggle description/query</button>
+		</div>
+		<div class="arkiweb-summary-content">
+			<div class="arkiweb-summary-stats">
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-summary-stats-tmpl">
+	<div class="arkiweb-summary-section"><h3>stats</h3></div>
+	<div class="arkiweb-summary-section-list">
+		from ${begin.strftime("%Y-%m-%d %H:%M.%S")}
+		until ${end.strftime("%Y-%m-%d %H:%M.%S")}
+		count ${count} size ${size}
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-summary-section-tmpl">
+	<div class="arkiweb-summary-section"><h3>${type}</h3></div>
+	<div class="arkiweb-summary-section-list"></div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-summary-section-item-tmpl">
+	<div>
+		<span class="arkiweb-summary-description">${description}</span>
+		<span class="arkiweb-summary-query">
+			{{if query}}
+			${query}
+			{{else}}
+			-
+			{{/if}}
+		</span>
+	</div>
+</script>
+<script type="text/x-jquery-tmpl" id="arkiweb-postprocessor-tmpl">
+	<div class="arkiweb-postprocessor-item">
+		<div class="arkiweb-postprocessor-item-header">
+			<input type="checkbox" name="arkiweb-postprocess-checkbox"/>
+			<span class="arkiweb-postprocessor-name">${name}</span>
+		</div>
+		<div class="arkiweb-postprocessor-item-content">
+		</div>
+	</div>
+</script>

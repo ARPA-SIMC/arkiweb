@@ -1,0 +1,50 @@
+.arkiweb {
+	font-family: 'Arial', sans-serif;
+	font-size: 0.7em;
+}
+
+.arkiweb-datasets-selection-list *[allowed=false] {
+	color: silver;
+}
+
+.arkiweb-dataset-name {
+	font-weight: bold;
+}	
+
+.arkiweb .error {
+	color: red;
+	font-weight: bold;
+}
+
+.arkiweb .hidden, .arkiweb-summary .hidden {
+	display: none;
+}
+
+.arkiweb .arkiweb-fields-selection-section {
+	border-bottom: 1px solid silver;
+}
+
+.arkiweb .arkiweb-fields-selection-section h3 {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.arkiweb-summary {
+	font-size: 0.7em;
+}
+.arkiweb-dataset-description-dialog {
+	font-size: 0.7em;
+}
+
+.arkiweb-postprocessor-item {
+	border-bottom: 1px solid silver;
+	padding: 0.5em;
+}
+.arkiweb-postprocessor-item-header {
+	margin: 0.2em;
+}
+.arkiweb-postprocessor-name {
+	text-decoration: underline;
+	cursor: pointer;
+	font-weight: bold;
+}
