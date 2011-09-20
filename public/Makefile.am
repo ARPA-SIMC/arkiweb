@@ -1,3 +1,10 @@
 publicdir = $(datarootdir)/$(PACKAGE)/public
 
-public_DATA = arkiweb-parser.js arkiweb.js
+public_DATA = \
+	      ajax-loader.gif \
+	      arkiweb-parser.js \
+	      arkiweb.css \
+	      arkiweb.html \
+	      arkiweb.js \
+	      index.html \
+	      jquery.arkiweb.js
