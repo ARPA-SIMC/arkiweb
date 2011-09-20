@@ -542,7 +542,7 @@
 			});
 			$(this.el).append(tmpl);
 			this.postprocessor.el = $(this.el).find(".arkiweb-postprocessor-item-content");
-			this.checkbox = $(this.el).find("> input[name=arkiweb-postprocess-checkbox]").get(0);
+			this.checkbox = $(this.el).find(" input[name=arkiweb-postprocess-checkbox]").get(0);
 			this.disable();
 			this.postprocessor.render();
 			$(this.el).css('color', this.postprocessor.color);
@@ -769,7 +769,7 @@
 
 			this.options.urls.data = this.options.urls.data || 'data';
 
-			this.options.postprocessors = [ arkiweb.views.postprocessors.Subarea, arkiweb.views.postprocessors.Singlepoint ] || this.options.postprocessors;
+			this.options.postprocessors = this.options.postprocessors || [ arkiweb.views.postprocessors.Subarea, arkiweb.views.postprocessors.Singlepoint ];
 
 		},
 		render: function() {
