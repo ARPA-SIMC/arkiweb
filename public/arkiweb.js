@@ -569,6 +569,9 @@
 			if ((value && !this.isSelected()) || (!value && this.isSelected())) {
 				this.checkbox.click();
 			}
+		},
+		getValue: function() {
+			return this.postprocessor.getValue();
 		}
 	});
 	arkiweb.views.postprocessors = {};
@@ -580,6 +583,9 @@
 		deactivate: function() {
 		},
 		render: function() {
+		},
+		getValue: function() {
+			return null;
 		}
 	});
 	arkiweb.views.postprocessors.Singlepoint = arkiweb.views.AbstractPostprocessor.extend({
@@ -649,6 +655,9 @@
 				x: $(this.el).find("input[name=lat]").val(),
 				y: $(this.el).find("input[name=lon]").val()
 			});
+		},
+		getValue: function() {
+			return "singlepoint " + $(this.el).find("input[name=lat]").val() + " " + $(this.el).find("input[name=lon]").val();
 		}
 	});
 	arkiweb.views.postprocessors.Subarea = arkiweb.views.AbstractPostprocessor.extend({
@@ -722,6 +731,15 @@
 					p.bind('change', this.onChangedSelection, this);
 				}, this);
 			}
+		},
+		getValue: function() {
+			var value = null;
+			_.each(this.postprocessors, function(postprocessor) {
+				if (postprocessor.isSelected()) {
+					value = postprocessor.getValue();
+				}
+			}, this);
+			return value;
 		}
 	});
 	arkiweb.views.Main = Backbone.View.extend({
@@ -819,10 +837,14 @@
 				return view.model.get('id');
 			});
 			var query = this.views.fields.query();
-			return {
-				datasets: datasets,
-				query: query
-			};
+			var postprocess = this.views.postprocessors.getValue();
+			
+			var data = {};
+			if (datasets) data.datasets = datasets;
+			if (query) data.query = query;
+			if (postprocess) data.postprocess = postprocess;
+
+			return data;
 		},
 		loadDatasets: function() {
 			var self = this;
