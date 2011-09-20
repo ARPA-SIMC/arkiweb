@@ -178,6 +178,8 @@
 	arkiweb.views.Map = Backbone.View.extend({
 		initialize: function(options) {
 			this.map = new OpenLayers.Map();
+			this.map.addControl(new OpenLayers.Control.LayerSwitcher());
+			this.map.addControl(new OpenLayers.Control.MousePosition());
 			var layer = new OpenLayers.Layer.WMS("OpenLayers WMS",
 							     "http://vmap0.tiles.osgeo.org/wms/vmap0", {
 								     layers: 'basic'
@@ -511,13 +513,167 @@
 			tmpl.find(".arkiweb-summary-query").addClass("hidden");
 		}
 	});
-
 	arkiweb.views.Error = Backbone.View.extend({
 		initialize: function(options) {
 			this.message = options.message
 		},
 		render: function() {
 			$(this.el).append("<div class='error'>" + this.message + "</div>");
+		}
+	});
+	arkiweb.views.Postprocessor = Backbone.View.extend({
+		tmpl: '#arkiweb-postprocessor-tmpl',
+		events: {
+			'click input[name=arkiweb-postprocess-checkbox]': 'triggerSelection'
+		},
+		initialize: function(options) {
+			var div = $("<div>");
+			$(this.el).append(div);
+			this.postprocessor = new options.postprocessor({
+				map: options.map,
+				datasets: options.datasets
+			});
+			this.name = this.postprocessor.name;
+		},
+		render: function() {
+			var tmpl = $(this.tmpl).tmpl({
+				name: this.postprocessor.name
+			});
+			$(this.el).append(tmpl);
+			this.postprocessor.el = $(this.el).find(".arkiweb-postprocessor-item");
+			this.checkbox = $(this.el).find("> input[name=arkiweb-postprocess-checkbox]").get(0);
+			this.disable();
+			this.postprocessor.render();
+			return this;
+		},
+		disable: function() {
+			$(this.checkbox).attr('checked', false);
+			$(this.checkbox).attr('disabled', true);
+			this.postprocessor.deactivate();
+		},
+		enable: function() {
+			$(this.checkbox).attr('disabled', false);
+		},
+		triggerSelection: function() {
+			this.trigger('change', this);
+			if (this.isSelected()) {
+				this.postprocessor.activate();
+			} else {
+				this.postprocessor.deactivate();
+			}
+		},
+		isSelected: function() {
+			return $(this.checkbox).is(":checked");
+		},
+		setSelection: function(value) {
+			if ((value && !this.isSelected()) || (!value && this.isSelected())) {
+				this.checkbox.click();
+			}
+		}
+	});
+	arkiweb.views.postprocessors = {};
+	arkiweb.views.AbstractPostprocessor = Backbone.View.extend({
+		name: null,
+		activate: function() {
+		},
+		deactivate: function() {
+		},
+		render: function() {
+		}
+	});
+	arkiweb.views.postprocessors.Singlepoint = arkiweb.views.AbstractPostprocessor.extend({
+		initialize: function(options) {
+			var self = this;
+			this.map = options.map.map;
+			this.layer = new OpenLayers.Layer.Vector("singlepoint");
+			this.control = new OpenLayers.Control.DrawFeature(this.layer, OpenLayers.Handler.Point);
+			this.map.addLayer(this.layer);
+			this.map.addControl(this.control);
+		},
+		activate: function() {
+			console.log("activating singlepoint");
+			this.control.activate();
+		},
+		deactivate: function() {
+			console.log("deactivating singlepoint");
+			this.control.deactivate();
+		},
+		name: "singlepoint",
+		render: function() {
+			$(this.el).append("lat <input type='text' name='lat'> lon <input type='text' name='lon'/>");
+		}
+	});
+	arkiweb.views.postprocessors.Subarea = arkiweb.views.AbstractPostprocessor.extend({
+		initialize: function(options) {
+			this.map = options.map.map;
+			this.layer = new OpenLayers.Layer.Vector("subarea");
+			this.control = new OpenLayers.Control.DrawFeature(this.layer, OpenLayers.Handler.RegularPolygon);
+			this.map.addLayer(this.layer);
+			this.map.addControl(this.control);
+		},
+		activate: function() {
+			console.log("activating subarea");
+			this.control.activate();
+		},
+		deactivate: function() {
+			console.log("deactivating subarea");
+			this.control.deactivate();
+		},
+		name: "subarea",
+		render: function() {
+			$(this.el).append("lat <input type='text' name='lat'> lon <input type='text' name='lon'/>");
+		}
+	});
+	arkiweb.views.Postprocessors = Backbone.View.extend({
+		initialize: function(options) {
+			this.map = options.map;
+			this.datasets = options.datasets;
+			this.postprocessors = {};
+			_.each(options.postprocessors, function(postprocessor) {
+				var div = $("<div>");
+				$(this.el).find(".arkiweb-postprocess-content").append(div);
+				var p = new arkiweb.views.Postprocessor({
+					postprocessor: postprocessor,
+					map: this.map,
+					datasets: this.datasets,
+					el: div
+				});
+				this.postprocessors[p.name] = p;
+				p.bind('change', this.onChangedSelection, this);
+			}, this);
+
+			this.datasets.bind('change', this.onDatasetsSelectionChanged, this);
+		},
+		render: function() {
+			_.each(this.postprocessors, function(postprocessor) {
+				postprocessor.render();
+			});
+		},
+		onDatasetsSelectionChanged: function() {
+			var selected = this.datasets.getSelected();
+			var postprocessors = [];
+			_.each(selected, function(s) {
+				postprocessors.push(s.model.get('postprocess'));
+			}, this);
+			postprocessors = _.intersection.apply(null, postprocessors);
+			_.each(this.postprocessors, function(p) {
+				if (_.include(postprocessors, p.name)) {
+					p.enable();
+				} else {
+					p.disable();
+				}
+			});
+		},
+		onChangedSelection: function(view) {
+			if (view.isSelected()) {
+				_.each(this.postprocessors, function(p) {
+					p.unbind('change', this.onChangedSelection);
+					if (p != view) {
+						p.setSelection(false);
+					}
+					p.bind('change', this.onChangedSelection, this);
+				}, this);
+			}
 		}
 	});
 	arkiweb.views.Main = Backbone.View.extend({
@@ -569,6 +725,17 @@
 				collection: this.collections.summary,
 				el: $("<div>")
 			});
+
+			this.views.postprocessors = new arkiweb.views.Postprocessors({
+				map: this.views.map,
+				datasets: this.views.datasets,
+				el: $(this.el).find(".arkiweb-postprocess"),
+				postprocessors: [
+					arkiweb.views.postprocessors.Singlepoint,
+					arkiweb.views.postprocessors.Subarea
+				]
+			});
+			this.views.postprocessors.render();
 
 			this.layouts = {};
 			this.layouts.main = $(this.el).layout({
