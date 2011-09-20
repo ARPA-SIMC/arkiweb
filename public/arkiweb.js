@@ -233,12 +233,15 @@
 			_.each(this.buttons, function(button) {
 				button.attr('disabled', true);
 			});
-			this.buttons.toggleQuery.attr('disabled', false);
-			this.buttons.clear.attr('disabled', false);
+
 		},
 		buttons: {},
 		views: [],
 		render: function() {
+			_.each(this.buttons, function(button) {
+				button.attr('disabled', this.collection.length == 0);
+			}, this);
+
 			this.content.empty();
 			this.views = [];
 
@@ -455,8 +458,17 @@
 				close: function() {
 					$(this).remove()
 				},
-				height: $(document).height() * 2 / 3,
-				width: $(document).width() * 2 / 3
+				height: $(document).height() / 2,
+				width: $(document).width() / 2,
+			});
+			$(this.el).layout({
+				center__applyDefaultStyles: true,
+				center__paneSelector: '.arkiweb-summary'
+			});
+			$(this.el).find(".arkiweb-summary").layout({
+				center__applyDefaultStyles: true,
+				north__paneSelector: '.arkiweb-summary-menu',
+				center__paneSelector: '.arkiweb-summary-content'
 			});
 		},
 		toggleQuery: function() {
