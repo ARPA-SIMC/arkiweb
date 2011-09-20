@@ -649,8 +649,8 @@
 			});
 		},
 		updateInput: function(coords) {
-			$(this.el).find("input[name=lat]").val(coords.x);
-			$(this.el).find("input[name=lon]").val(coords.y).trigger('change');
+			$(this.el).find("input[name=lon]").val(coords.x);
+			$(this.el).find("input[name=lat]").val(coords.y).trigger('change');
 		},
 		updateMap: function(coords) {
 			var feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(coords.x, coords.y));
@@ -659,12 +659,12 @@
 		},
 		onChangeInputCoords: function() {
 			this.updateMap({ 
-				x: $(this.el).find("input[name=lat]").val(),
-				y: $(this.el).find("input[name=lon]").val()
+				x: $(this.el).find("input[name=lon]").val(),
+				y: $(this.el).find("input[name=lat]").val()
 			});
 		},
 		getValue: function() {
-			return "singlepoint " + $(this.el).find("input[name=lat]").val() + " " + $(this.el).find("input[name=lon]").val();
+			return "singlepoint " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
 		}
 	});
 	arkiweb.views.postprocessors.Subarea = arkiweb.views.AbstractPostprocessor.extend({
