@@ -224,7 +224,19 @@
 			this.collection.bind('reset', this.render, this);
 			this.collection.bind('error', this.renderError, this);
 			this.content = $(this.el).find('.arkiweb-fields-selection-content');
+			this.buttons.toggleQuery = $(this.el).find(".arkiweb-fields-selection-menu .arkiweb-fields-selection-toggle-query");
+			this.buttons.showQuery = $(this.el).find(".arkiweb-fields-selection-menu .arkiweb-fields-selection-show-query");
+			this.buttons.clear = $(this.el).find(".arkiweb-fields-selection-menu .arkiweb-fields-selection-clear-selection");
+			this.buttons.submit = $(this.el).find(".arkiweb-fields-selection-menu .arkiweb-fields-selection-submit-selection");
+			this.buttons.download = $(this.el).find(".arkiweb-fields-selection-menu .arkiweb-fields-selection-download-selection");
+
+			_.each(this.buttons, function(button) {
+				button.attr('disabled', true);
+			});
+			this.buttons.toggleQuery.attr('disabled', false);
+			this.buttons.clear.attr('disabled', false);
 		},
+		buttons: {},
 		views: [],
 		render: function() {
 			this.content.empty();
