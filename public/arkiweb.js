@@ -742,6 +742,9 @@
 			this.views = {};
 
 			this.options.urls.data = this.options.urls.data || 'data';
+
+			this.options.postprocessors = [ arkiweb.views.postprocessors.Subarea, arkiweb.views.postprocessors.Singlepoint ] || this.options.postprocessors;
+
 		},
 		render: function() {
 			var tmpl = $(this.tmpl).tmpl();
