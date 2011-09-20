@@ -524,7 +524,8 @@
 	arkiweb.views.Postprocessor = Backbone.View.extend({
 		tmpl: '#arkiweb-postprocessor-tmpl',
 		events: {
-			'click input[name=arkiweb-postprocess-checkbox]': 'triggerSelection'
+			'click input[name=arkiweb-postprocess-checkbox]': 'triggerSelection',
+			'click .arkiweb-postprocessor-name': 'showHelp'
 		},
 		initialize: function(options) {
 			var div = $("<div>");
@@ -540,10 +541,11 @@
 				name: this.postprocessor.name
 			});
 			$(this.el).append(tmpl);
-			this.postprocessor.el = $(this.el).find(".arkiweb-postprocessor-item");
+			this.postprocessor.el = $(this.el).find(".arkiweb-postprocessor-item-content");
 			this.checkbox = $(this.el).find("> input[name=arkiweb-postprocess-checkbox]").get(0);
 			this.disable();
 			this.postprocessor.render();
+			$(this.el).css('color', this.postprocessor.color);
 			return this;
 		},
 		disable: function() {
@@ -572,12 +574,16 @@
 		},
 		getValue: function() {
 			return this.postprocessor.getValue();
+		},
+		showHelp: function() {
+			alert(this.postprocessor.help);
 		}
 	});
 	arkiweb.views.postprocessors = {};
 	arkiweb.views.AbstractPostprocessor = Backbone.View.extend({
 		name: null,
 		color: 'green',
+		help: "-",
 		activate: function() {
 		},
 		deactivate: function() {
@@ -634,6 +640,7 @@
 			this.control.deactivate();
 		},
 		name: "singlepoint",
+		help: "This postprocessor extract a single point of the selection.\nYou can select the point clicking on the map and/or filling the input fields\n",
 		render: function() {
 			$(this.el).append("lat <input type='text' name='lat'> lon <input type='text' name='lon'/>");
 			var self = this;
@@ -668,6 +675,7 @@
 			this.map.addLayer(this.layer);
 			this.map.addControl(this.control);
 		},
+		color: "blue",
 		activate: function() {
 			this.layer.setVisibility(true);
 			this.control.activate();
