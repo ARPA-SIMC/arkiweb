@@ -647,8 +647,8 @@
 			});
 		},
 		downloadData: function() {
-			console.log(this.options.urls.data);
-			console.log(this.getParams());
+			var url = this.options.urls.data + "?" + $.param(this.getParams());
+			window.open(url);
 		},
 		block: function() {
 			var img = "<div><img src='ajax-loader.gif' alt='loading'/></div>";
