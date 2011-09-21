@@ -20,8 +20,6 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <arkiweb/fields.h>
-#include <arki/summary.h>
-#include <arki/summary/stats.h>
 #include <arki/runtime.h>
 #include <arki/formatter.h>
 
@@ -29,20 +27,19 @@ namespace arkiweb {
 namespace fields {
 
 Printer::Printer(const arki::ConfigFile &cfg, arki::Emitter &emitter,
-                 const std::string &query)
-    : m_cfg(cfg), m_emitter(emitter), 
-    m_matcher(arki::Matcher::parse(query)) {}
-
-void Printer::print() {
-  arki::Summary summary;
+                 const std::string &query) : m_cfg(cfg), m_emitter(emitter), m_matcher(arki::Matcher::parse(query)) {
   for (arki::ConfigFile::const_section_iterator i = m_cfg.sectionBegin();
        i != m_cfg.sectionEnd(); ++i) {
     arki::Summary s;
     arki::ReadonlyDataset *ds = arki::ReadonlyDataset::create(*i->second);
     ds->querySummary(m_matcher, s);
-    summary.add(s);
+    m_summary.add(s);
     delete ds;
   }
+}
+
+
+void Printer::print() {
   struct Serialiser : public arki::summary::Visitor {
     const arki::Summary summary;
     arki::Emitter &emitter;
@@ -95,7 +92,7 @@ void Printer::print() {
 
       emitter.end_mapping();
     }
-  } serialiser(summary, m_emitter);
+  } serialiser(m_summary, m_emitter);
   serialiser.serialise();
 }
 
