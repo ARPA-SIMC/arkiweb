@@ -348,6 +348,9 @@
 				values.push(">= " + begin);
 			if (end)
 				values.push("<= " + end);
+			if (begin && end && begin == end) {
+				values = [ "= " + begin ];
+			}
 			if (values.length > 0)
 				query = "reftime: " + values.join(",");
 			return query;
