@@ -25,6 +25,8 @@
 #include <arki/configfile.h>
 #include <arki/emitter.h>
 #include <arki/matcher.h>
+#include <arki/summary.h>
+#include <arki/summary/stats.h>
 
 namespace arkiweb {
 namespace fields {
@@ -39,6 +41,8 @@ class Printer {
   const arki::ConfigFile m_cfg;
   arki::Emitter &m_emitter;
   const arki::Matcher m_matcher;
+
+  arki::Summary m_summary;
 };
 
 }
