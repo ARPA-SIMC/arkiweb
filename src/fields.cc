@@ -20,7 +20,9 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <iostream>
-#include <arkiweb/cgi.h>
+#include <cgicc/Cgicc.h>
+#include <cgicc/HTTPStatusHeader.h>
+#include <cgicc/HTTPContentHeader.h>
 #include <arkiweb/configfile.h>
 #include <arkiweb/fields.h>
 #include <arki/emitter/json.h>
@@ -28,20 +30,27 @@
 int main() {
   try {
     arki::runtime::init();
-    arkiweb::cgi::Cgi cgi;
-    std::vector<std::string> datasets = cgi["datasets[]"];
+    cgicc::Cgicc cgi;
+
+    std::vector<cgicc::FormEntry> forms;
+    cgi.getElement("datasets[]", forms);
+    std::vector<std::string> datasets;
+    for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
+         i != forms.end(); ++i) {
+      datasets.push_back((*i).getValue());
+    }
+    
     std::string query = cgi("query");
     arki::ConfigFile cfg = arkiweb::configfile(datasets);
     arki::emitter::JSON emitter(std::cout);
 
     arkiweb::fields::Printer printer(cfg, emitter, query);
 
-    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
-    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/json") << std::endl;
+    std::cout << cgicc::HTTPContentHeader::HTTPContentHeader("application/json");
 
     printer.print();
   } catch (const std::exception &e) {
-    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+    std::cout << cgicc::HTTPStatusHeader::HTTPStatusHeader(500, "ERROR");
     std::cerr << e.what() << std::endl;
   }
 

@@ -1,4 +1,6 @@
-#include <arkiweb/cgi.h>
+#include <cgicc/Cgicc.h>
+#include <cgicc/HTTPStatusHeader.h>
+#include <cgicc/HTTPContentHeader.h>
 #include <arkiweb/configfile.h>
 #include <arkiweb/restrict.h>
 
@@ -10,11 +12,18 @@ int main(int argc, char **argv) {
   try {
     arki::runtime::init();
 
-    arkiweb::cgi::Cgi cgi;
+    cgicc::Cgicc cgi;
 
     std::string query = cgi("query");
     std::string postprocess = cgi("postprocess");
-    std::vector<std::string> datasets = cgi["datasets[]"];
+
+    std::vector<cgicc::FormEntry> forms;
+    cgi.getElement("datasets[]", forms);
+    std::vector<std::string> datasets;
+    for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
+         i != forms.end(); ++i) {
+      datasets.push_back((*i).getValue());
+    }
 
     arki::ConfigFile cfg = arkiweb::configfile(datasets);
 
@@ -43,8 +52,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    std::cout << arkiweb::cgi::HttpStatusHeader(200, "OK");
-    std::cout << arkiweb::cgi::HttpContentTypeHeader("application/binary") << std::endl;
+    std::cout << cgicc::HTTPContentHeader::HTTPContentHeader("application/binary");
 
     dsp->process(merged, "");
 
@@ -52,7 +60,7 @@ int main(int argc, char **argv) {
 
   } catch (const std::exception &e) {
     std::cerr << e.what();
-    std::cout << arkiweb::cgi::HttpStatusHeader(500, "error") << std::endl;
+    std::cout << cgicc::HTTPStatusHeader::HTTPStatusHeader(500, "ERROR");
   }
   return 0;
 }

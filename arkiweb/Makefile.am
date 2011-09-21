@@ -7,8 +7,6 @@ libarkiweb_la_LIBADD = $(top_builddir)/wibble/libwibble.la -larkimet
 libarkiweb_la_SOURCES = \
 			configfile.cc \
 			configfile.h \
-			cgi.cc \
-			cgi.h \
 			dataset.cc \
 			dataset.h \
 			fields.cc \
