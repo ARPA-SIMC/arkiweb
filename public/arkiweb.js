@@ -57,6 +57,8 @@
 			if (!response.stats.b || !response.stats.e) {
 				this.stats = null
 			} else {
+				response.stats.b[1] -= 1;
+				response.stats.e[1] -= 1;
 				this.stats = {
 					begin: eval("new Date(" + response.stats.b.join(",") + ")"),
 					end: eval("new Date(" + response.stats.e.join(",") + ")"),
@@ -910,19 +912,19 @@
 
 			this.loadDatasets();
 		},
-		getParams: function() {
+		getDatasetsParam: function() {
 			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
 				return view.model.get('id');
 			});
-			var query = this.views.fields.query();
+			return datasets;
+		},
+		getPostprocessParam: function() {
 			var postprocess = this.views.postprocessors.getValue();
-			
-			var data = {};
-			if (datasets) data.datasets = datasets;
-			if (query) data.query = query;
-			if (postprocess) data.postprocess = postprocess;
-
-			return data;
+			return postprocess;
+		},
+		getQueryParam: function() {
+			var query = this.views.fields.query();
+			return query;
 		},
 		loadDatasets: function() {
 			var self = this;
@@ -937,6 +939,12 @@
 		},
 		loadFields: function() {
 			var self = this;
+			var data = {};
+			
+			var datasets = this.getDatasetsParam();
+			if (datasets)
+				data.datasets = datasets;
+
 			this.collections.fields.fetch({
 				beforeSend: function() {
 					self.block();
@@ -944,16 +952,19 @@
 				complete: function() {
 					self.unblock();
 				},
-				data: this.getParams()
-			
+				data: data
 			});
 		},
 		loadSummary: function() {
 			var self = this;
-			var datasets = _.map(this.views.datasets.getSelected(), function(view) {
-				return view.model.get('id');
-			});
-			var query = this.views.fields.query();
+			var data = {};
+			var datasets = this.getDatasetsParam();
+			if (datasets)
+				data.datasets = datasets;
+			var query = this.getQueryParam();
+			if (query)
+				data.query = query;
+
 			this.collections.summary.fetch({
 				beforeSend: function() {
 					self.block();
@@ -961,11 +972,22 @@
 				complete: function() {
 					self.unblock();
 				},
-				data: this.getParams()
+				data: data
 			});
 		},
 		downloadData: function() {
-			var url = this.options.urls.data + "?" + $.param(this.getParams());
+			var data = {};
+			var datasets = this.getDatasetsParam();
+			if (datasets)
+				data.datasets = datasets;
+			var query = this.getQueryParam();
+			if (query)
+				data.query = query;
+			var postprocess = this.getPostprocessParam();
+			if (postprocess)
+				data.postprocess = postprocess;
+
+			var url = this.options.urls.data + "?" + $.param(data);
 			window.open(url);
 		},
 		block: function() {
