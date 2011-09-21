@@ -334,9 +334,23 @@
 			$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
 		},
 		query: function() {
-			var begin = $(this.el).find("input[name=from]").val();
-			var end = $(this.el).find("input[name=until]").val();
-			return 'reftime: >= ' + begin + ", <= " + end;
+			var from = null;
+			var until = null;
+			var query = null;
+			var values = [];
+			if ($(this.el).find("input[name=arkiweb-reftime-from]").is(':checked')) {
+				var begin = $(this.el).find("input[name=from]").val();
+			}
+			if ($(this.el).find("input[name=arkiweb-reftime-until]").is(':checked')) {
+				var end = $(this.el).find("input[name=until]").val();
+			}
+			if (begin)
+				values.push(">= " + begin);
+			if (end)
+				values.push("<= " + end);
+			if (values.length > 0)
+				query = "reftime: " + values.join(",");
+			return query;
 		},
 		toggleQuery: function() {}
 	});
