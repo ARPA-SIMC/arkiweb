@@ -20,6 +20,8 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <arkiweb/dataset.h>
+#include <arkiweb/restrict.h>
+#include <arki/runtime.h>
 
 #include <wibble/regexp.h>
 
@@ -39,6 +41,8 @@ Printer::Printer(const arki::ConfigFile &cfg,
 
 void Printer::print() {
   using arki::ConfigFile;
+
+  arki::runtime::Restrict restr(arkiweb::restriction());
   
   m_emitter.start_list();
   for (ConfigFile::const_section_iterator i = m_cfg.sectionBegin();
@@ -51,7 +55,7 @@ void Printer::print() {
       m_emitter.add(*j);
       /* restriction */
       if (*j == "allowed") {
-        m_emitter.add(ConfigFile::boolValue(value, false));
+        m_emitter.add(restr.is_allowed(*i->second));
         continue;
       }
       /* postprocess */
