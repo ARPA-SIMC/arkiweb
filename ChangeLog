@@ -3,6 +3,7 @@
 	* public/arkiweb.js: hide stats when the response doesn't contain "b"
 	or "e" key.
 	* arkiweb/dataset.cc: "allowed" property now works
+	* public/arkiweb.js: reftime checkboxes
 2011-09-05 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: check for arkimet headers
 	* httpd/arkiweb.site: apache configuration
