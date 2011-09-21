@@ -330,6 +330,12 @@
 			$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
 		},
 		clearSelection: function() {
+			if ($(this.el).find("input[name=arkiweb-reftime-from]").is(':checked')) {
+				$(this.el).find("input[name=arkiweb-reftime-from]").click();
+			}
+			if ($(this.el).find("input[name=arkiweb-reftime-until]").is(':checked')) {
+				$(this.el).find("input[name=arkiweb-reftime-until]").click();
+			}
 			$(this.el).find("input[name=from]").datetimepicker('setDate', this.model.stats.begin);
 			$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
 		},
