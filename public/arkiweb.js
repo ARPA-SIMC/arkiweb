@@ -54,12 +54,16 @@
 		model: arkiweb.models.Field,
 		url: 'fields',
 		parse: function(response) {
-			this.stats = {
-				begin: eval("new Date(" + response.stats.b.join(",") + ")"),
-				end: eval("new Date(" + response.stats.e.join(",") + ")"),
-				count: response.stats.c,
-				size: response.stats.s
-			};
+			if (!response.stats.b || response.stats.e) {
+				this.stats = null
+			} else {
+				this.stats = {
+					begin: eval("new Date(" + response.stats.b.join(",") + ")"),
+					end: eval("new Date(" + response.stats.e.join(",") + ")"),
+					count: response.stats.c,
+					size: response.stats.s
+				};
+			}
 			return response.fields;
 		}
 	});
@@ -249,12 +253,14 @@
 
 			var div = $("<div>");
 			this.content.append(div);
-			var view = new arkiweb.views.FieldsSelectionStatsSection({
-				model: this.collection,
-				el: div
-			});
-			view.render();
-			this.views.push(view);
+			if (this.collection.stats) {
+				var view = new arkiweb.views.FieldsSelectionStatsSection({
+					model: this.collection,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}
 
 			this.collection.each(function(model) {
 				var div = $("<div>");
