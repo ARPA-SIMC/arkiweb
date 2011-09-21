@@ -1,4 +1,5 @@
 * Javascript: error handler in summary view
-* Empty fields when datasets selection changes
-* Message in fields pane when is empty
-* Help in every pane
+* Javascript: empty fields when datasets selection changes
+* Javascript: message in fields pane when is empty
+* Javascript: help in every pane
+* Javascript: better datetimepicker style
