@@ -79,9 +79,11 @@ Cgi::entries_map Cgi::entries() const {
 }
 
 void Cgi::parseQueryString() {
-  char *query = ::getenv("QUERY_STRING");
-  if (!query)
+  char *s = ::getenv("QUERY_STRING");
+  if (!s)
     return;
+  std::string query = wibble::str::urldecode(s);
+  std::cerr << "QUERY_STRING: " << query << std::endl;
   using wibble::Splitter;
   Splitter spl1("&", REG_EXTENDED);
   for (Splitter::const_iterator i1 = spl1.begin(query);
