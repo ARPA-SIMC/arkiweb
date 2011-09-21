@@ -30,12 +30,6 @@ AC_CHECK_HEADERS([sys/time.h sys/utsname.h])
 dnl Determine host system type
 AC_DEFINE_UNQUOTED(HOST, "$host", [The host system cgicc was configured for])
 
-dnl verify namespace support
-AC_CXX_NAMESPACES
-
-dnl verify STL support
-AC_CXX_HAVE_STL
-
 dnl Enable maximum compiler warnings for g++
 AC_MSG_CHECKING(maximum C++ compiler warning level)
 if test "$GXX" = yes; then

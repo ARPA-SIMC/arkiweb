@@ -13,17 +13,11 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
-/* define if the compiler implements namespaces */
-#define HAVE_NAMESPACES /**/
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
-
-/* define if the compiler supports Standard Template Library */
-#define HAVE_STL /**/
 
 /* Define to 1 if you have the <strings.h> header file. */
 #define HAVE_STRINGS_H 1
@@ -50,7 +44,7 @@
 #define HAVE_UNISTD_H 1
 
 /* The host system cgicc was configured for */
-#define HOST "x86_64-unknown-linux-gnu"
+#define HOST "i686-pc-linux-gnu"
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -70,9 +64,6 @@
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "cgicc"
-
-/* Define to the home page for this package. */
-#define PACKAGE_URL ""
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "3.2.9"
