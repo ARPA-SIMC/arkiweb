@@ -25,9 +25,12 @@
 
 namespace arkiweb {
 std::string restriction() {
-  char *s = ::getenv(ARKIWEB_RESTRICT_VAR);
-  if (!s)
+  char *x = ::getenv(ARKIWEB_RESTRICT_VAR);
+  if (!x)
     return "";
-  return std::string(s);
+  char *y = ::getenv(x);
+  if (!y)
+    return "";
+  return std::string(y);
 }
 }
