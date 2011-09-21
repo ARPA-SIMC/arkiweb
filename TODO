@@ -1,2 +1,4 @@
 * Javascript: error handler in summary view
 * Empty fields when datasets selection changes
+* Message in fields pane when is empty
+* Help in every pane
