@@ -54,7 +54,7 @@
 		model: arkiweb.models.Field,
 		url: 'fields',
 		parse: function(response) {
-			if (!response.stats.b || response.stats.e) {
+			if (!response.stats.b || !response.stats.e) {
 				this.stats = null
 			} else {
 				this.stats = {
