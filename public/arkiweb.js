@@ -459,13 +459,15 @@
 			var tmpl = $(this.tmpl).tmpl();
 			this.el.append(tmpl);
 
-			var div = $(this.el).find(".arkiweb-summary-stats");
-			var view = new arkiweb.views.SummaryStats({
-				model: this.collection,
-				el: div
-			});
-			view.render();
-			this.views.push(view);
+			if (this.collection.stats) {
+				var div = $(this.el).find(".arkiweb-summary-stats");
+				var view = new arkiweb.views.SummaryStats({
+					model: this.collection,
+					el: div
+				});
+				view.render();
+				this.views.push(view);
+			}
 
 			this.collection.each(function(model) {
 				var div = $("<div>");
