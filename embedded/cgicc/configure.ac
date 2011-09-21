@@ -30,13 +30,6 @@ AC_CHECK_HEADERS([sys/time.h sys/utsname.h])
 dnl Determine host system type
 AC_DEFINE_UNQUOTED(HOST, "$host", [The host system cgicc was configured for])
 
-dnl Check whether we're using aCC
-CGICC_CHECK_ACC
-if test "$cgicc_cv_acc" = yes; then
-  CXXFLAGS="-AA $CXXFLAGS"
-  DEMO_LIBS="-lstd_v2 -lCsup_v2"
-fi
-
 dnl verify namespace support
 AC_CXX_NAMESPACES
 
