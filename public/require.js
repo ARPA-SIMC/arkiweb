@@ -10,6 +10,8 @@ var arkiweb = {
 	routers: {},
 };
 
+//= require "arkiweb-parser"
+
 //= require "models/dataset"
 //= require "models/field-value"
 //= require "models/field"

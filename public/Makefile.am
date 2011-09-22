@@ -39,7 +39,7 @@ public_DATA = \
 
 doc_DATA = docs/arkiweb.html
 
-arkiweb.js: $(JSFILES)
+arkiweb.js: $(JSFILES) require.js
 	./yoke.js require.js > $@
 
 arkiweb.min.js: arkiweb.js
