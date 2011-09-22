@@ -37,10 +37,15 @@ public_DATA = \
 	      jquery.arkiweb.js \
 	      arkiweb.min.js
 
+doc_DATA = arkiweb.html
+
 arkiweb.js: $(JSFILES)
 	./yoke.js require.js > $@
 
 arkiweb.min.js: arkiweb.js
 	yui-compressor $< > $@
 
-EXTRA_DIST = $(public_DATA) $(JSFILES) require.js
+arkiweb.html: arkiweb.js
+	docco $< > $@
+
+EXTRA_DIST = $(public_DATA) $(JSFILES) require.js $(doc_DATA)
