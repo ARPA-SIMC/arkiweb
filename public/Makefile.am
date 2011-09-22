@@ -36,8 +36,6 @@ public_DATA = \
 	      index.html \
 	      jquery.arkiweb.js
 
-doc_DATA = docs/arkiweb.html
-
 arkiweb.js: $(JSFILES) require.js
 	./yoke.js require.js > $@
 
