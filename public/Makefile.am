@@ -1,42 +1,51 @@
 publicdir = $(datarootdir)/$(PACKAGE)/public
 
-JSFILES =  \
-	   models/dataset.js \
-	   models/field.js \
-	   models/field-value.js \
-	   collections/datasets.js \
-	   collections/fields.js \
-	   collections/field-values.js \
-	   views/summary-stats.js \
-	   views/fields-selection-section.js \
-	   views/error.js \
-	   views/postprocessors.js \
-	   views/datasets-selection-item.js \
-	   views/summary.js \
-	   views/summary-section-item.js \
-	   views/postprocessor.js \
-	   views/map.js \
-	   views/main.js \
-	   views/fields-selection-section-item.js \
-	   views/abstract-postprocessor.js \
-	   views/fields-selection-stats-section.js \
-	   views/fields-selection.js \
-	   views/datasets-selection.js \
-	   views/postprocessors/singlepoint.js \
-	   views/postprocessors/subarea.js \
-	   views/summary-section.js \
-	   routers/router.js
+JS_FILES = \
+	   javascript/arkiweb.js \
+	   javascript/parser.js \
+	   javascript/models/dataset.js \
+	   javascript/models/field.js \
+	   javascript/models/field-value.js \
+	   javascript/collections/datasets.js \
+	   javascript/collections/fields.js \
+	   javascript/collections/field-values.js \
+	   javascript/views/summary-stats.js \
+	   javascript/views/fields-selection-section.js \
+	   javascript/views/error.js \
+	   javascript/views/postprocessors.js \
+	   javascript/views/datasets-selection-item.js \
+	   javascript/views/summary.js \
+	   javascript/views/summary-section-item.js \
+	   javascript/views/postprocessor.js \
+	   javascript/views/map.js \
+	   javascript/views/main.js \
+	   javascript/views/fields-selection-section-item.js \
+	   javascript/views/abstract-postprocessor.js \
+	   javascript/views/fields-selection-stats-section.js \
+	   javascript/views/fields-selection.js \
+	   javascript/views/datasets-selection.js \
+	   javascript/views/postprocessors/singlepoint.js \
+	   javascript/views/postprocessors/subarea.js \
+	   javascript/views/summary-section.js \
+	   javascript/routers/router.js
+
+CSS_FILES = stylesheets/arkiweb.css
+
+IMG_FILES = images/ajax-loader.gif
 
 public_DATA = \
-	      ajax-loader.gif \
-	      arkiweb-parser.js \
-	      arkiweb.css \
+	      images/ajax-loader.gif \
+	      stylesheets/arkiweb.css \
 	      arkiweb.html \
 	      arkiweb.js \
+	      arkiweb.min.js \
 	      index.html \
-	      jquery.arkiweb.js
+	      javascript/jquery.arkiweb.js
 
-arkiweb.js: $(JSFILES) require.js
-	./yoke.js require.js > $@
+arkiweb.js: javascript/arkiweb.js $(JS_FILES)
+	./yoke.js $< > $@
 
-EXTRA_DIST = $(public_DATA) $(JSFILES) require.js $(doc_DATA)
+arkiweb.min.js: arkiweb.js
+	yui-compressor $< > $@
+
+EXTRA_DIST = $(JS_FILES) $(CSS_FILES) $(IMG_FILES) arkiweb.js arkiweb.min.js

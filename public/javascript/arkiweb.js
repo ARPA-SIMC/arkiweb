@@ -1,16 +1,16 @@
 // Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 
 (function() {
-var arkiweb = {
-	models: {},
-	collections: {},
-	views: {
-		postprocessors: {}
-	},
-	routers: {},
-};
+	var arkiweb = {
+		models: {},
+		collections: {},
+		views: {
+			postprocessors: {}
+		},
+		routers: {},
+	};
 
-//= require "arkiweb-parser"
+//= require "parser"
 
 //= require "models/dataset"
 //= require "models/field-value"

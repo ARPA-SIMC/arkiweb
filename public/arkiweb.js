@@ -1,14 +1,14 @@
 // Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 
 (function() {
-var arkiweb = {
-	models: {},
-	collections: {},
-	views: {
-		postprocessors: {}
-	},
-	routers: {},
-};
+	var arkiweb = {
+		models: {},
+		collections: {},
+		views: {
+			postprocessors: {}
+		},
+		routers: {},
+	};
 var ArkiwebParser = {
 	area: {
 		decode: function(a) {
@@ -420,13 +420,14 @@ arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		return this;
 	},
 	renderError: function(model, error) {
+		var message = "Error while loading datasets: " + error.statusText;
 		var view = new arkiweb.views.Error({ 
 			el: $(this.content),
-			message: "Error while loading datasets: " + error.statusText
+			message: message
 		});
-	view.render();
-	this.views.push(view);
-	return this;
+		view.render();
+		this.views.push(view);
+		return this;
 	},
 	notifyChange: function(view) {
 		this.buttons.submit.attr('disabled', this.getSelected().length == 0);

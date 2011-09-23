@@ -42,13 +42,14 @@ arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		return this;
 	},
 	renderError: function(model, error) {
+		var message = "Error while loading datasets: " + error.statusText;
 		var view = new arkiweb.views.Error({ 
 			el: $(this.content),
-			message: "Error while loading datasets: " + error.statusText
+			message: message
 		});
-	view.render();
-	this.views.push(view);
-	return this;
+		view.render();
+		this.views.push(view);
+		return this;
 	},
 	notifyChange: function(view) {
 		this.buttons.submit.attr('disabled', this.getSelected().length == 0);
