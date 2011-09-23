@@ -1,6 +1,12 @@
 arkiweb.collections.Fields = Backbone.Collection.extend({
 	model: arkiweb.models.Field,
 	url: 'fields',
+	initialize: function() {
+		this.bind('reset', function() {
+			if (this.models.length == 0)
+				this.stats = null;
+		}, this);
+	},
 	parse: function(response) {
 		if (!response.stats.b || !response.stats.e) {
 			this.stats = null

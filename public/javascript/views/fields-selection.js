@@ -28,7 +28,11 @@ arkiweb.views.FieldsSelection = Backbone.View.extend({
 			button.attr('disabled', this.collection.length == 0);
 		}, this);
 
-		this.content.empty();
+		_.each(this.views, function(view) {
+			if (view.destroy)
+				view.destroy();
+		});
+		$(this.content).empty();
 		this.views = [];
 
 		var div = $("<div>");
