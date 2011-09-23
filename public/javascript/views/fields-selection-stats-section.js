@@ -4,14 +4,16 @@ arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
 		//var tmpl = $(this.tmpl).tmpl(this.model.stats);
 		var tmpl = arkiweb.templates["fields-selection-stats-section"](this.model.stats);
 		$(this.el).append(tmpl);
-		$(this.el).find("input").datetimepicker({
+		$(this.el).find("input[name=from], input[name=until]").datetimepicker({
 			minDate: this.model.stats.begin,
 			maxDate: this.model.stats.end,
 			timeFormat: 'hh:mm:ss',
 			dateFormat: 'yy-mm-dd'
 		});
 		$(this.el).find("input[name=from]").datetimepicker('setDate', this.model.stats.begin);
-		$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end);
+		$(this.el).find("input[name=until]").datetimepicker('setDate', this.model.stats.end).datetimepicker('show');
+		// A third datetimepicker is shown (maybe a bug) - so i disable it:
+		$(this.el).find("input[name=until]").datetimepicker('show').datetimepicker('hide');
 	},
 	clearSelection: function() {
 		if ($(this.el).find("input[name=arkiweb-reftime-from]").is(':checked')) {
