@@ -67,6 +67,8 @@ arkiweb.views.Main = Backbone.View.extend({
 		this.views.postprocessors.render();
 
 		this.layouts = {};
+
+		var self = this;
 		this.layouts.main = $(this.el).layout({
 			applyDefaultStyles: true,
 			west__paneSelector: '.arkiweb-datasets-selection',
@@ -75,7 +77,11 @@ arkiweb.views.Main = Backbone.View.extend({
 			south__paneSelector: '.arkiweb-postprocess',
 			south__size: '40%',
 			west__size: '33%',
-			east__size: '33%'
+			east__size: '33%',
+			onresize_end: function() {
+				console.log("ciccio");
+				self.views.map.map.updateSize();
+			}
 		});
 		this.layouts.datasets = $(this.views.datasets.el).layout({
 			center__applyDefaultStyles: true,
