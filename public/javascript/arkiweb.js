@@ -1,14 +1,15 @@
 // Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 
 (function() {
-	var arkiweb = {
+	this.arkiweb || (this.arkiweb = {
 		models: {},
 		collections: {},
 		views: {
 			postprocessors: {}
 		},
 		routers: {},
-	};
+		templates: {}
+	});
 
 //= require "parser"
 
@@ -39,8 +40,20 @@
 //= require "views/postprocessors"
 //= require "views/main"
 
+//= require "templates/main"
+//= require "templates/datasets-selection-item"
+//= require "templates/dataset-description"
+//= require "templates/fields-selection-section"
+//= require "templates/fields-selection-section-item"
+//= require "templates/fields-selection-stats-section"
+//= require "templates/summary"
+//= require "templates/summary-stats"
+//= require "templates/summary-section"
+//= require "templates/summary-section-item"
+//= require "templates/postprocessor"
+
 //= require "routers/router"
 
-window.arkiweb = arkiweb
+//window.arkiweb = arkiweb
 
-}());
+}(this));

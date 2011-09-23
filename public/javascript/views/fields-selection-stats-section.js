@@ -1,7 +1,8 @@
 arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
-	tmpl: '#arkiweb-fields-selection-stats-section-tmpl',
+	//tmpl: '#arkiweb-fields-selection-stats-section-tmpl',
 	render: function() {
-		var tmpl = $(this.tmpl).tmpl(this.model.stats);
+		//var tmpl = $(this.tmpl).tmpl(this.model.stats);
+		var tmpl = arkiweb.templates["fields-selection-stats-section"](this.model.stats);
 		$(this.el).append(tmpl);
 		$(this.el).find("input").datetimepicker({
 			minDate: this.model.stats.begin,

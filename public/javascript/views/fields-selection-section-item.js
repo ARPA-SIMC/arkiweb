@@ -1,19 +1,19 @@
 arkiweb.views.FieldsSelectionSectionItem = Backbone.View.extend({
-	tmpl: '#arkiweb-fields-selection-section-item-tmpl',
+	//tmpl: '#arkiweb-fields-selection-section-item-tmpl',
 	render: function() {
 		var description = this.model.get('value').desc;
 		var query = this.model.query;
-		var tmpl = $(this.tmpl).tmpl({
+		var tmpl = arkiweb.templates["fields-selection-section-item"]({
 			description: this.model.get('value').desc,
 			query: this.model.query
 		});
 		$(this.el).append(tmpl);
 
 		if (!this.model.query) {
-			tmpl.find("input").attr('disabled', true);
+			$(this.el).find("input").attr('disabled', true);
 		}
 
-		tmpl.find('.arkiweb-field-query').addClass("hidden");
+		$(this.el).find('.arkiweb-field-query').addClass("hidden");
 	},
 	isSelected: function() {
 		return $(this.el).find("input").is(":checked");

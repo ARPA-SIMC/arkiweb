@@ -1,7 +1,8 @@
 arkiweb.views.SummarySection = Backbone.View.extend({
-	tmpl: '#arkiweb-summary-section-tmpl',
+	//tmpl: '#arkiweb-summary-section-tmpl',
 	render: function() {
-		var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+		//var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+		var tmpl = arkiweb.templates["summary-section"](this.model.toJSON());
 		$(this.el).append(tmpl);
 		this.views = [];
 		this.model.collection.each(function(model) {

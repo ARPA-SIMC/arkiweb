@@ -3,9 +3,9 @@ arkiweb.views.DatasetsSelectionItem = Backbone.View.extend({
 		'click .arkiweb-dataset-name': 'showDataset',
 		'click input:checkbox': 'notifyChange'
 	},
-	tmpl: "#arkiweb-datasets-selection-item-tmpl",
 	render: function() {
-		var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+		var tmpl = arkiweb.templates["datasets-selection-item"](this.model.toJSON());
+		//var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
 		$(this.el).append(tmpl);
 		this.checkbox = $(this.el).find("input:checkbox").get(0);
 		return this;
@@ -23,10 +23,8 @@ arkiweb.views.DatasetsSelectionItem = Backbone.View.extend({
 		return this;
 	},
 	showDataset: function() {
-		var div = $("<div>");
-		var tmpl = $("#arkiweb-dataset-description-tmpl").tmpl(this.model.toJSON());
-		div.append(tmpl);
-		div.dialog({
+		var tmpl = arkiweb.templates["dataset-description"](this.model.toJSON());
+		$("<div>").append($(tmpl)).dialog({
 			title: this.model.name,
 			autoOpen: true,
 			modal: true,

@@ -1,0 +1,12 @@
+<div class="arkiweb-dataset-description-dialog">
+	<p><b>name</b>: <%= @name %></p>
+	<% if @description: %>
+		<p><b>description</b>: <%= @description %></p>
+	<% end %>
+	<% if @postprocess.length > 0 :%>
+		<p><b>postprocess</b>: <%= @postprocess.join(",") %></p>
+	<% end %>
+	<% if @bounding: %>
+		<p><b>bounding</b>: <%= @bounding %></p>
+	<% end %>
+</div>

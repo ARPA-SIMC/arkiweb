@@ -1,0 +1,7 @@
+<div class="arkiweb-summary-section"><h3>stats</h3></div>
+<div class="arkiweb-summary-section-list">
+	from <%= @begin.strftime("%Y-%m-%d %H:%M.%S") %>
+	until <%= @end.strftime("%Y-%m-%d %H:%M.%S") %>
+	count <%= @count %>
+	size <%= @size %>
+</div>
