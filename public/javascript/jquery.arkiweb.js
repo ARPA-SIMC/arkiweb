@@ -9,6 +9,7 @@
 			}
 			settings.el = $(this);
 			var router = new arkiweb.routers.Router(settings);
+			$(this).data('arkiweb', router);
 			Backbone.history.start();
 		});
 	};
