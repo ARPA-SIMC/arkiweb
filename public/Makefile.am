@@ -61,4 +61,4 @@ arkiweb.min.js: arkiweb.js
 .eco.js:
 	eco $< -i arkiweb.templates
 
-EXTRA_DIST = $(JS_FILES) $(CSS_FILES) $(IMG_FILES) arkiweb.js arkiweb.min.js
+EXTRA_DIST = $(JS_FILES) $(CSS_FILES) $(IMG_FILES) arkiweb.js arkiweb.min.js index.html javascript/jquery.arkiweb.js
