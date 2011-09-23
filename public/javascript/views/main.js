@@ -1,5 +1,4 @@
 arkiweb.views.Main = Backbone.View.extend({
-	//tmpl: "#arkiweb-tmpl",
 	initialize: function(options) {
 		this.options = options;
 		this.collections = {};
@@ -21,7 +20,6 @@ arkiweb.views.Main = Backbone.View.extend({
 
 	},
 	render: function() {
-		//var tmpl = $(this.tmpl).tmpl();
 		var tmpl = arkiweb.templates["main"]();
 		$(this.el).append(tmpl);
 		$(this.el).addClass("arkiweb");
