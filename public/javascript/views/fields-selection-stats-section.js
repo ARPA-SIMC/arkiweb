@@ -47,6 +47,10 @@ arkiweb.views.FieldsSelectionStatsSection = Backbone.View.extend({
 			query = "reftime: " + values.join(",");
 		return query;
 	},
-	toggleQuery: function() {}
+	toggleQuery: function() {},
+	destroy: function() {
+		$(this.el).find("input[name=from]").datetimepicker('destroy');
+		$(this.el).find("input[name=until]").datetimepicker('destroy');
+	}
 });
 

@@ -31,6 +31,11 @@ arkiweb.views.Main = Backbone.View.extend({
 		});
 
 		this.views.datasets.bind('submit', this.loadFields, this);
+		// When the datasets selection changes,
+		// this view resets the fields selection
+		this.views.datasets.bind('change', function() {
+			this.collections.fields.reset();
+		}, this);
 
 		this.views.map = new arkiweb.views.Map({
 			view: this.views.datasets,
