@@ -1,5 +1,5 @@
 arkiweb.views.Summary = Backbone.View.extend({
-	tmpl: '#arkiweb-summary-tmpl',
+	//tmpl: '#arkiweb-summary-tmpl',
 	events: {
 		'click button': 'toggleQuery'
 	},
@@ -10,7 +10,8 @@ arkiweb.views.Summary = Backbone.View.extend({
 		this.el.empty();
 		this.views = [];
 
-		var tmpl = $(this.tmpl).tmpl();
+		//var tmpl = $(this.tmpl).tmpl();
+		var tmpl = arkiweb.templates["summary"]();
 		this.el.append(tmpl);
 
 		if (this.collection.stats) {
@@ -25,7 +26,7 @@ arkiweb.views.Summary = Backbone.View.extend({
 
 		this.collection.each(function(model) {
 			var div = $("<div>");
-			tmpl.find(".arkiweb-summary-content").append(div);
+			$(this.el).find(".arkiweb-summary-content").append(div);
 			var view = new arkiweb.views.SummarySection({
 				model: model,
 				el: div

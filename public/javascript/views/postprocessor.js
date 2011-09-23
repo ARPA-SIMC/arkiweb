@@ -1,5 +1,5 @@
 arkiweb.views.Postprocessor = Backbone.View.extend({
-	tmpl: '#arkiweb-postprocessor-tmpl',
+	//tmpl: '#arkiweb-postprocessor-tmpl',
 	events: {
 		'click input[name=arkiweb-postprocess-checkbox]': 'triggerSelection',
 		'click .arkiweb-postprocessor-name': 'showHelp'
@@ -14,7 +14,8 @@ arkiweb.views.Postprocessor = Backbone.View.extend({
 		this.name = this.postprocessor.name;
 	},
 	render: function() {
-		var tmpl = $(this.tmpl).tmpl({
+		//var tmpl = $(this.tmpl).tmpl({
+		var tmpl = arkiweb.templates["postprocessor"]({
 			name: this.postprocessor.name
 		});
 		$(this.el).append(tmpl);

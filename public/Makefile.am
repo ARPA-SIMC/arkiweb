@@ -27,7 +27,18 @@ JS_FILES = \
 	   javascript/views/postprocessors/singlepoint.js \
 	   javascript/views/postprocessors/subarea.js \
 	   javascript/views/summary-section.js \
-	   javascript/routers/router.js
+	   javascript/routers/router.js \
+	   javascript/templates/main.js \
+	   javascript/templates/datasets-selection-item.js \
+	   javascript/templates/dataset-description.js \
+	   javascript/templates/fields-selection-section.js \
+	   javascript/templates/fields-selection-section-item.js \
+	   javascript/templates/fields-selection-stats-section.js \
+	   javascript/templates/summary.js \
+	   javascript/templates/summary-stats.js \
+	   javascript/templates/summary-section.js \
+	   javascript/templates/summary-section-item.js \
+	   javascript/templates/postprocessor.js
 
 CSS_FILES = stylesheets/arkiweb.css
 
@@ -36,7 +47,6 @@ IMG_FILES = images/ajax-loader.gif
 public_DATA = \
 	      images/ajax-loader.gif \
 	      stylesheets/arkiweb.css \
-	      arkiweb.html \
 	      arkiweb.js \
 	      arkiweb.min.js \
 	      index.html \
@@ -47,5 +57,8 @@ arkiweb.js: javascript/arkiweb.js $(JS_FILES)
 
 arkiweb.min.js: arkiweb.js
 	yui-compressor $< > $@
+
+.eco.js:
+	eco $< -i arkiweb.templates
 
 EXTRA_DIST = $(JS_FILES) $(CSS_FILES) $(IMG_FILES) arkiweb.js arkiweb.min.js

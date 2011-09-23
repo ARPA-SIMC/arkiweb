@@ -1,11 +1,12 @@
 arkiweb.views.FieldsSelectionSection = Backbone.View.extend({
-	tmpl: '#arkiweb-fields-selection-section-tmpl',
+	//tmpl: '#arkiweb-fields-selection-section-tmpl',
 	events: {
 		'click h3': 'toggleSection'
 	},
 	views: [],
 	render: function() {
-		var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+		//var tmpl = $(this.tmpl).tmpl(this.model.toJSON());
+		var tmpl = arkiweb.templates["fields-selection-section"](this.model.toJSON());
 		$(this.el).append(tmpl);
 		$(this.el).find(".arkiweb-fields-selection-section-list").addClass("hidden");
 		this.views = [];

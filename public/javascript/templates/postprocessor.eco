@@ -1,0 +1,8 @@
+<div class="arkiweb-postprocessor-item">
+	<div class="arkiweb-postprocessor-item-header">
+		<input type="checkbox" name="arkiweb-postprocess-checkbox"/>
+		<span class="arkiweb-postprocessor-name"><%= @name %></span>
+	</div>
+	<div class="arkiweb-postprocessor-item-content">
+	</div>
+</div>

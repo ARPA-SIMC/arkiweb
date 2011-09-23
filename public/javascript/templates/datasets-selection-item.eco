@@ -1,0 +1,9 @@
+<div allowed="<%= @allowed %>">
+	<input type="checkbox"/>
+	<span class="arkiweb-dataset-name">
+		<%= @name %>
+	</span>
+	<span class="arkiweb-dataset-description">
+		<%= @description %>
+	</span>
+</div>
