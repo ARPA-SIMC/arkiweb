@@ -1,6 +1,7 @@
 /_darcs
 /autoscan.log
 /wibble
+/cgicc
 Makefile
 Makefile.in
 aclocal.m4

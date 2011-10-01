@@ -1,1 +1,1 @@
-SUBDIRS = embedded/cgicc wibble arkiweb src httpd public
+SUBDIRS = cgicc wibble arkiweb src httpd public
