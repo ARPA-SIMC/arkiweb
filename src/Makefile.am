@@ -1,8 +1,8 @@
 cgidir = $(pkglibdir)
 
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/embedded/cgicc
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/cgicc
 
-LDADD = $(top_builddir)/arkiweb/libarkiweb.la $(top_builddir)/wibble/libwibble.la $(top_builddir)/embedded/cgicc/cgicc/libcgicc.la -larkimet
+LDADD = $(top_builddir)/arkiweb/libarkiweb.la $(top_builddir)/wibble/libwibble.la $(top_builddir)/cgicc/cgicc/libcgicc.la -larkimet
 
 cgi_PROGRAMS = datasets summary fields data
 
