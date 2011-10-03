@@ -79,7 +79,6 @@ arkiweb.views.Main = Backbone.View.extend({
 			west__size: '33%',
 			east__size: '33%',
 			onresize_end: function() {
-				console.log("ciccio");
 				self.views.map.map.updateSize();
 			}
 		});
