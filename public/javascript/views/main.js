@@ -80,7 +80,8 @@ arkiweb.views.Main = Backbone.View.extend({
 			east__size: '33%',
 			onresize_end: function() {
 				self.views.map.map.updateSize();
-			}
+			},
+			closable: false
 		});
 		this.layouts.datasets = $(this.views.datasets.el).layout({
 			center__applyDefaultStyles: true,
