@@ -7,11 +7,11 @@ arkiweb.views.Map = Backbone.View.extend({
 						     "http://vmap0.tiles.osgeo.org/wms/vmap0", {
 							     layers: 'basic'
 						     });
-						     this.map.addLayer(layer);
-						     this.blayer = new OpenLayers.Layer.Vector("datasets bounding box");
-						     this.map.addLayer(this.blayer);
-						     this.view = options.view;
-						     this.view.bind("change", this.updateDatasetsFeatures, this);
+		this.map.addLayer(layer);
+		this.blayer = new OpenLayers.Layer.Vector("datasets bounding box");
+		this.map.addLayer(this.blayer);
+		this.view = options.view;
+		this.view.bind("change", this.updateDatasetsFeatures, this);
 	},
 	render: function() {
 		this.map.render($(this.el).get(0));
