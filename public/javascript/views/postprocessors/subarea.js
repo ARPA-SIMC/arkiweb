@@ -40,6 +40,7 @@ arkiweb.views.postprocessors.Subarea = arkiweb.views.AbstractPostprocessor.exten
 		this.map.addControl(this.control);
 	},
 	color: "blue",
+	help: "This postprocessor extract a subarea of the selection.\nYou can select the area clicking on the map and/or filling the input fields\n",
 	activate: function() {
 		this.layer.setVisibility(true);
 		this.control.activate();
