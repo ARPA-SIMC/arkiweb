@@ -5,9 +5,24 @@ arkiweb.views.Summary = Backbone.View.extend({
 	},
 	initialize: function(options) {
 		this.collection.bind("reset", this.render, this);
+		$(this.el).dialog({
+			title: 'summary',
+			autoOpen: false,
+			modal: true,
+			height: $(document).height() / 2,
+			width: $(document).width() / 2
+		});
+		this.layouts = {};
 	},
 	render: function() {
-		this.el.empty();
+		if (this.layouts.main)
+			this.layouts.main.destroy();
+		if (this.layouts.content)
+			this.layouts.content.destroy();
+
+		$(this.el).empty();
+
+		$(this.el).dialog('open');
 		this.views = [];
 
 		//var tmpl = $(this.tmpl).tmpl();
@@ -35,6 +50,7 @@ arkiweb.views.Summary = Backbone.View.extend({
 			this.views.push(view);
 		}, this);
 
+		/*
 		$(this.el).dialog({
 			title: 'summary',
 			autoOpen: true,
@@ -45,11 +61,13 @@ arkiweb.views.Summary = Backbone.View.extend({
 			height: $(document).height() / 2,
 			width: $(document).width() / 2,
 		});
-		$(this.el).layout({
+		*/
+
+		this.layouts.main = $(this.el).layout({
 			center__applyDefaultStyles: true,
 			center__paneSelector: '.arkiweb-summary'
 		});
-		$(this.el).find(".arkiweb-summary").layout({
+		this.layouts.content = $(this.el).find(".arkiweb-summary").layout({
 			center__applyDefaultStyles: true,
 			north__paneSelector: '.arkiweb-summary-menu',
 			center__paneSelector: '.arkiweb-summary-content'
