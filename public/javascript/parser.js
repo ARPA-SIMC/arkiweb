@@ -237,7 +237,7 @@ var ArkiwebParser = {
 						10: 'h3',
 						11: 'h6',
 						12: 'h12',
-						13: 's',
+						13: 's'
 					};
 					var s = "Timedef";
 					if (i.su == 255) {
@@ -287,7 +287,7 @@ var ArkiwebParser = {
 						10: 'h3',
 						11: 'h6',
 						12: 'h12',
-						13: 's',
+						13: 's'
 					};
 					return "BUFR," + i.va + un[i.un];
 				}
