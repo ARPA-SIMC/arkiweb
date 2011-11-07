@@ -3,7 +3,7 @@
 	font-size: 0.9em;
 }
 
-.arkiweb-datasets-selection-list *[allowed=false] {
+.arkiweb-datasets-selection-list .dataset-not-allowed {
 	color: silver;
 }
 
