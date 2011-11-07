@@ -1,4 +1,10 @@
-<div allowed="<%= @allowed %>">
+<div
+<% if @allowed: %>
+	class="dataset-allowed"
+<% else: %>
+	class="dataset-not-allowed"
+<% end %>
+>
 	<input type="checkbox"/>
 	<span class="arkiweb-dataset-name">
 		<%= @name %>
