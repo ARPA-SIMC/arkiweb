@@ -65,7 +65,7 @@ arkiweb.views.DatasetsSelection = Backbone.View.extend({
 		});
 	},
 	toggleAllowed: function() {
-		$(this.content).find('*[allowed=false]').toggleClass("hidden");
+		$(this.content).find('.dataset-not-allowed').toggleClass("hidden");
 	},
 	getSelected: function() {
 		return _.select(this.views, function(view) {
