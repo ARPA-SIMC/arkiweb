@@ -1,3 +1,5 @@
+2011-11-10 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* embedded: embedded directory
 2011-11-07 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* public/javascript/parser.js: removed useless commas
 	* public/javascript/templates/datasets-selection-item.eco: allowed
