@@ -1,0 +1,30 @@
+README for GNU cgicc
+====================
+
+GNU cgicc is an ANSI C++ compliant class library that greatly
+simplifies the creation of CGI applications for the World Wide
+Web. cgicc performs the following functions:
+
+ - Parses both GET and POST form data transparently
+ - Provides string, integer, floating-point and single- and
+   multiple-choice retrieval methods for form data
+ - Provides methods for saving and restoring CGI environments to aid
+   in application debugging
+ - Provides full on-the-fly HTML 4.0 generation capabilities, with support
+   for cookies
+ - Supports HTTP file upload
+ - Compatible with FastCGI
+
+Embedded version
+================
+
+This package provides an embedded version of cgicc, you can embed in your
+project copying this package inside your package directory, adding this line to
+your configure.ac file:
+	AC_CONFIG_SUBDIRS([cgicc])
+and adding this value to SUBDIRS in Makefile.am:
+	cgicc
+and adding this value to your program_LDADD:
+	$(top_builddir)/cgicc/cgicc/libcgicc.la
+ans this value to your program_CPPFLAGS:
+	$(top_srcdir)/cgicc

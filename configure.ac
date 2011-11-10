@@ -5,7 +5,7 @@ AC_PREREQ([2.63])
 AC_INIT([arkiweb], [0.3.5], [edigiacomo@arpa.emr.it])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h wibble/config.h])
-AC_CONFIG_SUBDIRS([cgicc])
+AC_CONFIG_SUBDIRS([embedded/cgicc])
 
 AC_PROG_CXX
 AC_PROG_CC
