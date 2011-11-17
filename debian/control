@@ -1,0 +1,13 @@
+Source: arkiweb
+Section: net
+Priority: extra
+Maintainer: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev, arkimet
+Standards-Version: 3.8.4
+
+Package: arkiweb
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: apache2
+Description: Web interface for arkiweb
+ Web interface for arkiweb
