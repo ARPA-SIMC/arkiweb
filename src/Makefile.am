@@ -1,6 +1,6 @@
 cgidir = $(pkglibdir)
 
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/cgicc
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/embedded/cgicc
 
 LDADD = $(top_builddir)/arkiweb/libarkiweb.la \
 	$(top_builddir)/wibble/libwibble.la \
