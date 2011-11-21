@@ -8,6 +8,7 @@
 }
 
 .arkiweb-dataset-name {
+	cursor: pointer;
 	font-weight: bold;
 }	
 
