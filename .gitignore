@@ -25,3 +25,4 @@ stamp-h1
 *.la
 *.lo
 *.o
+/public/javascript/templates/*.js
