@@ -26,4 +26,8 @@ stamp-h1
 *.lo
 *.o
 /public/arkiweb/templates/*.js
-/public/arkiweb/lib
+/public/lib
+/cgi-bin/datasets
+/cgi-bin/fields
+/cgi-bin/summary
+/cgi-bin/data
