@@ -1,0 +1,20 @@
+(function() {
+	var arkiweb = {
+		models: {},
+		collections: {},
+		views: {},
+		templates: {},
+		run: function(options) {
+			$(document).ready(function() {
+				var opts = $.extend({}, {
+					el: "#arkiweb",
+					baseUrl: "test/fixtures"
+				}, options);
+
+				arkiweb.App = new arkiweb.views.Application(opts);
+			});
+		}
+	};
+
+	this.arkiweb = arkiweb;
+}());

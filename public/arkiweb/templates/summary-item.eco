@@ -1,0 +1,28 @@
+<h3><a><%= @type %></a></h3>
+<div>
+	<table>
+		<thead>
+			<tr>
+				<td>query</td>
+				<td>description</td>
+			</tr>
+		</thead>
+		<tbody>
+			<% for value in @values: %>
+				<% query = undefined %>
+				<% className = "parsed" %>
+				<% try: %>
+					<% query = ArkiwebParser[@type].styles[value.s].decode(value) %>
+				<% catch e: %>
+					<% query = undefined %>
+					<% className = "unparsed" %>
+				<% end %>
+				
+				<tr class="<%= className %>">
+					<td class="query"><%= query %></td>
+					<td class="description"><%= value.desc %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

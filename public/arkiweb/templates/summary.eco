@@ -1,0 +1,14 @@
+<div class="summary-stats">
+	<p>
+	<% if @stats.c == 0: %>
+		empty selection
+	<% else: %>
+		<b>count: </b><%= @stats.c %>
+		<b>size: </b><%= @stats.s %>
+		<b>from: </b><%= @stats.b.strftime("%Y-%m-%d %H:%M:%S") %>
+		<b>until: </b><%= @stats.e.strftime("%Y-%m-%d %H:%M:%S") %>
+	<% end %>
+	</p>
+</div>
+<div class="summary-items">
+</div>

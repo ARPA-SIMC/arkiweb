@@ -1,0 +1,16 @@
+<div class="selected-datasets">
+	<b>selected datasets: </b><span class="selected-datasets-list"></span>
+</div>
+<div class="datasets-table">
+	<table>
+		<thead>
+			<tr>
+				<td>name</td>
+				<td>description</td>
+				<td>postprocessors</td>
+			</tr>
+		</thead>
+		<tbody class="datasets-list">
+		</tbody>
+	</table>
+</div>

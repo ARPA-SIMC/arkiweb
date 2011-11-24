@@ -1,6 +1,0 @@
-<div>
-	<span class="arkiweb-summary-description"><%= @description %></span>
-	<span class="arkiweb-summary-query">
-		<%= @query || "-" %>
-	</span>
-</div>

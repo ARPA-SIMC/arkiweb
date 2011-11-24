@@ -1,0 +1,15 @@
+<div class="fields-selection-summary">
+	<p>
+	<% if @stats.c == 0: %>
+		empty selection
+	<% else: %>
+		<b>count: </b><%= @stats.c %>
+		<b>size: </b><%= @stats.s %>
+		<b>from: </b><%= @stats.b.strftime("%Y-%m-%d %H:%M:%S") %>
+		<b>until: </b><%= @stats.e.strftime("%Y-%m-%d %H:%M:%S") %>
+	<% end %>
+	</p>
+	<p><b>query: </b><span class="query"></span></p>
+</div>
+<div class="fields-selection-items">
+</div>

@@ -1,28 +1,20 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css"/>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>
 		<link rel="stylesheet" href="arkiweb.css"/>
-		<script src="http://hacks.bluesmoon.info/strftime/strftime.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-		<script src="https://raw.github.com/malsup/blockui/master/jquery.blockUI.js"></script>
-		<script src="http://trentrichardson.com/examples/timepicker/js/jquery-ui-timepicker-addon.js"></script>
-		<script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
-		<script src="http://documentcloud.github.com/underscore/underscore.js"></script>
-		<script src="http://documentcloud.github.com/backbone/backbone.js"></script>
-		<script src="http://openlayers.org/api/OpenLayers.js"></script>
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/jquery-ui.js"></script>
+		<script src="lib/jquery.layout.js"></script>
+		<script src="lib/jquery.blockUI.js"></script>
+		<script src="lib/jquery-ui-timepicker-addon.js"></script>
+		<script src="lib/underscore.js"></script>
+		<script src="lib/backbone.js"></script>
+		<script src="lib/OpenLayers/OpenLayers.js"></script>
+		<script src="lib/strftime.js"></script>
 		<script src="arkiweb.js"></script>
-		<script src="jquery.arkiweb.js"></script>
 		<script>
-			$(document).ready(function() {
-				$("#arkiweb").arkiweb({
-					urls: {
-						datasets: 'fixtures/datasets',
-						fields: 'fixtures/fields',
-						summary: 'fixtures/fields',
-						data: 'fixtures/data'
-					}
-				});
+			arkiweb.run({
+				baseUrl: '/~emanuele/cgi-bin/arkiweb'
 			});
 		</script>
 	</head>

@@ -1,5 +1,0 @@
-<div class="arkiweb-fields-selection-section"><h3>stats</h3></div>
-<div class="arkiweb-fields-selection-section-list">
-	<input type="checkbox" name="arkiweb-reftime-from">from  <input type="text" name="from"/><br/>
-	<input type="checkbox" name="arkiweb-reftime-until">until <input type="text" name="until"/>
-</div>
