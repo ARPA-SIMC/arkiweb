@@ -1,7 +1,7 @@
 Arkiweb
 =======
 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
-version 0.3.6
+version 0.4
 
 Dependencies
 ------------
@@ -15,12 +15,13 @@ mv wibble/wibble/* wibble/
 ----
 * `arkimet`: static library and header files
 
-If you edit the javascript files, you must install:
+If you edit the Javascript or CSS files, you must install the 
+following programs:
 
-* `node.js` - http://nodejs.org
-* `npm` - http://npmjs.org
+* `node.js`
 * `eco` - https://github.com/sstephenson/eco
-* `yui-compressor` - http://developer.yahoo.com/yui/compressor
+* `less`
+* `uglifyjs`
 
 Web services
 ------------
@@ -42,15 +43,15 @@ The services read the environment variable `ARKIWEB_CONF`, which
 *is mandatory*. You can set it from the `.htacces`:
 ----
 # /var/www/arkiweb/services/.htaccess
-SetEnv ARKIWEB_CONF /etc/arkiweb.config
+SetEnv ARKIWEB_CONFIG /etc/arkiweb.config
 ----
 The configuration file is created by `arki-mergeconf`.
 
 Authentication & authorization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Arkiweb comes with a very simple authorization system. When the global 
-variable `ARKIWEB_RESTRICT_VAR` is set, the service looks for the global
-variable `${ARKIWEB_RESTRICT_VAR}`. The value of the variable is used for
+variable `ARKIWEB_RESTRICT` is set, the service looks for the global
+variable `${ARKIWEB_RESTRICT}`. The value of the variable is used for
 restricted access (similar to the `--restrict` option of the arkimet 
 commands).
 
@@ -63,7 +64,7 @@ AuthType Basic
 AuthName "By Invitation Only"
 AuthUserFile /usr/local/apache/passwd/passwords
 Require valid-user
-SetEnv ARKIWEB_RESTRICT_VAR REMOTE_USER
+SetEnv ARKIWEB_RESTRICT REMOTE_USER
 ----
 
 Website
@@ -73,11 +74,18 @@ The website is installed under `$datarootdir/arkiweb/public/`.
 * `arkiweb.css`: stylesheet
 * `arkiweb.js`: development version
 * `arkiweb.min.js`: minified version
-* `jquery.arkiweb.js`: jquery plugin
-* `ajax-loader.gif`: image
-* `index.html`: very simple html with embedded arkiweb.
+* `index.html`: example
+
+You need the following Javascript libraries:
+* `jquery`
+* `jquery-ui`
+* `jquery.layout`
+* `jquery.blockUI`
+* `jquery-ui-timepicker-addon`
+* `underscore`
+* `backbone`
+* `openlayers`
+* `strftime`
 
 You can copy these files in your `www` directory (e.g. `/var/www/arkiweb/`)
-and edit `index.html`. Otherwise, embed it inside you HTML page.
-
-*Note*: see `index.html` for the javascript dependencies.
+and edit `index.html`. 

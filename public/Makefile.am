@@ -14,6 +14,7 @@ JS = \
      arkiweb/views/datasets-selection.js \
      arkiweb/views/fields-selection.js \
      arkiweb/views/summary.js \
+     arkiweb/views/postprocessors.js \
      arkiweb/templates/application.js \
      arkiweb/templates/datasets-selection.js \
      arkiweb/templates/datasets-selection-item.js \
@@ -21,7 +22,10 @@ JS = \
      arkiweb/templates/fields-selection-item.js \
      arkiweb/templates/fields-selection-reftime.js \
      arkiweb/templates/summary.js \
-     arkiweb/templates/summary-item.js
+     arkiweb/templates/summary-item.js \
+     arkiweb/templates/postprocessor.js \
+     arkiweb/postprocessors/singlepoint.js \
+     arkiweb/postprocessors/subarea.js
 
 TEMPLATES = \
 	    arkiweb/templates/application.eco \
@@ -31,7 +35,8 @@ TEMPLATES = \
 	    arkiweb/templates/fields-selection-item.eco \
 	    arkiweb/templates/fields-selection-reftime.eco \
 	    arkiweb/templates/summary.eco \
-	    arkiweb/templates/summary-item.eco
+	    arkiweb/templates/summary-item.eco \
+	    arkiweb/templates/postprocessor.eco
 
 LESS = css/arkiweb.less
 
@@ -48,3 +53,7 @@ arkiweb.css: $(LESS)
 	$(ECO) $< -i arkiweb.templates
 
 EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES)
+
+htmlexampledir = $(docdir)/html/example
+
+htmlexample_DATA = index.html
