@@ -1,0 +1,9 @@
+<h3><a>reftime</a></h3>
+<div>
+	<input class="begin" type="checkbox"/>
+	<b>from: </b>
+	<input class="begin-value" type="text" size="22"/>
+	<input class="end" type="checkbox"/>
+	<b>until: </b>
+	<input class="end-value" type="text" size="22"/>
+</div>

@@ -1,9 +1,0 @@
-<div class="arkiweb-summary">
-	<div class="arkiweb-summary-menu">
-		<button class="arkiweb-summary-toggle-query">toggle description/query</button>
-	</div>
-	<div class="arkiweb-summary-content">
-		<div class="arkiweb-summary-stats">
-		</div>
-	</div>
-</div>
