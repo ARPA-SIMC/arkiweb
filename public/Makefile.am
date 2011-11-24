@@ -52,7 +52,7 @@ arkiweb.css: $(LESS)
 .eco.js:
 	$(ECO) $< -i arkiweb.templates
 
-EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES)
+EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES) index.html
 
 htmlexampledir = $(docdir)/html/example
 

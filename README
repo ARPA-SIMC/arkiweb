@@ -18,10 +18,10 @@ mv wibble/wibble/* wibble/
 If you edit the Javascript or CSS files, you must install the 
 following programs:
 
-* `node.js`
-* `eco` - https://github.com/sstephenson/eco
-* `less`
-* `uglifyjs`
+* `node.js`: http://nodejs.org/
+* `eco`: https://github.com/sstephenson/eco
+* `less`: http://lesscss.org/
+* `uglifyjs`: https://github.com/mishoo/UglifyJS
 
 Web services
 ------------
@@ -78,15 +78,15 @@ The website is installed under `$datarootdir/arkiweb/public/`.
 
 You need the following Javascript libraries:
 
-* `jquery`
-* `jquery-ui`
-* `jquery.layout`
-* `jquery.blockUI`
-* `jquery-ui-timepicker-addon`
-* `underscore`
-* `backbone`
-* `openlayers`
-* `strftime`
+* `jquery`: http://jquery.com/
+* `jquery-ui`: http://jqueryui.com/
+* `jquery.layout` http://layout.jquery-dev.net/
+* `jquery.blockUI` http://jquery.malsup.com/block/
+* `jquery-ui-timepicker-addon`: https://github.com/trentrichardson/jQuery-Timepicker-Addon
+* `underscore`: http://documentcloud.github.com/underscore/
+* `backbone`: http://documentcloud.github.com/backbone/
+* `openlayers`: http://openlayers.org/
+* `strftime`: http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html
 
 You can copy these files in your `www` directory (e.g. `/var/www/arkiweb/`)
 and edit `index.html`. 

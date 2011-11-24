@@ -21,10 +21,12 @@ AC_CHECK_HEADER([arki/libconfig.h],
 AC_PATH_PROG([ECO], [eco])
 AC_PATH_PROG([LESSC], [lessc])
 AC_PATH_PROG([UGLIFYJS], [uglifyjs])
+AC_PATH_PROG([ASCIIDOC], [asciidoc])
 
 test x$ECO != x && have_eco=yes || have_eco=no
 test x$LESSC != x && have_lessc=yes || have_lessc=no
 test x$UGLIFYJS != x && have_uglifyjs=yes || have_uglifyjs=no
+test x$ASCIIDOC != x && have_asciidoc=yes || have_asciidoc=no
 
 AC_CONFIG_FILES([Makefile
                  wibble/Makefile
@@ -40,5 +42,6 @@ ${PACKAGE_STRING}
 - eco:		$have_eco (public/arkiweb/templates/*.eco compiler)
 - lessc:	$have_lessc (public/css/*.less compiler)
 - uglifyjs:	$have_uglifyjs (public/arkiweb.min.js compiler)
+- asciidoc:	$have_asciidoc (README -> README.html compiler)
 ===================================================================
 ])
