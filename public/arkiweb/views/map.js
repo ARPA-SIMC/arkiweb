@@ -33,6 +33,9 @@
 				this.map.zoomToExtent(bounds);
 			else
 				this.map.zoomToMaxExtent();
+		},
+		updateSize: function() {
+			this.map.updateSize();
 		}
 	});
 

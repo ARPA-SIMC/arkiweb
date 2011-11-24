@@ -66,7 +66,7 @@
 			});
 		},
 		getCommand: function() {
-			return "singlepoint: " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
+			return "singlepoint " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
 		}
 	});
 

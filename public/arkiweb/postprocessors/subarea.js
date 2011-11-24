@@ -86,7 +86,7 @@
 		getCommand: function() {
 			var lons = [ $(this.el).find("input[name=lon1]").val(), $(this.el).find("input[name=lon2]").val() ];
 			var lats = [ $(this.el).find("input[name=lat1]").val(), $(this.el).find("input[name=lat2]").val() ];
-			return "subarea: " + _.min(lons) + " " + _.min(lats) + " " + _.max(lons) + " " + _.max(lats);
+			return "subarea " + _.min(lons) + " " + _.min(lats) + " " + _.max(lons) + " " + _.max(lats);
 		}
 	});
 

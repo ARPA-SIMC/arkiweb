@@ -16,6 +16,7 @@
 			var tmpl = arkiweb.templates["application"]();
 			$(this.el).html(tmpl);
 
+			var self = this;
 			this.mainlayout = $(this.el).layout({
 				closable: false,
 				resizable: false,
@@ -30,7 +31,10 @@
 				hidable: false,
 				center__paneSelector: '.selection',
 				south__paneSelector: '.map',
-				south__size: "40%"
+				south__size: "40%",
+				onresize: function() {
+					self.views.map.updateSize();
+				}
 			});
 
 			this.datasetslayout = $(".datasets", $(this.el)).height("100%").layout({
@@ -56,6 +60,14 @@
 				hidable: false,
 				north__paneSelector: '.summary-menu',
 				center__paneSelector: '.summary-content'
+			});
+
+			$(window).resize(function() {
+				self.mainlayout.resizeAll();
+				self.contentlayout.resizeAll();
+				self.datasetslayout.resizeAll();
+				self.fieldslayout.resizeAll();
+				self.summarylayout.resizeAll();
 			});
 
 			$(".selection > div").hide();
