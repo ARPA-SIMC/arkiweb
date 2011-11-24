@@ -6,7 +6,6 @@
 		views: [],
 		render: function() {
 			var tmpl = arkiweb.templates["summary"](this.collection);
-			console.log(tmpl);
 			$(this.el).html(tmpl);
 			this.views = [];
 

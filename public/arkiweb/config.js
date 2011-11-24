@@ -4,11 +4,13 @@
 		collections: {},
 		views: {},
 		templates: {},
+		postprocessors: {},
 		run: function(options) {
 			$(document).ready(function() {
 				var opts = $.extend({}, {
 					el: "#arkiweb",
-					baseUrl: "test/fixtures"
+					baseUrl: "test/fixtures",
+					postprocessors: {}
 				}, options);
 
 				arkiweb.App = new arkiweb.views.Application(opts);

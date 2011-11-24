@@ -81,8 +81,15 @@
 				el: ".summary-content"
 			});
 
+			this.views.postprocessors = new arkiweb.views.Postprocessors({
+				el: ".postprocessors-content",
+				datasets: this.views.datasets
+			});
+
+			this.views.postprocessors.render();
+
 			this.views.map = new arkiweb.views.Map({
-				el: $(".map", this.el),
+				el: ".map",
 				datasets: this.views.datasets
 			});
 
@@ -116,9 +123,9 @@
 			'click .summary-menu .show-fields': 'showFields',
 			'click .summary-menu .show-postprocessors': 'showPostprocessors',
 			'click .summary-menu .download-selection': 'downloadSelection',
-			'click .postprocessor-menu .show-datasets': 'showDatasets',
-			'click .postprocessor-menu .show-fields': 'showFields',
-			'click .postprocessor-menu .download-selection': 'downloadSelection'
+			'click .postprocessors-menu .show-datasets': 'showDatasets',
+			'click .postprocessors-menu .show-fields': 'showFields',
+			'click .postprocessors-menu .download-selection': 'downloadSelection'
 		},
 		toggleDisallowedDatasets: function() {
 			this.views.datasets.toggleDisallowed();
