@@ -5,16 +5,24 @@
 			this.datasets.bind("select", this.update, this);
 
 			this.map = opts.map;
-
 		},
+		colors: [
+			"green",
+			"blue",
+			"red",
+			"orange"
+		],
 		postprocessors: [],
 		render: function() {
+			var i = 0;
 			_.each(arkiweb.postprocessors, function(klass, name) {
 				var p = new PostprocessorContainer({
 					name: name,
 					map: this.map,
-					postprocessor: klass
+					postprocessor: klass,
+					color: this.colors[i % this.colors.length]
 				});
+				i++;
 				p.render();
 				$(this.el).append(p.el);
 
@@ -56,12 +64,17 @@
 
 	var PostprocessorContainer = Backbone.View.extend({
 		className: "postprocessor",
-		initialize: function() {
+		initialize: function(opts) {
 			var klass = this.options.postprocessor;
+			if (this.options.color) {
+				this.color = this.options.color;
+			}
 			this.postprocessor = new klass({
-				map: this.options.map
+				map: this.options.map,
+				color: this.color
 			});
 		},
+		color: 'black',
 		render: function() {
 			var tmpl = arkiweb.templates["postprocessor"];
 			$(this.el).html(tmpl({
@@ -69,6 +82,7 @@
 			}));
 			this.postprocessor.render();
 			$(this.el).append(this.postprocessor.el);
+			$(this.el).find(".title").css("color", this.color);
 		},
 		events: {
 			'click .postprocessor-checkbox': 'toggleSelection'
@@ -85,10 +99,9 @@
 			}
 		},
 		isSelected: function() {
-			return $(this.el).find(".postprocessor-checkbox:checked");
+			return $(this.el).find(".postprocessor-checkbox").is(":checked");
 		},
 		enable: function() {
-			this.postprocessor.activate();
 			$(this.el).find(".postprocessor-checkbox").removeAttr("disabled");
 		},
 		disable: function() {
@@ -97,7 +110,7 @@
 			$(this.el).find(".postprocessor-checkbox").attr("disabled", "disabled");
 		},
 		getCommand: function() {
-			this.postprocessor.getCommand();
+			return this.postprocessor.getCommand();
 		}
 	});
 

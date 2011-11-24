@@ -27,7 +27,6 @@
 				<button class="show-datasets">back to datasets selection</button>
 				<button class="show-fields">back to fields selection</button>
 				<button class="show-postprocessors">choose a postprocessor</button>
-				<button class="download-selection">download the selected data</button>
 			</div>
 			<div class="summary-content">
 			</div>
