@@ -81,13 +81,6 @@
 				el: ".summary-content"
 			});
 
-			this.views.postprocessors = new arkiweb.views.Postprocessors({
-				el: ".postprocessors-content",
-				datasets: this.views.datasets
-			});
-
-			this.views.postprocessors.render();
-
 			this.views.map = new arkiweb.views.Map({
 				el: ".map",
 				datasets: this.views.datasets
@@ -95,6 +88,14 @@
 
 
 			this.views.map.render();
+
+			this.views.postprocessors = new arkiweb.views.Postprocessors({
+				el: ".postprocessors-content",
+				datasets: this.views.datasets,
+				map: this.views.map.map
+			});
+
+			this.views.postprocessors.render();
 
 			this.loadDatasets();
 		},
@@ -122,7 +123,6 @@
 			'click .summary-menu .show-datasets': 'showDatasets',
 			'click .summary-menu .show-fields': 'showFields',
 			'click .summary-menu .show-postprocessors': 'showPostprocessors',
-			'click .summary-menu .download-selection': 'downloadSelection',
 			'click .postprocessors-menu .show-datasets': 'showDatasets',
 			'click .postprocessors-menu .show-fields': 'showFields',
 			'click .postprocessors-menu .download-selection': 'downloadSelection'
@@ -211,13 +211,15 @@
 			$(".selection > .postprocessors", $(this.el)).show("slide", "slow");
 		},
 		downloadSelection: function() {
-			var datasets = _.map(this.views.datasets.getSelected(), function(ds) { return ds.get("name") });
-			var query = this.views.fields.getQuery();
+			var data = {
+				datasets: _.map(this.views.datasets.getSelected(), function(ds) { return ds.get("name") }),
+				query: this.views.fields.getQuery()
+			};
+			var postprocess = this.views.postprocessors.getCommand();
+			if (postprocess)
+				data.postprocess = postprocess;
 
-			var url = this.opts.baseUrl + "/data?" + $.param({
-				datasets: datasets,
-				query: query
-			});
+			var url = this.opts.baseUrl + "/data?" + $.param(data);
 			window.open(url);
 		}
 	});
