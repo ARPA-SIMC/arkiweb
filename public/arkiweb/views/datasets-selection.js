@@ -24,6 +24,9 @@
 
 			this.layout = $(this.el).layout({
 				applyDefaultStyles: true,
+				closable: false,
+				resizable: false,
+				hidable: false,
 				north__paneSelector: ".selected-datasets",
 				center__paneSelector: ".datasets-table"
 			});

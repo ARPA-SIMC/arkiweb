@@ -62,14 +62,6 @@
 				center__paneSelector: '.summary-content'
 			});
 
-			$(window).resize(function() {
-				self.mainlayout.resizeAll();
-				self.contentlayout.resizeAll();
-				self.datasetslayout.resizeAll();
-				self.fieldslayout.resizeAll();
-				self.summarylayout.resizeAll();
-			});
-
 			$(".selection > div").hide();
 
 			this.views = {};
@@ -163,6 +155,7 @@
 		showDatasets: function() {
 			$(".selection > div", $(this.el)).hide();
 			$(".selection > .datasets", $(this.el)).show("slide", "slow");
+			this.datasetslayout.resizeAll();
 		},
 		loadFields: function() {
 			this.block("loading fields");
@@ -187,6 +180,7 @@
 		showFields: function() {
 			$(".selection > div", $(this.el)).hide();
 			$(".selection > .fields", $(this.el)).show("slide", "slow");
+			this.fieldslayout.resizeAll();
 		},
 		clearFieldsSelection: function() {
 			this.views.fields.clearSelection();
@@ -194,6 +188,7 @@
 		showSummary: function() {
 			$(".selection > div", $(this.el)).hide();
 			$(".selection > .summary", $(this.el)).show("slide", "slow");
+			this.summarylayout.resizeAll();
 		},
 		loadSummary: function() {
 			this.block("loading summary");
