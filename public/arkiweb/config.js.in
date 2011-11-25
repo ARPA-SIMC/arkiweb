@@ -15,7 +15,8 @@
 
 				arkiweb.App = new arkiweb.views.Application(opts);
 			});
-		}
+		},
+		version: "@PACKAGE_VERSION@"
 	};
 
 	this.arkiweb = arkiweb;
