@@ -1,5 +1,4 @@
 <div class="header">
-	<b>arkiweb</b>
 </div>
 
 <div class="content">
@@ -46,5 +45,6 @@
 </div>
 
 <div class="footer">
-	Copyright &copy; 2011 ARPA-SIMC Emilia-Romagna - released under <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>
+	<p class="copyright">Copyright &copy; 2011 <a href="http://www.arpa.emr.it/sim/" target="_blank">ARPA-SIMC Emilia-Romagna</a> - released under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a></p>
+	<p class="version">version <%= arkiweb.version %></p>
 </div>

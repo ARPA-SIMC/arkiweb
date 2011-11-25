@@ -49,8 +49,14 @@ arkiweb.min.js: arkiweb.js
 arkiweb.css: $(LESS)
 	$(LESSC) $^ $@
 
+SUFFIXES = .eco .js.in .js
+
 .eco.js:
 	$(ECO) $< -i arkiweb.templates
+
+.js.in.js:
+	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
+
 
 EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES) index.html
 
