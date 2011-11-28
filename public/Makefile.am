@@ -43,16 +43,28 @@ LESS = css/arkiweb.less
 arkiweb.js: $(JS)
 	cat $^ > $@
 
+if HAVE_UGLIFYJS
+
 arkiweb.min.js: arkiweb.js
 	$(UGLIFYJS) -o $@ $^
+
+endif
+
+if HAVE_LESSC
 
 arkiweb.css: $(LESS)
 	$(LESSC) $^ $@
 
+endif
+
 SUFFIXES = .eco .js.in .js
+
+if HAVE_ECO
 
 .eco.js:
 	$(ECO) $< -i arkiweb.templates
+
+endif
 
 .js.in.js:
 	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
