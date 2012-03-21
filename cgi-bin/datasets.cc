@@ -32,12 +32,12 @@ int main() {
     arki::emitter::JSON emitter(std::cout);
     arkiweb::dataset::Printer printer(cfg, emitter);
 
-    std::cout << cgicc::HTTPContentHeader::HTTPContentHeader("application/json");
+    std::cout << cgicc::HTTPContentHeader("application/json");
 
     printer.print();
 
   } catch (const std::exception &e) {
-    std::cout << cgicc::HTTPStatusHeader::HTTPStatusHeader(500, "ERROR");
+    std::cout << cgicc::HTTPStatusHeader(500, "ERROR");
     std::cerr << e.what() << std::endl;
   }
 

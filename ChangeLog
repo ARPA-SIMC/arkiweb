@@ -1,3 +1,12 @@
+2012-03-21 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* cgi-bin/Makefile.am: out-of-dir build
+	* cgi-bin/data.cc: fixed constructor for cgicc objects
+	* cgi-bin/datasets.cc: fixed constructor for cgicc objects
+	* cgi-bin/fields.cc: fixed constructor for cgicc objects
+	* cgi-bin/summary.cc: fixed constructor for cgicc objects
+	* embedded/cgicc/cgicc/Makefile.am: out-of-dir build
+	* public/Makefile.am: out-of-dir build
+	* public/arkiweb/parser.js: fixed BUFR output
 2011-11-24 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* public/*: new javascript version
 2011-11-10 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
