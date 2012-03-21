@@ -1,3 +1,4 @@
+/wibble.tar.gz
 /_darcs
 /autoscan.log
 /wibble
@@ -25,6 +26,8 @@ stamp-h1
 *.la
 *.lo
 *.o
+/README.html
+/public/arkiweb/config.js
 /public/arkiweb/templates/*.js
 /public/lib
 /cgi-bin/datasets

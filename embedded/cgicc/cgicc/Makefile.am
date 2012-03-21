@@ -2,7 +2,7 @@
 
 CLEANFILES = *~
 
-INCLUDES = -I$(top_srcdir)
+INCLUDES = -I$(top_srcdir) -I$(top_builddir)
 
 noinst_LTLIBRARIES = libcgicc.la
 

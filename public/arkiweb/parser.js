@@ -124,7 +124,9 @@ var ArkiwebParser = {
 						for (var k in i.va) {
 							vals.push(k+"="+i.va[k]);
 						}
-						s += vals.join(",");
+						if (vals.length > 0) {
+							s += ":" + vals.join(",");
+						}
 					}
 					return s;
 				}

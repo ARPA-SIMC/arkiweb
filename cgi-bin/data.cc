@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    std::cout << cgicc::HTTPContentHeader::HTTPContentHeader("application/binary");
+    std::cout << cgicc::HTTPContentHeader("application/binary");
 
     dsp->process(merged, "");
 
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
   } catch (const std::exception &e) {
     std::cerr << e.what();
-    std::cout << cgicc::HTTPStatusHeader::HTTPStatusHeader(500, "ERROR");
+    std::cout << cgicc::HTTPStatusHeader(500, "ERROR");
   }
   return 0;
 }

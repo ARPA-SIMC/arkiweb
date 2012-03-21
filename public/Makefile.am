@@ -3,29 +3,29 @@ publicdir = $(datarootdir)/$(PACKAGE)/public
 public_DATA = arkiweb.js arkiweb.min.js arkiweb.css
 
 JS = \
-     arkiweb/config.js \
-     arkiweb/parser.js \
-     arkiweb/models/dataset.js \
-     arkiweb/models/field.js \
-     arkiweb/collections/datasets.js \
-     arkiweb/collections/fields.js \
-     arkiweb/views/application.js \
-     arkiweb/views/map.js \
-     arkiweb/views/datasets-selection.js \
-     arkiweb/views/fields-selection.js \
-     arkiweb/views/summary.js \
-     arkiweb/views/postprocessors.js \
-     arkiweb/templates/application.js \
-     arkiweb/templates/datasets-selection.js \
-     arkiweb/templates/datasets-selection-item.js \
-     arkiweb/templates/fields-selection.js \
-     arkiweb/templates/fields-selection-item.js \
-     arkiweb/templates/fields-selection-reftime.js \
-     arkiweb/templates/summary.js \
-     arkiweb/templates/summary-item.js \
-     arkiweb/templates/postprocessor.js \
-     arkiweb/postprocessors/singlepoint.js \
-     arkiweb/postprocessors/subarea.js
+     $(srcdir)/arkiweb/config.js \
+     $(srcdir)/arkiweb/parser.js \
+     $(srcdir)/arkiweb/models/dataset.js \
+     $(srcdir)/arkiweb/models/field.js \
+     $(srcdir)/arkiweb/collections/datasets.js \
+     $(srcdir)/arkiweb/collections/fields.js \
+     $(srcdir)/arkiweb/views/application.js \
+     $(srcdir)/arkiweb/views/map.js \
+     $(srcdir)/arkiweb/views/datasets-selection.js \
+     $(srcdir)/arkiweb/views/fields-selection.js \
+     $(srcdir)/arkiweb/views/summary.js \
+     $(srcdir)/arkiweb/views/postprocessors.js \
+     $(srcdir)/arkiweb/templates/application.js \
+     $(srcdir)/arkiweb/templates/datasets-selection.js \
+     $(srcdir)/arkiweb/templates/datasets-selection-item.js \
+     $(srcdir)/arkiweb/templates/fields-selection.js \
+     $(srcdir)/arkiweb/templates/fields-selection-item.js \
+     $(srcdir)/arkiweb/templates/fields-selection-reftime.js \
+     $(srcdir)/arkiweb/templates/summary.js \
+     $(srcdir)/arkiweb/templates/summary-item.js \
+     $(srcdir)/arkiweb/templates/postprocessor.js \
+     $(srcdir)/arkiweb/postprocessors/singlepoint.js \
+     $(srcdir)/arkiweb/postprocessors/subarea.js
 
 TEMPLATES = \
 	    arkiweb/templates/application.eco \
@@ -62,7 +62,7 @@ SUFFIXES = .eco .js.in .js
 if HAVE_ECO
 
 .eco.js:
-	$(ECO) $< -i arkiweb.templates
+	$(ECO) $< -i arkiweb.templates -p > $@
 
 endif
 
