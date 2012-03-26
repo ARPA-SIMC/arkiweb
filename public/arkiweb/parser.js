@@ -32,9 +32,9 @@ var ArkiwebParser = {
 			GRIB1: {
 				decode: function(i) {
 					var l = [i.lt];
-					if (i.l1) {
+					if (i.l1 != undefined) {
 						l.push(i.l1)
-						if (i.l2) {
+						if (i.l2 != undefined) {
 							l.push(i.l2);
 						}
 					}
@@ -119,7 +119,7 @@ var ArkiwebParser = {
 			BUFR: {
 				decode: function(i) {
 					var s = "BUFR," + i.ty + "," + i.st + "," + i.ls;
-					if (i.va) {
+					if (i.va != undefined) {
 						var vals = [];
 						for (var k in i.va) {
 							vals.push(k+"="+i.va[k]);
@@ -247,7 +247,7 @@ var ArkiwebParser = {
 					} else {
 						s += "," + i.sl + un[i.su];
 					}
-					if (i.pt) {
+					if (i.pt != undefined) {
 						s += "," + i.pt
 					} else {
 						// If i.pt is not defined, then
@@ -267,7 +267,7 @@ var ArkiwebParser = {
 					// If stat unit is 255, then 
 					// proclen = "-" (see
 					// arki/types/timerange.cc:1408).
-					if (i.pu) {
+					if (i.pu != undefined) {
 						s += "," + i.pl + un[i.pu]
 					} else {
 						s += ",-"
