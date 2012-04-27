@@ -3,7 +3,7 @@ publicdir = $(datarootdir)/$(PACKAGE)/public
 public_DATA = arkiweb.js arkiweb.min.js arkiweb.css
 
 JS = \
-     $(srcdir)/arkiweb/config.js \
+     $(builddir)/arkiweb/config.js \
      $(srcdir)/arkiweb/parser.js \
      $(srcdir)/arkiweb/models/dataset.js \
      $(srcdir)/arkiweb/models/field.js \
@@ -66,8 +66,8 @@ if HAVE_ECO
 
 endif
 
-.js.in.js:
-	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
+#.js.in.js:
+#	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
 
 
 EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES) index.html
