@@ -43,7 +43,12 @@ var ArkiwebParser = {
 			},
 			GRIB2S: {
 				decode: function(i) {
-					return "GRIB2S," + i.lt + "," + i.sc + "," + i.va;
+					var l = [i.lt, '-', '-'];
+					if (i.sc != undefined)
+						l[1] = i.sc
+					if (i.va != undefined)
+						l[2] = i.va
+					return "GRIB2S," + l.join(",")
 				}
 			},
 			GRIB2D: {
