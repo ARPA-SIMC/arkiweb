@@ -172,7 +172,7 @@
 				error: function(collection, error) {
 					self.unblock();
 					self.block_err("Error while fetching fields from " + collection.url + ": " + error.statusText + " (" + error.status + ")");
-				},
+				}
 			});
 
 			this.showFields();
@@ -208,7 +208,7 @@
 				error: function(collection, error) {
 					self.unblock();
 					self.block_err("Error while fetching summary from " + collection.url + ": " + error.statusText + " (" + error.status + ")");
-				},
+				}
 			});
 
 			this.showSummary();
