@@ -25,7 +25,8 @@ JS = \
      $(srcdir)/arkiweb/templates/summary-item.js \
      $(srcdir)/arkiweb/templates/postprocessor.js \
      $(srcdir)/arkiweb/postprocessors/singlepoint.js \
-     $(srcdir)/arkiweb/postprocessors/subarea.js
+     $(srcdir)/arkiweb/postprocessors/subarea.js \
+     $(srcdir)/arkiweb/postprocessors/gacsv.js
 
 TEMPLATES = \
 	    arkiweb/templates/application.eco \
