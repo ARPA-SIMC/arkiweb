@@ -1,3 +1,8 @@
+2012-10-10 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: version 0.7
+	* public/arkiweb/parser.js: decode for array AND object
+	* public/arkiweb/templates/fields-selection-item.eco: decoding
+	* public/arkiweb/templates/summary-item.eco: decoding
 2012-05-31 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* public/arkiweb/views/application.js: fixed syntax error
 2012-03-26 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
