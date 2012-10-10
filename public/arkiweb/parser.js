@@ -1,7 +1,10 @@
 var ArkiwebParser = {
 	area: {
 		decode: function(a) {
-			return "area:" + a.join(" or ");
+			if (a instanceof Array)
+				return "area:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB: {
@@ -26,7 +29,10 @@ var ArkiwebParser = {
 	},
 	level: {
 		decode: function(a) {
-			return "level:" + a.join(" or ");
+			if (a instanceof Array)
+				return "level:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB1: {
@@ -65,7 +71,10 @@ var ArkiwebParser = {
 	},
 	origin: {
 		decode: function(a) {
-			return "origin:" + a.join(" or ");
+			if (a instanceof Array)
+				return "origin:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB1: {
@@ -92,7 +101,10 @@ var ArkiwebParser = {
 	},
 	proddef: {
 		decode: function(a) {
-			return "proddef:" + a.join(" or ");
+			if (a instanceof Array)
+				return "proddef:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB: {
@@ -108,7 +120,10 @@ var ArkiwebParser = {
 	},
 	product: {
 		decode: function(a) {
-			return "product:" + a.join(" or ");
+			if (a instanceof Array)
+				return "product:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB1: {
@@ -145,19 +160,18 @@ var ArkiwebParser = {
 	},
 	quantity: {
 		decode: function(a) {
-			return "quantity:" + a.join(" or ");
-		},
-		styles: {
-			ODIMH5: {
-				decode: function(i) {
-					return va.join(",");
-				}
-			}
+			if (a instanceof Array)
+				return "quantity:" + a.join(" or ");
+			else
+				return a.va.join(",")
 		}
 	},
 	run: {
 		decode: function(a) {
-			return "run:" + a.join(" or ");
+			if (a instanceof Array)
+				return "run:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			MINUTE: {
@@ -177,19 +191,18 @@ var ArkiwebParser = {
 	},
 	task: {
 		decode: function(a) {
-			return "task:" + a.join(" or ");
-		},
-		styles: {
-			ODIMH5: {
-				decode: function(i) {
-					return i.va
-				}
-			}
+			if (a instanceof Array)
+				return "task:" + a.join(" or ");
+			else
+				return a.va;
 		}
 	},
 	timerange: {
 		decode: function(a) {
-			return "timerange:" + a.join(" or ");
+			if (a instanceof Array)
+				return "timerange:" + a.join(" or ");
+			else
+				return this.styles[a.s].decode(a);
 		},
 		styles: {
 			GRIB1: {
