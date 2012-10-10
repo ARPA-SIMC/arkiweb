@@ -12,7 +12,7 @@
 				<% query = undefined %>
 				<% className = "parsed" %>
 				<% try: %>
-					<% query = ArkiwebParser[@type].styles[value.s].decode(value) %>
+					<% query = ArkiwebParser[@type].decode(value) %>
 				<% catch e: %>
 					<% query = undefined %>
 					<% className = "unparsed" %>
