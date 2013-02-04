@@ -24,6 +24,11 @@ var ArkiwebParser = {
 					}
 					return "ODIMH5:" + vals.join(",");
 				}
+			},
+			VM2: {
+				decode: function(i) {
+					return "VM2," + i.id;
+				}
 			}
 		}
 	},
@@ -154,6 +159,11 @@ var ArkiwebParser = {
 			ODIMH5: {
 				decode: function(i) {
 					return "ODIMH5," + i.ob + "," + i.pr;
+				}
+			},
+			VM2: {
+				decode: function(i) {
+					return "VM2," + i.id;
 				}
 			}
 		}
