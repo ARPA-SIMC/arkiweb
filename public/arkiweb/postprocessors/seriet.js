@@ -1,7 +1,7 @@
 (function() {
-	var Gacsv = arkiweb.views.PostprocessorControl.extend({
+	var Seriet = arkiweb.views.PostprocessorControl.extend({
 		initialize: function(opts) {
-			this.layer = new OpenLayers.Layer.Vector("gacsv", {
+			this.layer = new OpenLayers.Layer.Vector("seriet", {
 				style: {
 					strokeColor: this.options.color,
 					strokeOpacity: "0.5",
@@ -66,9 +66,9 @@
 			});
 		},
 		getCommand: function() {
-			return "gacsv " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
+			return "seriet " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
 		}
 	});
 
-	this.arkiweb.postprocessors.gacsv = Gacsv;
+	this.arkiweb.postprocessors.seriet = Seriet;
 }());

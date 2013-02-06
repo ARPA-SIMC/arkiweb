@@ -26,7 +26,7 @@ JS = \
      $(srcdir)/arkiweb/templates/postprocessor.js \
      $(srcdir)/arkiweb/postprocessors/singlepoint.js \
      $(srcdir)/arkiweb/postprocessors/subarea.js \
-     $(srcdir)/arkiweb/postprocessors/gacsv.js
+     $(srcdir)/arkiweb/postprocessors/seriet.js
 
 TEMPLATES = \
 	    arkiweb/templates/application.eco \
