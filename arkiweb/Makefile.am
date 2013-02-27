@@ -7,8 +7,12 @@ libarkiweb_la_LIBADD = \
 		       -larkimet
 
 libarkiweb_la_SOURCES = \
+			authorization.cc \
+			authorization.h \
 			configfile.cc \
 			configfile.h \
+			data.cc \
+			data.h \
 			dataset.cc \
 			dataset.h \
 			fields.cc \
