@@ -3,7 +3,6 @@
 #include <cgicc/HTTPContentHeader.h>
 
 #include <arkiweb/configfile.h>
-#include <arkiweb/restrict.h>
 #include <arkiweb/data.h>
 #include <arkiweb/authorization.h>
 
