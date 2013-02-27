@@ -45,18 +45,22 @@ User User::get() {
 	return User::get(name);
 }
 
-bool User::is_allowed(const std::string& query, const arki::ConfigFile& cfg)
-{
+std::string User::name() const { return m_name; }
+
+bool User::is_allowed_dataset(const arki::ConfigFile& cfg) const {
+	arki::runtime::Restrict rest(m_name);
+	return rest.is_allowed(cfg);
+}
+bool User::is_allowed(const std::string& query, const arki::ConfigFile& cfg) const {
 	if (m_name.empty())
 		return true;
 
-	arki::runtime::Restrict rest(m_name);
 	arki::Summary summary;
 	arki::Matcher matcher = arki::Matcher::parse(query);
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i) {
 		const arki::ConfigFile& c = *i->second;
-		if (!rest.is_allowed(c))
+		if (!is_allowed_dataset(c))
 			return false;
 		arki::Summary s;
 		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(c));

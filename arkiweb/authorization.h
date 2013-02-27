@@ -40,7 +40,9 @@ class User {
 	static User get(const std::string& name);
 	static User get();
 
-	bool is_allowed(const std::string& query, const arki::ConfigFile& cfg);
+	std::string name() const;
+	bool is_allowed_dataset(const arki::ConfigFile& cfg) const;
+	bool is_allowed(const std::string& query, const arki::ConfigFile& cfg) const;
 };
 
 }

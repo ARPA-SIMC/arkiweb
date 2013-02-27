@@ -22,8 +22,8 @@
 #include <arkiweb/configfile.h>
 
 #include <arki/runtime/config.h>
-#include <arkiweb/restrict.h>
 #include <wibble/exception.h>
+#include <arkiweb/authorization.h>
 
 namespace arkiweb {
 
@@ -38,7 +38,7 @@ std::string configpath() {
 arki::ConfigFile configfile() {
   arki::ConfigFile cfg;
   arki::runtime::parseConfigFile(cfg, configpath());
-  arki::runtime::Restrict restr(arkiweb::restriction());
+  arki::runtime::Restrict restr(authorization::User::get().name());
   for (arki::ConfigFile::section_iterator i = cfg.sectionBegin();
        i != cfg.sectionEnd(); ++i) {
     i->second->setValue(std::string("id"),
