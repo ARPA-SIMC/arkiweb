@@ -1,3 +1,8 @@
+2012-02-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: version 0.8
+	* arkiweb/authorization.{h,cc}: auth module
+	* arkiweb/data.{h,cc}: data service
+	* cgi-bin/data.cc: reflected changes in data service
 2012-10-10 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.7
 	* public/arkiweb/parser.js: decode for array AND object
