@@ -20,21 +20,21 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <iostream>
+#include <memory>
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
-#include <arkiweb/configfile.h>
-#include <arkiweb/dataset.h>
-#include <arki/emitter/json.h>
+#include <arkiweb/processor.h>
 
 int main() {
   try {
-    arki::ConfigFile cfg = arkiweb::configfile();
-    arki::emitter::JSON emitter(std::cout);
-    arkiweb::dataset::Printer printer(cfg, emitter);
-
     std::cout << cgicc::HTTPContentHeader("application/json");
 
-    printer.print();
+		arkiweb::ProcessorFactory f;
+		f.target = "configfile";
+		f.format = "jsonp";
+		f.outfile = "";
+		std::auto_ptr<arkiweb::Processor> p(f.create());
+		p->process();
 
   } catch (const std::exception &e) {
     std::cout << cgicc::HTTPStatusHeader(500, "ERROR");

@@ -19,6 +19,7 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
+#include <iostream>
 
 #include <arki/configfile.h>
 #include <arki/emitter.h>
@@ -29,17 +30,21 @@ struct Processor {
 	virtual void process() = 0;
 };
 
-struct ProcessorFactory {
-	enum ProcessorDomain {
-		CONFIGFILE,
-		FIELDS,
-		SUMMARY,
-		DATA
-	};
+class ProcessorFactory {
+ private:
+	arki::Emitter* m_emitter;
+	arki::ConfigFile m_configfile;
 
-	ProcessorDomain domain;
+ public:
+	// "configfile", "summary", "data" (default: "configfile")
+	std::string target;
+	// "json"
+	std::string format;
+	// empty or "-" for stdout (default: "")
+	std::string outfile;
 
 	ProcessorFactory();
+	~ProcessorFactory();
 
 	Processor* create();
 };

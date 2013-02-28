@@ -19,21 +19,32 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-
+#include <arkiweb/configfile.h>
 #include <arkiweb/processor.h>
 #include <arkiweb/authorization.h>
+#include <arkiweb/emitter.h>
+#include <arki/emitter/json.h>
 
 namespace arkiweb {
 
 ProcessorFactory::ProcessorFactory() {
-		domain = ProcessorFactory::CONFIGFILE;
+		m_emitter = NULL;
+		m_configfile = arkiweb::configfile();
+}
+ProcessorFactory::~ProcessorFactory() {
+	delete m_emitter;
 }
 Processor* ProcessorFactory::create() {
-	switch (domain) {
-		default:
-			throw wibble::exception::Generic("not yet implemented");
+	if (target == "configfile") {
+		if (format == "json") {
+			m_emitter = new arki::emitter::JSON(std::cout);
+		}
+		else if (format == "jsonp") {
+			m_emitter = new arkiweb::emitter::JSONP(std::cout);
+		}
+		return new processor::ConfigFileEmitter(m_configfile, *m_emitter);
 	}
-	return NULL;
+	throw wibble::exception::Generic("unsupported processor target: " + target);
 }
 
 namespace processor {
