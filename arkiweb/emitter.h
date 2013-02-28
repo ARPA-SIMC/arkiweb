@@ -1,7 +1,7 @@
 /*
- * dataset - dataset utilities
+ * emitter - serialization utilities
  *
- * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,27 +19,50 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#ifndef ARKIWEB_DATASET_H
-#define ARKIWEB_DATASET_H
+#ifndef ARKIWEB_EMITTER_H
+#define ARKIWEB_EMITTER_H
 
-#include <arki/configfile.h>
+#include <iostream>
 #include <arki/emitter.h>
+#include <arki/emitter/json.h>
 
 namespace arkiweb {
-namespace dataset {
+namespace emitter {
 
-class Printer {
- public:
-  Printer(const arki::ConfigFile &cfg,
-          arki::Emitter &emitter);
-  void print();
+/**
+ * JSONP emitter, works only when the object starts with mapping or list.
+ */
+class JSONP : public arki::emitter::JSON {
  private:
-  const arki::ConfigFile m_cfg;
-  arki::Emitter &m_emitter;
-  std::set<std::string> m_keys;
+	std::string jsonp;
+	bool m_started;
+ protected:
+	void start() {
+		if (!m_started) {
+			out << jsonp << "(";
+			m_started = true;
+		}
+	}
+	void end() {
+		start();
+		out << ")";
+	}
+ public:
+	JSONP(std::ostream& out, const std::string& jsonp="jsonp")
+			: arki::emitter::JSON(out), jsonp(jsonp), m_started(false) {}
+	virtual ~JSONP() {
+		end();
+	}
+	virtual void start_list() {
+		start();
+		JSON::start_list();
+	}
+	virtual void start_mapping() {
+		start();
+		JSON::start_mapping();
+	}
 };
 
 }
 }
-
-#endif        /* ARKIWEB_DATASET_H */
+#endif
