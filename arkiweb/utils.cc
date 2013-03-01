@@ -51,14 +51,12 @@ void setToDefault(arki::ConfigFile& cfg)
 
 void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter)
 {
-	arki::ConfigFile base;
-	setToDefault(base);
+	setToDefault(cfg);
 
-	for (std::set<std::string>::const_iterator i = dsfilter.begin();
-			 i != dsfilter.end(); ++i) {
-		arki::ConfigFile* c = base.section(*i);
-		if (c)
-			cfg.mergeInto(*i, *c);
+	for (arki::ConfigFile::section_iterator i = cfg.sectionBegin();
+			 i != cfg.sectionEnd(); ++i) {
+		if (dsfilter.find(i->first) == dsfilter.end())
+			cfg.deleteSection(i->first);
 	}
 }
 
