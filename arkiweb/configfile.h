@@ -1,7 +1,7 @@
 /*
  * configfile - configuration file
  *
- * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2011,2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #define ARKIWEB_CONFIGFILE_H
 
 #include <string>
-#include <vector>
+#include <set>
 
 #include <arki/configfile.h>
 
@@ -34,7 +34,7 @@ std::string configpath();
 
 arki::ConfigFile configfile();
 
-arki::ConfigFile configfile(const std::vector<std::string> &datasets);
+arki::ConfigFile configfile(const std::set<std::string>& datasets);
 
 }
 

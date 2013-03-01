@@ -19,10 +19,10 @@ int main(int argc, char **argv) {
 
 		std::vector<cgicc::FormEntry> forms;
 		cgi.getElement("datasets[]", forms);
-		std::vector<std::string> datasets;
+		std::set<std::string> datasets;
 		for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
 				 i != forms.end(); ++i) {
-			datasets.push_back((*i).getValue());
+			datasets.insert((*i).getValue());
 		}
 
 		if (!postprocess.empty() && datasets.size() > 1) {
