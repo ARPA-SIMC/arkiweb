@@ -35,15 +35,23 @@ ProcessorFactory::~ProcessorFactory() {}
 Processor* ProcessorFactory::create() {
 	std::auto_ptr<arki::Emitter> emitter;
 	if (target == "configfile") {
-		if (format == "json") {
+		if (format == "json")
 			emitter.reset(new arki::emitter::JSON(std::cout));
-		}
-		else if (format == "jsonp") {
+		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
-		}
+		else
+			throw wibble::exception::Generic("unsupported format: " + format);
 		return new processor::ConfigFileEmitter(emitter.release());
+	} else if (target == "summary") {
+		if (format == "json")
+			emitter.reset(new arki::emitter::JSON(std::cout));
+		else if (format == "jsonp")
+			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
+		else
+			throw wibble::exception::Generic("unsupported format: " + format);
+		return new processor::SummaryEmitter(emitter.release());
 	}
-	throw wibble::exception::Generic("unsupported processor target: " + target);
+	throw wibble::exception::Generic("unsupported target: " + target);
 }
 
 namespace processor {
@@ -67,6 +75,22 @@ void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 		}
 	}
 	arkiweb::encoding::BaseEncoder(*emitter).encode(config);
+}
+
+SummaryEmitter::SummaryEmitter(arki::Emitter* emitter) : emitter(emitter) {}
+SummaryEmitter::~SummaryEmitter() {
+	delete emitter;
+}
+void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
+	arki::Summary summary;
+	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
+			 i != cfg.sectionEnd(); ++i) {
+		arki::Summary s;
+		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
+		ds->querySummary(query, s);
+		summary.add(s);
+	}
+	arkiweb::encoding::BaseEncoder(*emitter).encode(summary);
 }
 
 }

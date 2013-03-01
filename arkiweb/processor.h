@@ -50,15 +50,20 @@ namespace processor {
 
 class ConfigFileEmitter : public Processor {
  private:
-	arki::ConfigFile cfg;
 	arki::Emitter* emitter;
- protected:
-#if 0
-	void emit(const arki::ConfigFile& c);
-#endif
  public:
 	ConfigFileEmitter(arki::Emitter* emitter);
 	~ConfigFileEmitter();
+	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
+};
+
+class SummaryEmitter : public Processor {
+ private:
+	arki::Emitter* emitter;
+ public:
+	SummaryEmitter(arki::Emitter* emitter);
+	~SummaryEmitter();
+
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
 
