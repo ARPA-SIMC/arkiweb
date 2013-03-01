@@ -9,12 +9,4 @@ struct arkiweb_processor_shar {
 };
 TESTGRP(arkiweb_processor);
 
-template<> template<>
-void to::test<1>()
-{
-	arki::emitter::JSON e(std::cout);
-	arkiweb::processor::ConfigFileEmitter ce(arkiweb::configfile(), e);
-	ce.process();
-}
-
 }
