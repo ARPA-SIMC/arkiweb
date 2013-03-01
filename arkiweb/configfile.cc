@@ -50,14 +50,16 @@ arki::ConfigFile configfile() {
 }
 
 arki::ConfigFile configfile(const std::set<std::string>& datasets) {
-  arki::ConfigFile cfg = configfile();
+	arki::ConfigFile cfg = configfile();
+	arki::ConfigFile res;
 
-	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-			 i != cfg.sectionEnd(); ++i) {
-		if (datasets.find(i->first) == datasets.end())
-			cfg.deleteSection(i->first);
+	for (std::set<std::string>::const_iterator i = datasets.begin();
+			 i != datasets.end(); ++i) {
+		arki::ConfigFile* c = cfg.section(*i);
+		if (c)
+			res.mergeInto(*i, *c);
 	}
-  return cfg;
+  return res;
 }
 
 }
