@@ -44,7 +44,7 @@ void BaseEncoder::encode(arki::ConfigFile::const_section_iterator& i) {
 	Split splitter(",", config.value("postprocess"));
 	for (Split::const_iterator i = splitter.begin();
 			 i != splitter.end(); ++i) {
-		emitter.add(*i);
+		emitter.add(wibble::str::trim(*i));
 	}
 	emitter.end_list();
 	emitter.end_mapping();
