@@ -1,7 +1,7 @@
 /*
- * configfile - configuration file
+ * utils - utilities
  *
- * Copyright (C) 2011,2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#ifndef ARKIWEB_CONFIGFILE_H
-#define ARKIWEB_CONFIGFILE_H
+#ifndef ARKIWEB_UTILS_H
+#define ARKIWEB_UTILS_H
 
 #include <string>
 #include <set>
@@ -30,12 +30,12 @@
 #define ARKIWEB_CONFIG_VAR "ARKIWEB_CONFIG"
 
 namespace arkiweb {
-std::string configpath();
+namespace utils {
 
-arki::ConfigFile configfile();
-
-arki::ConfigFile configfile(const std::set<std::string>& datasets);
+void setToDefault(arki::ConfigFile& cfg);
+void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter);
 
 }
+}
 
-#endif        /* ARKIWEB_CONFIGFILE_H */
+#endif

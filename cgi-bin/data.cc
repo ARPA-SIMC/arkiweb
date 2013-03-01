@@ -2,7 +2,7 @@
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
 
-#include <arkiweb/configfile.h>
+#include <arkiweb/utils.h>
 #include <arkiweb/data.h>
 #include <arkiweb/authorization.h>
 
@@ -24,6 +24,11 @@ int main(int argc, char **argv) {
 				 i != forms.end(); ++i) {
 			datasets.insert((*i).getValue());
 		}
+		arki::ConfigFile config;
+		if (datasets.size() > 0)
+			arkiweb::utils::setToDefault(config, datasets);
+		else
+			arkiweb::utils::setToDefault(config);
 
 		if (!postprocess.empty() && datasets.size() > 1) {
 			std::cout << cgicc::HTTPStatusHeader(400,
@@ -32,14 +37,12 @@ int main(int argc, char **argv) {
 			return 0;
 		}
 
-		arki::ConfigFile cfg = arkiweb::configfile(datasets);
-
-		if (!arkiweb::authorization::User::get().is_allowed(query, cfg)) {
+		if (!arkiweb::authorization::User::get().is_allowed(query, config)) {
 			std::cout << cgicc::HTTPStatusHeader(403, "");
 			return 0;
 		}
 
-		arkiweb::data::Printer printer(cfg, query, postprocess, std::cout);
+		arkiweb::data::Printer printer(config, query, postprocess, std::cout);
 		printer.print();
 
 		std::cout.flush();

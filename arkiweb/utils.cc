@@ -1,7 +1,7 @@
 /*
- * configfile - configuration file
+ * utils - utilities
  *
- * Copyright (C) 2011,2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,16 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <arkiweb/configfile.h>
+#include <arkiweb/utils.h>
 
 #include <arki/runtime/config.h>
 #include <wibble/exception.h>
 #include <arkiweb/authorization.h>
 
 namespace arkiweb {
+namespace utils {
 
-std::string configpath() {
+static std::string configpath() {
   char *path = ::getenv(ARKIWEB_CONFIG_VAR);
   if (!path)
     throw wibble::exception::Consistency("Reading " ARKIWEB_CONFIG_VAR,
@@ -35,8 +36,8 @@ std::string configpath() {
   return path;
 }
 
-arki::ConfigFile configfile() {
-  arki::ConfigFile cfg;
+void setToDefault(arki::ConfigFile& cfg)
+{
   arki::runtime::parseConfigFile(cfg, configpath());
   arki::runtime::Restrict restr(authorization::User::get().name());
   for (arki::ConfigFile::section_iterator i = cfg.sectionBegin();
@@ -46,20 +47,20 @@ arki::ConfigFile configfile() {
     i->second->setValue(std::string("allowed"), 
                         ( restr.is_allowed(*(i->second)) ? "true" : "false" ));
   }
-  return cfg;
 }
 
-arki::ConfigFile configfile(const std::set<std::string>& datasets) {
-	arki::ConfigFile cfg = configfile();
-	arki::ConfigFile res;
+void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter)
+{
+	arki::ConfigFile base;
+	setToDefault(base);
 
-	for (std::set<std::string>::const_iterator i = datasets.begin();
-			 i != datasets.end(); ++i) {
-		arki::ConfigFile* c = cfg.section(*i);
+	for (std::set<std::string>::const_iterator i = dsfilter.begin();
+			 i != dsfilter.end(); ++i) {
+		arki::ConfigFile* c = base.section(*i);
 		if (c)
-			res.mergeInto(*i, *c);
+			cfg.mergeInto(*i, *c);
 	}
-  return res;
 }
 
+}
 }

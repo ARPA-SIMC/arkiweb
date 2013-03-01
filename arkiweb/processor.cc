@@ -25,7 +25,6 @@
 #include <arki/dataset.h>
 #include <arki/emitter/json.h>
 
-#include <arkiweb/configfile.h>
 #include <arkiweb/authorization.h>
 #include <arkiweb/emitter.h>
 
