@@ -23,6 +23,7 @@
 #define ARKIWEB_ENCODING_H
 
 #include <arki/configfile.h>
+#include <arki/summary.h>
 #include <arki/emitter.h>
 
 namespace arkiweb {
@@ -30,6 +31,7 @@ namespace arkiweb {
 // Generic encoder
 struct Encoder {
 	virtual void encode(const arki::ConfigFile& config) = 0;
+	virtual void encode(const arki::Summary& sum) = 0;
 };
 
 namespace encoding {
@@ -46,6 +48,7 @@ class BaseEncoder : public Encoder {
 	BaseEncoder(arki::Emitter& emitter);
 
 	virtual void encode(const arki::ConfigFile& config);
+	virtual void encode(const arki::Summary& sum);
 };
 
 }

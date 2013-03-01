@@ -22,6 +22,9 @@
 #include <arkiweb/encoding.h>
 
 #include <wibble/string.h>
+#include <arki/formatter.h>
+#include <arki/summary.h>
+#include <arki/summary/stats.h>
 
 #include <arkiweb/authorization.h>
 
@@ -56,6 +59,37 @@ void BaseEncoder::encode(const arki::ConfigFile& config) {
 			 i != config.sectionEnd(); ++i) {
 		encode(i);
 	}
+	emitter.end_list();
+}
+void BaseEncoder::encode(const arki::Summary& sum) {
+	emitter.start_list();
+
+	struct Serialiser : public arki::summary::Visitor {
+		arki::Emitter& emitter;
+		arki::Formatter* formatter;
+		Serialiser(arki::Emitter& emitter) : emitter(emitter), formatter(arki::Formatter::create()) {}
+		bool operator()(const std::vector< arki::UItem<> >& md,
+										const arki::UItem<arki::summary::Stats>& stats) {
+			emitter.start_mapping();
+
+			for (std::vector< arki::UItem<> >::const_iterator i = md.begin();
+					 i != md.end(); ++i) {
+				if (!i->defined()) continue;
+				emitter.add((*i)->tag());
+				emitter.start_mapping();
+				if (formatter) emitter.add("desc", (*formatter)(*i));
+				(*i)->serialiseLocal(emitter, formatter);
+				emitter.end_mapping();
+			}
+			emitter.add(stats->tag());
+			emitter.start_mapping();
+			stats->serialiseLocal(emitter, formatter);
+			emitter.end_mapping();
+			emitter.end_mapping();
+			return true;
+		}
+	} serialiser(emitter);
+	sum.visit(serialiser);
 	emitter.end_list();
 }
 
