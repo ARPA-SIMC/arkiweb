@@ -31,7 +31,7 @@ int main() {
 
 		arkiweb::ProcessorFactory f;
 		f.target = "configfile";
-		f.format = "json";
+		f.format = "jsonp";
 		f.outfile = "";
 		std::auto_ptr<arkiweb::Processor> p(f.create());
 		p->process();
