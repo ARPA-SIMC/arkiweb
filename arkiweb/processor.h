@@ -22,12 +22,13 @@
 #include <iostream>
 
 #include <arki/configfile.h>
+#include <arki/matcher.h>
 #include <arki/emitter.h>
 
 namespace arkiweb {
 
 struct Processor {
-	virtual void process(const arki::ConfigFile& cfg) = 0;
+	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query) = 0;
 };
 
 class ProcessorFactory {
@@ -58,7 +59,7 @@ class ConfigFileEmitter : public Processor {
 	void emit(const arki::ConfigFile& c);
  public:
 	ConfigFileEmitter(arki::Emitter& emitter);
-	virtual void process(const arki::ConfigFile& cfg);
+	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
 
 }

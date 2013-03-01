@@ -19,11 +19,15 @@
  *
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
-#include <arkiweb/configfile.h>
 #include <arkiweb/processor.h>
+
+#include <arki/summary.h>
+#include <arki/dataset.h>
+#include <arki/emitter/json.h>
+
+#include <arkiweb/configfile.h>
 #include <arkiweb/authorization.h>
 #include <arkiweb/emitter.h>
-#include <arki/emitter/json.h>
 
 namespace arkiweb {
 
@@ -50,11 +54,20 @@ namespace processor {
 
 ConfigFileEmitter::ConfigFileEmitter(arki::Emitter& emitter) : emitter(emitter) {}
 
-void ConfigFileEmitter::process(const arki::ConfigFile& cfg) {
+void ConfigFileEmitter::process(const arki::ConfigFile& cfg,
+																const arki::Matcher& query) {
 	emitter.start_list();
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i)
-		emit(*i->second);
+		if (!query.empty()) {
+			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
+			arki::Summary summary;
+			ds->querySummary(query, summary);
+			if (summary.count() > 0)
+				emit(*i->second);
+		} else {
+			emit(*i->second);
+		}
 	emitter.end_list();
 }
 void ConfigFileEmitter::emit(const arki::ConfigFile& c) {
