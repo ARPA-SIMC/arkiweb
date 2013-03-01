@@ -9,8 +9,6 @@ libarkiweb_la_LIBADD = \
 libarkiweb_la_SOURCES = \
 			authorization.cc \
 			authorization.h \
-			configfile.cc \
-			configfile.h \
 			data.cc \
 			data.h \
 			emitter.cc \
@@ -20,7 +18,9 @@ libarkiweb_la_SOURCES = \
 			processor.cc \
 			processor.h \
 			summary.cc \
-			summary.h
+			summary.h \
+			utils.cc \
+			utils.h
 
 check_PROGRAMS = arkiweb-test
 

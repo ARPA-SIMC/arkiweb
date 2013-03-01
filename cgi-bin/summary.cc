@@ -23,7 +23,7 @@
 #include <cgicc/Cgicc.h>
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
-#include <arkiweb/configfile.h>
+#include <arkiweb/utils.h>
 #include <arkiweb/summary.h>
 #include <arki/emitter/json.h>
 #include <arki/runtime.h>
@@ -39,13 +39,17 @@ int main() {
          i != forms.end(); ++i) {
       datasets.insert((*i).getValue());
     }
-  
+		arki::ConfigFile config;
+		if (datasets.size() > 0)
+			arkiweb::utils::setToDefault(config, datasets);
+		else
+			arkiweb::utils::setToDefault(config);
 
     std::string query = cgi("query");
-    arki::ConfigFile cfg = arkiweb::configfile(datasets);
+
     arki::emitter::JSON emitter(std::cout);
 
-    arkiweb::summary::Printer printer(cfg, emitter, query);
+    arkiweb::summary::Printer printer(config, emitter, query);
 
     std::cout << cgicc::HTTPContentHeader("application/json");
 

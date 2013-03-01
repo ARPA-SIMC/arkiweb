@@ -25,7 +25,7 @@
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
 #include <arki/runtime.h>
-#include <arkiweb/configfile.h>
+#include <arkiweb/utils.h>
 #include <arkiweb/processor.h>
 
 int main() {
@@ -41,6 +41,12 @@ int main() {
 				 i != forms.end(); ++i) {
 			datasets.insert((*i).getValue());
 		}
+		arki::ConfigFile config;
+		if (datasets.size() > 0)
+			arkiweb::utils::setToDefault(config, datasets);
+		else
+			arkiweb::utils::setToDefault(config);
+
 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
 
 		arkiweb::ProcessorFactory f;
@@ -50,10 +56,7 @@ int main() {
 		std::auto_ptr<arkiweb::Processor> p(f.create());
 
 		std::cout << cgicc::HTTPContentHeader("application/json");
-		if (datasets.size() > 0)
-			p->process(arkiweb::configfile(datasets), matcher);
-		else
-			p->process(arkiweb::configfile(), matcher);
+		p->process(config, matcher);
 
   } catch (const std::exception &e) {
     std::cout << cgicc::HTTPStatusHeader(500, "ERROR");
