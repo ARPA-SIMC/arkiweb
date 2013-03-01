@@ -23,7 +23,7 @@
 
 #include <arki/configfile.h>
 #include <arki/matcher.h>
-#include <arki/emitter.h>
+#include <arkiweb/encoding.h>
 
 namespace arkiweb {
 
@@ -32,9 +32,6 @@ struct Processor {
 };
 
 class ProcessorFactory {
- private:
-	arki::Emitter* m_emitter;
-
  public:
 	// "configfile", "summary", "data" (default: "configfile")
 	std::string target;
@@ -54,11 +51,14 @@ namespace processor {
 class ConfigFileEmitter : public Processor {
  private:
 	arki::ConfigFile cfg;
-	arki::Emitter& emitter;
+	arki::Emitter* emitter;
  protected:
+#if 0
 	void emit(const arki::ConfigFile& c);
+#endif
  public:
-	ConfigFileEmitter(arki::Emitter& emitter);
+	ConfigFileEmitter(arki::Emitter* emitter);
+	~ConfigFileEmitter();
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
 

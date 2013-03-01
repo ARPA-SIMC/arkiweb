@@ -25,68 +25,48 @@
 #include <arki/dataset.h>
 #include <arki/emitter/json.h>
 
-#include <arkiweb/authorization.h>
 #include <arkiweb/emitter.h>
+#include <arkiweb/encoding.h>
 
 namespace arkiweb {
 
-ProcessorFactory::ProcessorFactory() {
-		m_emitter = NULL;
-}
-ProcessorFactory::~ProcessorFactory() {
-	delete m_emitter;
-}
+ProcessorFactory::ProcessorFactory() {}
+ProcessorFactory::~ProcessorFactory() {}
 Processor* ProcessorFactory::create() {
+	std::auto_ptr<arki::Emitter> emitter;
 	if (target == "configfile") {
 		if (format == "json") {
-			m_emitter = new arki::emitter::JSON(std::cout);
+			emitter.reset(new arki::emitter::JSON(std::cout));
 		}
 		else if (format == "jsonp") {
-			m_emitter = new arkiweb::emitter::JSONP(std::cout);
+			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		}
-		return new processor::ConfigFileEmitter(*m_emitter);
+		return new processor::ConfigFileEmitter(emitter.release());
 	}
 	throw wibble::exception::Generic("unsupported processor target: " + target);
 }
 
 namespace processor {
 
-ConfigFileEmitter::ConfigFileEmitter(arki::Emitter& emitter) : emitter(emitter) {}
+ConfigFileEmitter::ConfigFileEmitter(arki::Emitter* emitter) : emitter(emitter) {}
+ConfigFileEmitter::~ConfigFileEmitter() {
+	delete emitter;
+}
 
-void ConfigFileEmitter::process(const arki::ConfigFile& cfg,
-																const arki::Matcher& query) {
-	emitter.start_list();
-	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-			 i != cfg.sectionEnd(); ++i)
-		if (!query.empty()) {
+void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
+	arki::ConfigFile config(cfg);
+	// If the matcher is not empty, then filter datasets
+	if (!query.empty()) {
+		for (arki::ConfigFile::const_section_iterator i = config.sectionBegin();
+				 i != config.sectionEnd(); ++i) {
 			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
 			arki::Summary summary;
 			ds->querySummary(query, summary);
-			if (summary.count() > 0)
-				emit(*i->second);
-		} else {
-			emit(*i->second);
+			if (summary.count() == 0)
+				config.deleteSection(i->first);
 		}
-	emitter.end_list();
-}
-void ConfigFileEmitter::emit(const arki::ConfigFile& c) {
-	using wibble::str::Split;
-
-	emitter.start_mapping();
-	emitter.add("id", c.value("id"));
-	emitter.add("name", c.value("name"));
-	emitter.add("description", c.value("description"));
-	emitter.add("allowed", authorization::User::get().is_allowed_dataset(c));
-	emitter.add("bounding", c.value("bounding"));
-	emitter.add("postprocess");
-	emitter.start_list();
-	Split splitter(",", c.value("postprocess"));
-	for (Split::const_iterator i = splitter.begin();
-			 i != splitter.end(); ++i) {
-		emitter.add(*i);
 	}
-	emitter.end_list();
-	emitter.end_mapping();
+	arkiweb::encoding::BaseEncoder(*emitter).encode(config);
 }
 
 }
