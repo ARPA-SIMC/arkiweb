@@ -21,20 +21,35 @@
  */
 #include <iostream>
 #include <memory>
+#include <cgicc/Cgicc.h>
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
+#include <arkiweb/configfile.h>
 #include <arkiweb/processor.h>
 
 int main() {
-  try {
-    std::cout << cgicc::HTTPContentHeader("application/json");
+	try {
+    cgicc::Cgicc cgi;
+
+		std::vector<cgicc::FormEntry> forms;
+		cgi.getElement("datasets[]", forms);
+		std::set<std::string> datasets;
+		for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
+				 i != forms.end(); ++i) {
+			datasets.insert((*i).getValue());
+		}
 
 		arkiweb::ProcessorFactory f;
 		f.target = "configfile";
-		f.format = "jsonp";
+		f.format = "json";
 		f.outfile = "";
 		std::auto_ptr<arkiweb::Processor> p(f.create());
-		p->process();
+
+		std::cout << cgicc::HTTPContentHeader("application/json");
+		if (datasets.size() > 0)
+			p->process(arkiweb::configfile(datasets));
+		else
+			p->process(arkiweb::configfile());
 
   } catch (const std::exception &e) {
     std::cout << cgicc::HTTPStatusHeader(500, "ERROR");

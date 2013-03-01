@@ -29,7 +29,6 @@ namespace arkiweb {
 
 ProcessorFactory::ProcessorFactory() {
 		m_emitter = NULL;
-		m_configfile = arkiweb::configfile();
 }
 ProcessorFactory::~ProcessorFactory() {
 	delete m_emitter;
@@ -42,18 +41,16 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp") {
 			m_emitter = new arkiweb::emitter::JSONP(std::cout);
 		}
-		return new processor::ConfigFileEmitter(m_configfile, *m_emitter);
+		return new processor::ConfigFileEmitter(*m_emitter);
 	}
 	throw wibble::exception::Generic("unsupported processor target: " + target);
 }
 
 namespace processor {
 
-ConfigFileEmitter::ConfigFileEmitter(const arki::ConfigFile& cfg,
-																		 arki::Emitter& emitter)
-		: cfg(cfg), emitter(emitter) {}
+ConfigFileEmitter::ConfigFileEmitter(arki::Emitter& emitter) : emitter(emitter) {}
 
-void ConfigFileEmitter::process() {
+void ConfigFileEmitter::process(const arki::ConfigFile& cfg) {
 	emitter.start_list();
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i)

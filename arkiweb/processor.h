@@ -27,13 +27,12 @@
 namespace arkiweb {
 
 struct Processor {
-	virtual void process() = 0;
+	virtual void process(const arki::ConfigFile& cfg) = 0;
 };
 
 class ProcessorFactory {
  private:
 	arki::Emitter* m_emitter;
-	arki::ConfigFile m_configfile;
 
  public:
 	// "configfile", "summary", "data" (default: "configfile")
@@ -58,9 +57,8 @@ class ConfigFileEmitter : public Processor {
  protected:
 	void emit(const arki::ConfigFile& c);
  public:
-	ConfigFileEmitter(const arki::ConfigFile& cfg,
-										arki::Emitter& emitter);
-	virtual void process();
+	ConfigFileEmitter(arki::Emitter& emitter);
+	virtual void process(const arki::ConfigFile& cfg);
 };
 
 }
