@@ -1,7 +1,7 @@
 /*
  * configfile - configuration file
  *
- * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2011,2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,17 +49,15 @@ arki::ConfigFile configfile() {
   return cfg;
 }
 
-arki::ConfigFile configfile(const std::vector<std::string> &datasets) {
+arki::ConfigFile configfile(const std::set<std::string>& datasets) {
   arki::ConfigFile cfg = configfile();
-  arki::ConfigFile res;
 
-  for (std::vector<std::string>::const_iterator i = datasets.begin();
-       i != datasets.end(); ++i) {
-    arki::ConfigFile *c = cfg.section(*i);
-    if (c)
-      res.mergeInto(*i, *c);
-  }
-  return res;
+	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
+			 i != cfg.sectionEnd(); ++i) {
+		if (datasets.find(i->first) == datasets.end())
+			cfg.deleteSection(i->first);
+	}
+  return cfg;
 }
 
 }
