@@ -34,33 +34,30 @@ namespace emitter {
  */
 class JSONP : public arki::emitter::JSON {
  private:
-	std::string jsonp;
-	bool m_started;
+	std::string m_jsonp;
  protected:
-	void start() {
-		if (!m_started) {
-			out << jsonp << "(";
-			m_started = true;
-		}
-	}
-	void end() {
-		start();
-		out << ")";
-	}
+	virtual void start_jsonp();
+	virtual void end_jsonp();
  public:
-	JSONP(std::ostream& out, const std::string& jsonp="jsonp")
-			: arki::emitter::JSON(out), jsonp(jsonp), m_started(false) {}
-	virtual ~JSONP() {
-		end();
-	}
-	virtual void start_list() {
-		start();
-		JSON::start_list();
-	}
-	virtual void start_mapping() {
-		start();
-		JSON::start_mapping();
-	}
+	JSONP(std::ostream& out, const std::string& jsonp="jsonp");
+	virtual ~JSONP();
+
+	virtual void start_list();
+	virtual void end_list();
+
+	virtual void start_mapping();
+	virtual void end_mapping();
+
+	virtual void add_null();
+	virtual void add_bool(bool val);
+	virtual void add_int(long long int val);
+	virtual void add_double(double val);
+	virtual void add_string(const std::string& val);
+
+	virtual void add_break();
+	virtual void add_raw(const std::string& val);
+	virtual void add_raw(const wibble::sys::Buffer& val);
+
 };
 
 }

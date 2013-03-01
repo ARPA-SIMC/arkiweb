@@ -13,6 +13,7 @@ libarkiweb_la_SOURCES = \
 			configfile.h \
 			data.cc \
 			data.h \
+			emitter.cc \
 			emitter.h \
 			fields.cc \
 			fields.h \
