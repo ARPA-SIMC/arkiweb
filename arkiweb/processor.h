@@ -77,6 +77,15 @@ class FieldsEmitter : public Processor {
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
 
-}
+class BinaryDataEmitter : public Processor {
+ private:
+	std::ostream& out;
 
+ public:
+	BinaryDataEmitter(std::ostream& out);
+
+	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
+};
+
+}
 }
