@@ -44,6 +44,7 @@ int main() {
 		}
 		arki::ConfigFile config;
 		arkiweb::utils::setToDefault(config, datasets);
+		arkiweb::authorization::User::get().remove_unallowed(config);
 
 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
 
@@ -53,11 +54,6 @@ int main() {
 			std::cout << cgicc::HTTPStatusHeader(400,
 																					 "Only one dataset[] value is allowed "
 																					 "when postprocess parameter is set ");
-			return 0;
-		}
-
-		if (!arkiweb::authorization::User::get().is_allowed(matcher, config)) {
-			std::cout << cgicc::HTTPStatusHeader(403, "");
 			return 0;
 		}
 
