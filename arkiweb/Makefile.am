@@ -9,8 +9,6 @@ libarkiweb_la_LIBADD = \
 libarkiweb_la_SOURCES = \
 			authorization.cc \
 			authorization.h \
-			data.cc \
-			data.h \
 			emitter.cc \
 			emitter.h \
 			encoding.cc \
