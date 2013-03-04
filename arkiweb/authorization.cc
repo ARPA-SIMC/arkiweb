@@ -72,6 +72,10 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 		return false;
 	return true;
 }
+void User::remove_unallowed(arki::ConfigFile& cfg) const {
+	arki::runtime::Restrict rest(m_name);
+	rest.remove_unallowed(cfg);
+}
 
 }
 }
