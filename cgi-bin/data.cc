@@ -47,6 +47,8 @@ int main() {
 
 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
 
+		std::string postprocess = cgi("postprocess");
+
 		if (!arkiweb::authorization::User::get().is_allowed(matcher, config)) {
 			std::cout << cgicc::HTTPStatusHeader(403, "");
 			return 0;
@@ -55,6 +57,7 @@ int main() {
 		arkiweb::ProcessorFactory f;
 		f.target = "data";
 		f.outfile = "";
+		f.postprocess = postprocess;
 		std::auto_ptr<arkiweb::Processor> p(f.create());
 
 		std::cout << cgicc::HTTPContentHeader("application/binary");

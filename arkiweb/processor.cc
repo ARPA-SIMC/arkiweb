@@ -60,7 +60,9 @@ Processor* ProcessorFactory::create() {
 			throw wibble::exception::Generic("unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
 	} else if (target == "data") {
-		return new processor::BinaryDataEmitter(std::cout);
+		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter(std::cout);
+		bde->postprocess = postprocess;
+		return bde;
 	}
 	throw wibble::exception::Generic("unsupported target: " + target);
 }
@@ -125,7 +127,11 @@ BinaryDataEmitter::BinaryDataEmitter(std::ostream& out) : out(out) {}
 
 void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
 	arki::dataset::ByteQuery q;
-	q.setData(query);
+	if (postprocess.empty()) {
+		q.setData(query);
+	} else {
+		q.setPostprocess(query, postprocess);
+	}
 	arki::dataset::AutoMerged(cfg).queryBytes(q, out);
 }
 
