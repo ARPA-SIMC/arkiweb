@@ -67,6 +67,16 @@ class SummaryEmitter : public Processor {
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
 
+class FieldsEmitter : public Processor {
+ private:
+	arki::Emitter* emitter;
+ public:
+	FieldsEmitter(arki::Emitter* emitter);
+	~FieldsEmitter();
+
+	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
+};
+
 }
 
 }

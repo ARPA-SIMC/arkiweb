@@ -50,6 +50,14 @@ Processor* ProcessorFactory::create() {
 		else
 			throw wibble::exception::Generic("unsupported format: " + format);
 		return new processor::SummaryEmitter(emitter.release());
+	} else if (target == "fields") {
+		if (format == "json")
+			emitter.reset(new arki::emitter::JSON(std::cout));
+		else if (format == "jsonp")
+			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
+		else
+			throw wibble::exception::Generic("unsupported format: " + format);
+		return new processor::FieldsEmitter(emitter.release());
 	}
 	throw wibble::exception::Generic("unsupported target: " + target);
 }
@@ -91,6 +99,23 @@ void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& q
 		summary.add(s);
 	}
 	arkiweb::encoding::BaseEncoder(*emitter).encode(summary);
+}
+
+FieldsEmitter::FieldsEmitter(arki::Emitter* emitter) : emitter(emitter) {}
+FieldsEmitter::~FieldsEmitter() {
+	delete emitter;
+}
+
+void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
+	arki::Summary summary;
+	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
+			 i != cfg.sectionEnd(); ++i) {
+		arki::Summary s;
+		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
+		ds->querySummary(query, s);
+		summary.add(s);
+	}
+	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
 }
 
 }
