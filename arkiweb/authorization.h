@@ -42,7 +42,7 @@ class User {
 
 	std::string name() const;
 	bool is_allowed_dataset(const arki::ConfigFile& cfg) const;
-	bool is_allowed(const std::string& query, const arki::ConfigFile& cfg) const;
+	bool is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg) const;
 };
 
 }

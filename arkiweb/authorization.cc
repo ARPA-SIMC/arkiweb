@@ -51,12 +51,11 @@ bool User::is_allowed_dataset(const arki::ConfigFile& cfg) const {
 	arki::runtime::Restrict rest(m_name);
 	return rest.is_allowed(cfg);
 }
-bool User::is_allowed(const std::string& query, const arki::ConfigFile& cfg) const {
+bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg) const {
 	if (m_name.empty())
 		return true;
 
 	arki::Summary summary;
-	arki::Matcher matcher = arki::Matcher::parse(query);
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i) {
 		const arki::ConfigFile& c = *i->second;

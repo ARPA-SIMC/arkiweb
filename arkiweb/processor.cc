@@ -23,6 +23,7 @@
 
 #include <arki/summary.h>
 #include <arki/dataset.h>
+#include <arki/dataset/merged.h>
 #include <arki/emitter/json.h>
 
 #include <arkiweb/emitter.h>
@@ -58,6 +59,8 @@ Processor* ProcessorFactory::create() {
 		else
 			throw wibble::exception::Generic("unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
+	} else if (target == "data") {
+		return new processor::BinaryDataEmitter(std::cout);
 	}
 	throw wibble::exception::Generic("unsupported target: " + target);
 }
@@ -116,6 +119,14 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 		summary.add(s);
 	}
 	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
+}
+
+BinaryDataEmitter::BinaryDataEmitter(std::ostream& out) : out(out) {}
+
+void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
+	arki::dataset::ByteQuery q;
+	q.setData(query);
+	arki::dataset::AutoMerged(cfg).queryBytes(q, out);
 }
 
 }
