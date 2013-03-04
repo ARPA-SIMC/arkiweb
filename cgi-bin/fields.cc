@@ -1,7 +1,7 @@
 /*
  * fields - web service for fields
  *
- * Copyright (C) 2011  ARPA-SIM <urpsim@smr.arpa.emr.it>
+ * Copyright (C) 2011,2013  ARPA-SIM <urpsim@smr.arpa.emr.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,40 +20,41 @@
  * Author: Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
  */
 #include <iostream>
+#include <memory>
 #include <cgicc/Cgicc.h>
 #include <cgicc/HTTPStatusHeader.h>
 #include <cgicc/HTTPContentHeader.h>
-#include <arkiweb/utils.h>
-#include <arkiweb/fields.h>
-#include <arki/emitter/json.h>
 #include <arki/runtime.h>
+#include <arkiweb/utils.h>
+#include <arkiweb/processor.h>
+
 int main() {
-  try {
-    arki::runtime::init();
+	try {
+		arki::runtime::init();
+
     cgicc::Cgicc cgi;
 
-    std::vector<cgicc::FormEntry> forms;
-    cgi.getElement("datasets[]", forms);
-    std::set<std::string> datasets;
-    for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
-         i != forms.end(); ++i) {
-      datasets.insert((*i).getValue());
-    }
+		std::vector<cgicc::FormEntry> forms;
+		cgi.getElement("datasets[]", forms);
+		std::set<std::string> datasets;
+		for (std::vector<cgicc::FormEntry>::const_iterator i = forms.begin();
+				 i != forms.end(); ++i) {
+			datasets.insert((*i).getValue());
+		}
 		arki::ConfigFile config;
-		if (datasets.size() > 0)
-			arkiweb::utils::setToDefault(config, datasets);
-		else
-			arkiweb::utils::setToDefault(config);
-    
-    std::string query = cgi("query");
+		arkiweb::utils::setToDefault(config, datasets);
 
-    arki::emitter::JSON emitter(std::cout);
+		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
 
-    arkiweb::fields::Printer printer(config, emitter, query);
+		arkiweb::ProcessorFactory f;
+		f.target = "fields";
+		f.format = "json";
+		f.outfile = "";
+		std::auto_ptr<arkiweb::Processor> p(f.create());
 
-    std::cout << cgicc::HTTPContentHeader("application/json");
+		std::cout << cgicc::HTTPContentHeader("application/json");
+		p->process(config, matcher);
 
-    printer.print();
   } catch (const std::exception &e) {
     std::cout << cgicc::HTTPStatusHeader(500, "ERROR");
     std::cerr << e.what() << std::endl;

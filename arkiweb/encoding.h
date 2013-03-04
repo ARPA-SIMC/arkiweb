@@ -38,16 +38,22 @@ namespace encoding {
 
 // Base encoder
 class BaseEncoder : public Encoder {
- private:
-	arki::Emitter& emitter;
-	
  protected:
+	arki::Emitter& emitter;
+
 	virtual void encode(arki::ConfigFile::const_section_iterator& i);
 
  public:
 	BaseEncoder(arki::Emitter& emitter);
 
 	virtual void encode(const arki::ConfigFile& config);
+	virtual void encode(const arki::Summary& sum);
+};
+
+// Reimplements the summary encoder
+class FieldsEncoder : public BaseEncoder {
+ public:
+	FieldsEncoder(arki::Emitter& emitter);
 	virtual void encode(const arki::Summary& sum);
 };
 
