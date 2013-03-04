@@ -39,9 +39,12 @@ User User::get(const std::string& name) {
 }
 User User::get() {
 	char *x = ::getenv(ARKIWEB_RESTRICT_VAR);
-
-	std::string name = ( x == NULL ? "" : x);
-
+	std::string name;
+	if (x) {
+		char *y = ::getenv(x);
+		if (y)
+			name.assign(y);
+	}
 	return User::get(name);
 }
 
