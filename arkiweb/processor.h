@@ -39,6 +39,8 @@ class ProcessorFactory {
 	std::string format;
 	// empty or "-" for stdout (default: "")
 	std::string outfile;
+	// if empty, print data (default: "")
+	std::string postprocess;
 
 	ProcessorFactory();
 	~ProcessorFactory();
@@ -82,6 +84,8 @@ class BinaryDataEmitter : public Processor {
 	std::ostream& out;
 
  public:
+	std::string postprocess;
+
 	BinaryDataEmitter(std::ostream& out);
 
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
