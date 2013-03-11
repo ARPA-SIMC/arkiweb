@@ -106,8 +106,9 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 					 i != md.end(); ++i) {
 				if (!i->defined()) continue;
 				fields[(*i)->tag()].insert(*i);
-				statistics.merge(*stats);
 			}
+			statistics.merge(*stats);
+			return true;
 		}
 	} merger;
 
