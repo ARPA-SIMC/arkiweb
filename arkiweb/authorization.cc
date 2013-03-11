@@ -31,21 +31,31 @@ namespace authorization {
 
 User::User() : m_name(""), m_maxcount(0), m_maxsize(0) {}
 
-User User::get(const std::string& name) {
-	User u;
-	u.m_name = name;
-#warning TODO maxcount, maxsize and matcher filter implementation
-	return u;
-}
 User User::get() {
-	char *x = ::getenv(ARKIWEB_RESTRICT_VAR);
-	std::string name;
+	User u;
+	char* x = NULL, *y = NULL;
+	// Restrict
+	x = ::getenv(ARKIWEB_RESTRICT_VAR);
 	if (x) {
-		char *y = ::getenv(x);
+		y = ::getenv(x);
 		if (y)
-			name.assign(y);
+			u.m_name = y;
 	}
-	return User::get(name);
+	// Maxcount
+	x = ::getenv(ARKIWEB_MAXCOUNT_VAR);
+	if (x) {
+		y = ::getenv(x);
+		if (y)
+			u.m_maxcount = strtoull(y, NULL, 10);
+	}
+	// Maxsize
+	x = ::getenv(ARKIWEB_MAXSIZE_VAR);
+	if (x) {
+		y = ::getenv(x);
+		if (y)
+			u.m_maxsize = strtoull(y, NULL, 10);
+	}
+	return u;
 }
 
 std::string User::name() const { return m_name; }
