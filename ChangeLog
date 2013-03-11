@@ -1,4 +1,6 @@
-2012-02-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+2013-03-11 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: version 0.9
+2013-02-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.8
 	* arkiweb/authorization.{h,cc}: auth module
 	* arkiweb/data.{h,cc}: data service
