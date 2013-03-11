@@ -48,6 +48,12 @@ int main() {
 
 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
 
+		if (!arkiweb::authorization::User::get().is_allowed(matcher, config)) {
+			std::cout << cgicc::HTTPStatusHeader(403,
+																					 "Forbidden request");
+			return 0;
+		}
+
 		std::string postprocess = cgi("postprocess");
 
 		if (!postprocess.empty() && datasets.size() > 1) {
