@@ -23,6 +23,8 @@
 #include <arki/matcher.h>
 
 #define ARKIWEB_RESTRICT_VAR "ARKIWEB_RESTRICT"
+#define ARKIWEB_MAXCOUNT_VAR "ARKIWEB_MAXCOUNT"
+#define ARKIWEB_MAXSIZE_VAR  "ARKIWEB_MAXSIZE"
 
 namespace arkiweb {
 
@@ -37,7 +39,6 @@ class User {
 	User();
 
  public:
-	static User get(const std::string& name);
 	static User get();
 
 	std::string name() const;
