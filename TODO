@@ -2,4 +2,4 @@
 * Javascript: message in fields pane when is empty
 * Javascript: help in every pane
 * README is obsolete
-* auth: count & size limits + query domain
+* auth: restrict based on matcher
