@@ -28,6 +28,4 @@ arkiweb_test_LDADD = \
 		     -larkimet
 
 arkiweb_test_SOURCES = \
-		       arkiweb-test.cc \
-		       configfile-tut.cc \
-		       processor-tut.cc
+		       arkiweb-test.cc
