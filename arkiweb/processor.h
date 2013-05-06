@@ -49,7 +49,7 @@ class ProcessorFactory {
 };
 
 namespace processor {
-
+/// Emit configfile
 class ConfigFileEmitter : public Processor {
  private:
 	arki::Emitter* emitter;
@@ -58,7 +58,7 @@ class ConfigFileEmitter : public Processor {
 	~ConfigFileEmitter();
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
-
+/// Emit summary
 class SummaryEmitter : public Processor {
  private:
 	arki::Emitter* emitter;
@@ -68,7 +68,7 @@ class SummaryEmitter : public Processor {
 
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
-
+/// Emit fields (summary collapsed on metadata)
 class FieldsEmitter : public Processor {
  private:
 	arki::Emitter* emitter;
@@ -78,7 +78,7 @@ class FieldsEmitter : public Processor {
 
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
-
+/// Emit data
 class BinaryDataEmitter : public Processor {
  private:
 	std::ostream& out;
