@@ -21,6 +21,7 @@ Makefile
 /public/lib
 /public/arkiweb/templates/*.js
 /public/arkiweb/config.js
+/embedded/cgicc/cgicc/CgiDefs.h
 /cgicc
 /cgi-bin/summary
 /cgi-bin/fields
