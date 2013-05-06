@@ -30,7 +30,7 @@ namespace arkiweb {
 namespace emitter {
 
 /**
- * JSONP emitter, works only when the object starts with mapping or list.
+ * JSONP emitter
  */
 class JSONP : public arki::emitter::JSON {
  private:
