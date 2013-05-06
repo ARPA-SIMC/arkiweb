@@ -1,6 +1,7 @@
 * Javascript: error handler in summary view
 * Javascript: message in fields pane when is empty
 * Javascript: help in every pane
+* Javascript: remove node.js dependencies
 * README is obsolete
 * auth: restrict based on matcher
 * postprocess client side
