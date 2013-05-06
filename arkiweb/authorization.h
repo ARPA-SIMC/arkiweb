@@ -30,20 +30,39 @@ namespace arkiweb {
 
 namespace authorization {
 
+/**
+ * User class for authorization
+ *
+ * A user has a unique name and some permissions on data download.
+ */
 class User {
  private:
+    /// user name
 	std::string m_name;
+    /// max number of downloaded data
 	size_t m_maxcount;
+    /// max size of downloaded data
 	unsigned long long m_maxsize;
 
 	User();
 
  public:
+    /**
+     * User factory
+     *
+     * The user is created from the environment variables
+     * `ARKIWEB_RESTRICT_VAR`, `ARKIWEB_MAXCOUNT_VAR` and
+     * `ARKIWEB_MAXSIZE_VAR`. These variables point to variables
+     * containing the values for the user members.
+     */
 	static User get();
 
 	std::string name() const;
+    /// Return true if the dataset is allowed for this user
 	bool is_allowed_dataset(const arki::ConfigFile& cfg) const;
+    /// Return true if the query against the configfile is allowed
 	bool is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg) const;
+    /// Remove unallowed datasets from configfile
 	void remove_unallowed(arki::ConfigFile& cfg) const;
 };
 
