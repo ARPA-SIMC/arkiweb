@@ -54,14 +54,19 @@ void BaseEncoder::encode(arki::ConfigFile::const_section_iterator& i) {
 }
 
 void BaseEncoder::encode(const arki::ConfigFile& config) {
+    emitter.start_mapping();
+    emitter.add("datasets");
 	emitter.start_list();
 	for (arki::ConfigFile::const_section_iterator i = config.sectionBegin();
 			 i != config.sectionEnd(); ++i) {
 		encode(i);
 	}
 	emitter.end_list();
+    emitter.end_mapping();
 }
 void BaseEncoder::encode(const arki::Summary& sum) {
+    emitter.start_mapping();
+    emitter.add("summary");
 	emitter.start_list();
 
 	struct Serialiser : public arki::summary::Visitor {
@@ -91,6 +96,7 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 	} serialiser(emitter);
 	sum.visit(serialiser);
 	emitter.end_list();
+    emitter.end_mapping();
 }
 
 FieldsEncoder::FieldsEncoder(arki::Emitter& emitter): BaseEncoder(emitter) {}

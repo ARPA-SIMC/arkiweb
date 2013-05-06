@@ -1,3 +1,9 @@
+2013-05-06 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: version 0.11
+	* arkiweb/encoding.cc: changed JSON encoding for configfile and
+	summary
+	* public/arkiweb/collections/datasets.js: changed class to reflect
+	changes on response
 2013-03-11 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.9
 2013-02-27 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
