@@ -15,5 +15,5 @@
 		}
 	});
 
-	this.arkiweb.postprocessors.seriet = JsonPostproc;
+	this.arkiweb.postprocessors.json = JsonPostproc;
 }());
