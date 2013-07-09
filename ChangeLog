@@ -1,3 +1,7 @@
+2013-07-09 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* configure.ac: version 0.12
+	* public/Makefile.am: json postprocessor in dist
+	* public/arkiweb/postprocessors/json.js: JSON postprocessor
 2013-05-06 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.11
 	* arkiweb/encoding.cc: changed JSON encoding for configfile and
