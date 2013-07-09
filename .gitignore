@@ -21,6 +21,9 @@ Makefile
 /public/lib
 /public/arkiweb/templates/*.js
 /public/arkiweb/config.js
+/public/arkiweb.min.js
+/public/arkiweb.js
+/public/arkiweb.css
 /embedded/cgicc/cgicc/CgiDefs.h
 /cgicc
 /cgi-bin/summary
