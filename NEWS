@@ -1,5 +1,14 @@
 = NEWS
 
+== version 0.13 - 2013-07-11 edigiacomo@arpa.emr.it
+
+* New environment variable ARKIWEB_FILTER: when set, arkiweb read the variable
+  associated to it and filter the response before sending it to the client. The
+  filter uses the syntax of the arkimet queries.
+  For example, if the users are allowed to see only the analysis of the temperature:
+    SetEnv ARKIWEB_FILTER MYFILTER
+    SetEnv MYFILTER "product: GRIB1,200,2,11; timerange: GRIB1,0,0h,0h"
+
 == version 0.12 - 2013-07-09 edigiacomo@arpa.emr.it
 
 * json postprocessor widget
