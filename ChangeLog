@@ -1,3 +1,12 @@
+2013-07-11 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* arkiweb/authorization.h (User::get_filter): filter operation.
+	* arkiweb/authorization.cc (User::get): read ARKIWEB_FILTER
+	environment variable.
+	(User::get_filter): filter operation.
+	(User::is_allowed): filter operation.
+	* arkiweb/processor.cc (SummaryEmitter::process): filter summary.
+	(FieldsEmitter::process): filter summary.
+	(BinaryDataEmitter::process): filter metadata
 2013-07-09 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.12
 	* public/Makefile.am: json postprocessor in dist
