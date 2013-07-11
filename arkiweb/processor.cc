@@ -45,7 +45,8 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-			throw wibble::exception::Generic("unsupported format: " + format);
+            throw wibble::exception::Consistency("while creating processor",
+                                                 "unsupported format: " + format);
 		return new processor::ConfigFileEmitter(emitter.release());
 	} else if (target == "summary") {
 		if (format == "json")
@@ -53,7 +54,8 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-			throw wibble::exception::Generic("unsupported format: " + format);
+			throw wibble::exception::Consistency("while creating processor",
+                                                 "unsupported format: " + format);
 		return new processor::SummaryEmitter(emitter.release());
 	} else if (target == "fields") {
 		if (format == "json")
@@ -61,14 +63,16 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-			throw wibble::exception::Generic("unsupported format: " + format);
+			throw wibble::exception::Consistency("while creating processor",
+                                                 "unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
 	} else if (target == "data") {
 		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter(std::cout);
 		bde->postprocess = postprocess;
 		return bde;
 	}
-	throw wibble::exception::Generic("unsupported target: " + target);
+    throw wibble::exception::Consistency("while creating processor",
+                                         "unsupported target: " + target);
 }
 
 namespace processor {

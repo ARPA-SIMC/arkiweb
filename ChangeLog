@@ -6,7 +6,8 @@
 	(User::is_allowed): filter operation.
 	* arkiweb/processor.cc (SummaryEmitter::process): filter summary.
 	(FieldsEmitter::process): filter summary.
-	(BinaryDataEmitter::process): filter metadata
+	(BinaryDataEmitter::process): filter metadata.
+	(ProcessorFactory::create): Consistency exception instead of Generic.
 2013-07-09 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* configure.ac: version 0.12
 	* public/Makefile.am: json postprocessor in dist
