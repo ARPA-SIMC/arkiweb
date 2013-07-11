@@ -25,6 +25,7 @@
 #define ARKIWEB_RESTRICT_VAR "ARKIWEB_RESTRICT"
 #define ARKIWEB_MAXCOUNT_VAR "ARKIWEB_MAXCOUNT"
 #define ARKIWEB_MAXSIZE_VAR  "ARKIWEB_MAXSIZE"
+#define ARKIWEB_FILTER_VAR "ARKIWEB_FILTER"
 
 namespace arkiweb {
 
@@ -43,6 +44,8 @@ class User {
 	size_t m_maxcount;
     /// max size of downloaded data
 	unsigned long long m_maxsize;
+    /// filter
+    std::string m_filter;
 
 	User();
 
@@ -64,6 +67,8 @@ class User {
 	bool is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg) const;
     /// Remove unallowed datasets from configfile
 	void remove_unallowed(arki::ConfigFile& cfg) const;
+    /// Return filter matcher
+    arki::Matcher get_filter() const;
 };
 
 }

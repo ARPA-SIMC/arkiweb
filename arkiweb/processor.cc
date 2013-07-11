@@ -25,9 +25,13 @@
 #include <arki/dataset.h>
 #include <arki/dataset/merged.h>
 #include <arki/emitter/json.h>
+#include <arki/metadata/consumer.h>
+#include <arki/utils/dataset.h>
+#include <arki/postprocess.h>
 
 #include <arkiweb/emitter.h>
 #include <arkiweb/encoding.h>
+#include <arkiweb/authorization.h>
 
 namespace arkiweb {
 
@@ -103,7 +107,9 @@ void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& q
 		ds->querySummary(query, s);
 		summary.add(s);
 	}
-	arkiweb::encoding::BaseEncoder(*emitter).encode(summary);
+    using authorization::User;
+    arki::Summary filtered_summary = summary.filter(User::get().get_filter());
+	arkiweb::encoding::BaseEncoder(*emitter).encode(filtered_summary);
 }
 
 FieldsEmitter::FieldsEmitter(arki::Emitter* emitter) : emitter(emitter) {}
@@ -120,7 +126,9 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 		ds->querySummary(query, s);
 		summary.add(s);
 	}
-	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
+    using authorization::User;
+    arki::Summary filtered_summary = summary.filter(User::get().get_filter());
+	arkiweb::encoding::FieldsEncoder(*emitter).encode(filtered_summary);
 }
 
 BinaryDataEmitter::BinaryDataEmitter(std::ostream& out) : out(out) {}
@@ -132,7 +140,35 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 	} else {
 		q.setPostprocess(query, postprocess);
 	}
-	arki::dataset::AutoMerged(cfg).queryBytes(q, out);
+    using authorization::User;
+    switch (q.type) {
+        case arki::dataset::ByteQuery::BQ_DATA: {
+            arki::dataset::AutoMerged ds(cfg);
+            arki::utils::ds::DataOnly dataonly(out);
+            arki::utils::ds::DataStartHookRunner dshr(dataonly, q.data_start_hook);
+            arki::Matcher m = User::get().get_filter();
+            arki::metadata::FilteredConsumer fc(m, dshr);
+            ds.queryData(q, fc);
+            break;
+        }
+        case arki::dataset::ByteQuery::BQ_POSTPROCESS: {
+            arki::dataset::AutoMerged ds(cfg);
+            arki::Postprocess postproc(q.param);
+            postproc.set_output(out);
+            postproc.validate(ds.cfg);
+            postproc.set_data_start_hook(q.data_start_hook);
+            postproc.start();
+            arki::Matcher m = User::get().get_filter();
+            arki::metadata::FilteredConsumer fc(m, postproc);
+            ds.queryData(q, fc);
+            postproc.flush();
+            break;
+        }
+        default:
+            throw wibble::exception::Consistency("While retrieving data",
+                                                 "Unsupported operation");
+
+    }
 }
 
 }

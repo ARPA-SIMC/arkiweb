@@ -55,6 +55,13 @@ User User::get() {
 		if (y)
 			u.m_maxsize = strtoull(y, NULL, 10);
 	}
+    // Filter
+    x = ::getenv(ARKIWEB_FILTER_VAR);
+    if (x) {
+        y = ::getenv(x);
+        if (y)
+            u.m_filter = y;
+    }
 	return u;
 }
 
@@ -79,15 +86,19 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 		ds->querySummary(matcher, s);
 		summary.add(s);
 	}
-	if (m_maxcount > 0 && summary.count() > m_maxcount)
+    arki::Summary filtered_summary = summary.filter(get_filter());
+	if (m_maxcount > 0 && filtered_summary.count() > m_maxcount)
 		return false;
-	if (m_maxsize > 0 && summary.size() > m_maxsize)
+	if (m_maxsize > 0 && filtered_summary.size() > m_maxsize)
 		return false;
 	return true;
 }
 void User::remove_unallowed(arki::ConfigFile& cfg) const {
 	arki::runtime::Restrict rest(m_name);
 	rest.remove_unallowed(cfg);
+}
+arki::Matcher User::get_filter() const {
+    return arki::Matcher::parse(m_filter);
 }
 
 }
