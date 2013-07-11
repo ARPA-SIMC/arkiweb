@@ -3,5 +3,6 @@
 * Javascript: help in every pane
 * Javascript: remove node.js dependencies
 * README is obsolete
-* auth: restrict based on matcher
 * postprocess client side
+* Clean the code: use queryData instead of querySummary (for authorization
+  purposes)
