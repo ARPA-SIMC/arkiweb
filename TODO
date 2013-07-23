@@ -1,8 +1,5 @@
-* Javascript: error handler in summary view
-* Javascript: message in fields pane when is empty
 * Javascript: help in every pane
 * Javascript: remove node.js dependencies
 * README is obsolete
-* postprocess client side
 * Clean the code: use queryData instead of querySummary (for authorization
   purposes)
