@@ -1,5 +1,4 @@
 * Javascript: help in every pane
 * Javascript: remove node.js dependencies
 * README is obsolete
-* Clean the code: use queryData instead of querySummary (for authorization
-  purposes)
+* Clean the code: user querymacro to filter summary results (auth)
