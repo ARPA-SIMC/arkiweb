@@ -1,5 +1,10 @@
 = NEWS
 
+== version 0.14 - 2013-07-30 edigiacomo@arpa.emr.it
+
+* When ARKIWEB_FILTER is set, querymacro simpleauth is used (it must be
+  installed on the server)
+
 == version 0.13 - 2013-07-11 edigiacomo@arpa.emr.it
 
 * New environment variable ARKIWEB_FILTER: when set, arkiweb read the variable
