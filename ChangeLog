@@ -1,3 +1,6 @@
+2013-07-30 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* arkiweb/processor.cc (BinaryDataEmitter::process): querymacro for
+	auth filter
 2013-07-11 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* arkiweb/authorization.h (User::get_filter): filter operation.
 	* arkiweb/authorization.cc (User::get): read ARKIWEB_FILTER

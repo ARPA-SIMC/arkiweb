@@ -28,6 +28,7 @@
 #include <arki/metadata/consumer.h>
 #include <arki/utils/dataset.h>
 #include <arki/postprocess.h>
+#include <arki/runtime.h>
 
 #include <arkiweb/emitter.h>
 #include <arkiweb/encoding.h>
@@ -145,33 +146,22 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 		q.setPostprocess(query, postprocess);
 	}
     using authorization::User;
-    switch (q.type) {
-        case arki::dataset::ByteQuery::BQ_DATA: {
-            arki::dataset::AutoMerged ds(cfg);
-            arki::utils::ds::DataOnly dataonly(out);
-            arki::utils::ds::DataStartHookRunner dshr(dataonly, q.data_start_hook);
-            arki::Matcher m = User::get().get_filter();
-            arki::metadata::FilteredConsumer fc(m, dshr);
-            ds.queryData(q, fc);
-            break;
+    if (User::get().get_filter().empty()) {
+        arki::dataset::AutoMerged(cfg).queryBytes(q, out);
+    } else {
+        for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
+             i != cfg.sectionEnd(); ++i) {
+            std::string qmacro = wibble::str::fmtf("dataset:%s. query:%s. filter:%s.\n",
+                                                   i->second->value("name").c_str(),
+                                                   query.toString().c_str(),
+                                                   User::get().get_filter().toString().c_str());
+            arki::ConfigFile c;
+            c.mergeInto(i->first, *i->second);
+            std::auto_ptr<arki::ReadonlyDataset> ds = arki::runtime::make_qmacro_dataset(c,
+                                                                                         "simpleauth",
+                                                                                         qmacro);
+            ds->queryBytes(q, out);
         }
-        case arki::dataset::ByteQuery::BQ_POSTPROCESS: {
-            arki::dataset::AutoMerged ds(cfg);
-            arki::Postprocess postproc(q.param);
-            postproc.set_output(out);
-            postproc.validate(ds.cfg);
-            postproc.set_data_start_hook(q.data_start_hook);
-            postproc.start();
-            arki::Matcher m = User::get().get_filter();
-            arki::metadata::FilteredConsumer fc(m, postproc);
-            ds.queryData(q, fc);
-            postproc.flush();
-            break;
-        }
-        default:
-            throw wibble::exception::Consistency("While retrieving data",
-                                                 "Unsupported operation");
-
     }
 }
 
