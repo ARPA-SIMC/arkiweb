@@ -1,10 +1,9 @@
-Arkiweb
-=======
+= Arkiweb
 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
-version 0.4
+version 0.15
 
-Dependencies
-------------
+== Dependencies
+
 Arkiweb needs the following libraries
 
 * `wibble`:
@@ -23,15 +22,14 @@ following programs:
 * `less`: http://lesscss.org/
 * `uglifyjs`: https://github.com/mishoo/UglifyJS
 
-Web services
-------------
+== Web services
 
 The web services are installed in `$libdir/arkiweb/cgi-bin`.
 
 To install the services under a web server, you must configure it.
 
-Installation of the web services under Apache 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Installation of the web services under Apache
+
 Installation of the web services under 
 `/var/www/arkiweb/services`
 ----
@@ -47,16 +45,15 @@ SetEnv ARKIWEB_CONFIG /etc/arkiweb.config
 ----
 The configuration file is created by `arki-mergeconf`.
 
-Authentication & authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Authentication & authorization
+
 Arkiweb comes with a very simple authorization system. When the global 
 variable `ARKIWEB_RESTRICT` is set, the service looks for the global
 variable `${ARKIWEB_RESTRICT}`. The value of the variable is used for
 restricted access (similar to the `--restrict` option of the arkimet 
 commands).
 
-Example with Apache basic authentication
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.Example with Apache basic authentication
 ----
 # /var/www/arkiweb/services/.htaccess
 ...
@@ -67,8 +64,8 @@ Require valid-user
 SetEnv ARKIWEB_RESTRICT REMOTE_USER
 ----
 
-Website
--------
+== Website
+
 The website is installed under `$datarootdir/arkiweb/public/`.
 
 * `arkiweb.css`: stylesheet
