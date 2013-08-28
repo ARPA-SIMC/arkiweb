@@ -34,9 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/arkiweb/summary
 %{_libdir}/arkiweb/fields
 %{_libdir}/arkiweb/data
-%{_datadir}/arkiweb/public/*
-%{_datadir}/arkiweb/httpd/arkiweb.conf
-
+%{_datadir}/arkiweb/*
 
 %changelog
 * Wed Aug 28 2013 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.15-1%{dist}
