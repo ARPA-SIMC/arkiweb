@@ -7,6 +7,6 @@ EXTRA_DIST = README ChangeLog README.html
 if HAVE_ASCIIDOC
 
 README.html: README
-	asciidoc $^
+	asciidoc -a toc $^
 
 endif

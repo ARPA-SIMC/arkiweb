@@ -22,30 +22,26 @@ following programs:
 * `less`: http://lesscss.org/
 * `uglifyjs`: https://github.com/mishoo/UglifyJS
 
-== Web services
+== Installation
 
-The web services are installed in `$libdir/arkiweb/cgi-bin`.
+----
+$ autoreconf -ifv && ./configure && make
+----
+
+=== Web services installation
+
+The web services are installed in `$libdir/arkiweb`.
 
 To install the services under a web server, you must configure it.
 
-=== Installation of the web services under Apache
+The environment variable `ARKIWEB_CONFIG` is mandatory. Its value is the path
+of the configuration file, created with `arki-mergeconf`.
 
-Installation of the web services under 
-`/var/www/arkiweb/services`
 ----
-# mkdir -p /var/www/arkiweb/services
-# ln -s $libdir/arkiweb/cgi-bin/* /var/www/arkiweb/services/
+include::httpd/arkiweb.conf[]
 ----
 
-The services read the environment variable `ARKIWEB_CONF`, which
-*is mandatory*. You can set it from the `.htacces`:
-----
-# /var/www/arkiweb/services/.htaccess
-SetEnv ARKIWEB_CONFIG /etc/arkiweb.config
-----
-The configuration file is created by `arki-mergeconf`.
-
-=== Authentication & authorization
+==== Authentication & authorization
 
 Arkiweb comes with a very simple authorization system. When the global 
 variable `ARKIWEB_RESTRICT` is set, the service looks for the global
@@ -55,8 +51,6 @@ commands).
 
 .Example with Apache basic authentication
 ----
-# /var/www/arkiweb/services/.htaccess
-...
 AuthType Basic
 AuthName "By Invitation Only"
 AuthUserFile /usr/local/apache/passwd/passwords
@@ -64,14 +58,24 @@ Require valid-user
 SetEnv ARKIWEB_RESTRICT REMOTE_USER
 ----
 
-== Website
+In addition, you can limit the maximum number or size of retrieved items:
+
+----
+# Max 1000 items
+SetEnv ARKIWEB_MAXCOUNT MAXCOUNT
+SetEnv MAXCOUNT 1000
+# Max 1000000 bytes
+SetEnv ARKIWEB_MAXSIZE MAXSIZE
+SetEnv MAXSIZE 1000000
+----
+
+=== Website installation
 
 The website is installed under `$datarootdir/arkiweb/public/`.
 
 * `arkiweb.css`: stylesheet
 * `arkiweb.js`: development version
 * `arkiweb.min.js`: minified version
-* `index.html`: example
 
 You need the following Javascript libraries:
 
@@ -85,5 +89,95 @@ You need the following Javascript libraries:
 * `openlayers`: http://openlayers.org/
 * `strftime`: http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html
 
-You can copy these files in your `www` directory (e.g. `/var/www/arkiweb/`)
-and edit `index.html`. 
+Then, you must configure and run your arkiweb application. Suppose that you
+have you web services under `/cgi-bin/arkiweb` and that you want embed arkiweb
+inside a `<div id="arkiweb">`:
+
+[source,javascript]
+----
+$(document).ready(function() {
+	arkiweb.run({
+		baseUrl: "/cgi-bin/arkiweb",
+		el: "#arkiweb"
+	});
+});
+----
+
+== API
+
+[options="header",cols="m,"]
+|======
+| Name                       | Description
+| <<API_datasets,/datasets>> | Retrieve list of datasets
+| <<API_summary,/summary>>   | Retrieve the summary
+| <<API_fields,/fields>>     | Retrieve list of fields
+| <<API_data,/data>>         | Retrieve the data
+|======
+
+[[API_datasets]]
+=== Get the list of datasets
+
+The `/datasets` returns the list of datasets in `JSON` format.
+
+The parameters are:
+
+- `datasets[]=NAME`: run the service over the dataset with name `NAME`. Can be
+  specified multiple times. If not set, run the service over all the datasets.
+- `query=QUERY`: filter datasets by query. *NOTE*: when `query` is specified,
+  the service could be very slow.
+
+
+The output is a `JSON` object:
+
+----
+{
+  "datasets": [
+    {
+      "id": "lmsmr4x52",
+      "name": "lmsmr4x52",
+      "description": "COSMOI7, Operational suite, v4.21, CI and BC from IFS",
+      "bounding": "POLYGON ((20.6613559288928954 31.7145084340445464, 0.9181226563627547 ... ))",
+      "allowed": true,
+      "postprocess": [
+        "singlepoint",
+        "subarea",
+        "seriet"
+      ]
+    },
+    {
+      ...
+    },
+    ...
+  ]
+}
+----
+
+- `id`: id of the dataset
+- `name`: name of the dataset
+- `description`: description of the dataset
+- `bounding`: bounding box in `WKT` format
+- `allowed`: `true` if the user can download data from this dataset
+- `postprocess`: array with a list of allowed postprocessors
+
+.Examples
+----
+# List all datasets
+$ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data'
+# List all datasets with data for today
+$ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data?query=reftime:=today'
+----
+
+[[API_fields]]
+=== Get the list of fields
+
+*TODO*
+
+[[API_summary]]
+=== Get the summary
+
+*TODO*
+
+[[API_data]]
+=== Get the data
+
+*TODO*
