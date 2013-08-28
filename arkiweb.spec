@@ -30,10 +30,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 %doc %{_docdir}/%{name}
 %defattr(-,root,root,-)
+%dir %{_libdir}/arkiweb
 %{_libdir}/arkiweb/datasets
 %{_libdir}/arkiweb/summary
 %{_libdir}/arkiweb/fields
 %{_libdir}/arkiweb/data
+%dir %{_datadir}/arkiweb
 %{_datadir}/arkiweb/*
 
 %changelog
