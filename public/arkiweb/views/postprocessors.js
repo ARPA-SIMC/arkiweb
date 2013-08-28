@@ -106,6 +106,7 @@
 		},
 		disable: function() {
 			this.postprocessor.deactivate();
+            $(this.el).removeClass("selected");
 			$(this.el).find(".postprocessor-checkbox:checked").attr("checked", false);
 			$(this.el).find(".postprocessor-checkbox").attr("disabled", "disabled");
 		},
