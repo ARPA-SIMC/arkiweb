@@ -1,4 +1,4 @@
-ScriptAlias /arkiweb/services/ @PKGLIBDIR@
+ScriptAlias /services/arkiweb/ @PKGLIBDIR@/
 <Directory "@PKGLIBDIR@">
 	AllowOverride None
 	Options +ExecCGI
