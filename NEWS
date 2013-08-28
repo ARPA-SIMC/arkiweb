@@ -1,5 +1,10 @@
 = NEWS
 
+== version 0.15 - 2013-08-28 edigiacomo@arpa.emr.it
+
+* Fixed a bug in postprocessor checkbox: class ".selected" is removed from the
+  checked postprocessor when it is disabled.
+
 == version 0.14 - 2013-07-30 edigiacomo@arpa.emr.it
 
 * When ARKIWEB_FILTER is set, querymacro simpleauth is used (it must be
