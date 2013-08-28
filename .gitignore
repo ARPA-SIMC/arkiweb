@@ -24,6 +24,7 @@ Makefile
 /public/arkiweb.min.js
 /public/arkiweb.js
 /public/arkiweb.css
+/httpd/arkiweb.conf
 /embedded/cgicc/cgicc/CgiDefs.h
 /cgicc
 /cgi-bin/summary
