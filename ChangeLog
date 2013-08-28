@@ -1,3 +1,6 @@
+2013-08-28 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* public/arkiweb/views/postprocessors.js
+	(PostprocessorContainer.disable): fix a selection bug
 2013-07-30 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* arkiweb/processor.cc (BinaryDataEmitter::process): querymacro for
 	auth filter
