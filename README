@@ -170,14 +170,75 @@ $ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data?query=reftime:=today'
 [[API_fields]]
 === Get the list of fields
 
-*TODO*
+The `/fields` service returns the list of the available fields (metadata) for
+the given datasets and for the (optionally) given query.
+
+The parameters are:
+
+- `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
+  specified multiple times. If not set, the result is empty.
+- `query=QUERY`: filter datasets by query.
+
+The output is a `JSON` object:
+
+----
+{
+  "fields": [
+    {
+      "type": "area",
+      "values": [{...}, {...}]
+    },
+    {
+      "type": "product",
+      "values": [{...}, {...}]
+    }
+  ],
+  "stats": {
+    "b": [
+      2012,
+      6,
+      5,
+      12,
+      0,
+      0
+    ],
+    "e": [
+      2013,
+      9,
+      4,
+      0,
+      0,
+      0
+    ],
+    "c": 5178696,
+    "s": 964376769120
+  }
+}
+----
+
+- `fields`: array with an object for each metadata type
+  - `type`: the metadata type
+  - `values`: array containing the metadata of the given type
+- `stats`:
+  `b`: begin reftime
+  `e`: end reftime
+  `c`: item count
+  `s`: size in bytes
 
 [[API_summary]]
 === Get the summary
 
 *TODO*
 
+
 [[API_data]]
 === Get the data
 
-*TODO*
+The `/data` service returs the data.
+
+The parameters are:
+
+- `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
+  specified multiple times.
+- `query=QUERY`: filter datasets by query.
+- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset cna be specified.
