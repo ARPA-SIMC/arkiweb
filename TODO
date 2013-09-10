@@ -2,3 +2,4 @@
 * Javascript: remove node.js dependencies
 * README is obsolete
 * Clean the code: user querymacro to filter summary results (auth)
+* Summary files
