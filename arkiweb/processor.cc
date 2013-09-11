@@ -87,6 +87,8 @@ void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 	arki::ConfigFile config(cfg);
 	// If the matcher is not empty, then filter datasets
 	if (!query.empty()) {
+        // TODO: query the summary file if exists, otherwise query the dataset
+        // and create it.
 		for (arki::ConfigFile::const_section_iterator i = config.sectionBegin();
 				 i != config.sectionEnd(); ++i) {
 			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
