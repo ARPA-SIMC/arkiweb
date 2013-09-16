@@ -32,7 +32,13 @@
 namespace arkiweb {
 namespace utils {
 
+/**
+ * Create a default ConfigFile
+ */
 void setToDefault(arki::ConfigFile& cfg);
+/**
+ * Create a default ConfigFile, restricted to given datasets
+ */
 void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter);
 
 }
