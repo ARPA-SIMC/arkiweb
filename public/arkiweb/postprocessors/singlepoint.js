@@ -37,7 +37,17 @@
 			this.options.map.addLayer(this.layer);
 		},
 		render: function() {
-			$(this.el).html("lat <input type='text' name='lat'/> lon <input type='text' name='lon'/>");
+			$(this.el).html("lat <input type='text' name='lat'/> \
+                            lon <input type='text' name='lon'/> \
+                            format <select name='format'> \
+                                <option selected value='BUFR'>BUFR</option> \
+                                <option value='CREX'>CREX</option> \
+                                <option value='JSON'>JSON</option> \
+                            </select> \
+                            interpolation <select name='interpolation'> \
+                                <option selected value='bilin'>bilinear</option> \
+                                <option value='near'>nearest point</option> \
+                            </select>");
 		},
 		events: {
 			"change input[type=text]": "onChangeInputCoords"
@@ -66,7 +76,11 @@
 			});
 		},
 		getCommand: function() {
-			return "singlepoint " + $(this.el).find("input[name=lon]").val() + " " + $(this.el).find("input[name=lat]").val();
+			return "singlepoint " +
+                " -f " + $(this.el).find("input[name=format]").val() +
+                " -z " + $(this.el).find("input[name=interpolation]").val() +
+                " " + $(this.el).find("input[name=lon]").val() +
+                " " + $(this.el).find("input[name=lat]").val();
 		}
 	});
 
