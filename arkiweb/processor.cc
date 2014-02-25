@@ -33,6 +33,7 @@
 #include <arkiweb/emitter.h>
 #include <arkiweb/encoding.h>
 #include <arkiweb/authorization.h>
+#include <arkiweb/utils.h>
 
 namespace arkiweb {
 
@@ -93,7 +94,7 @@ void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 				 i != cfg.sectionEnd(); ++i) {
 			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
 			arki::Summary summary;
-			ds->querySummary(query, summary);
+            utils::query_cached_summary(i->first, *ds, query, summary);
 			if (summary.count() > 0)
 			    config.mergeInto(i->first, *i->second);
 		}
