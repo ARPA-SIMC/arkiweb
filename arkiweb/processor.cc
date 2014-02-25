@@ -84,20 +84,22 @@ ConfigFileEmitter::~ConfigFileEmitter() {
 }
 
 void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
-	arki::ConfigFile config(cfg);
+	arki::ConfigFile config;
 	// If the matcher is not empty, then filter datasets
 	if (!query.empty()) {
         // TODO: query the summary file if exists, otherwise query the dataset
         // and create it.
-		for (arki::ConfigFile::const_section_iterator i = config.sectionBegin();
-				 i != config.sectionEnd(); ++i) {
+		for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
+				 i != cfg.sectionEnd(); ++i) {
 			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
 			arki::Summary summary;
 			ds->querySummary(query, summary);
-			if (summary.count() == 0)
-				config.deleteSection(i->first);
+			if (summary.count() > 0)
+			    config.mergeInto(i->first, *i->second);
 		}
-	}
+	} else {
+        config.merge(cfg);
+    }
 	arkiweb::encoding::BaseEncoder(*emitter).encode(config);
 }
 
