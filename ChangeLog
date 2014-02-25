@@ -1,3 +1,6 @@
+2014-02-19 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* public/arkiweb/postprocessors/singlepoint.js: format and
+	interpolation options
 2013-08-28 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* public/arkiweb/views/postprocessors.js
 	(PostprocessorContainer.disable): fix a selection bug
