@@ -67,8 +67,9 @@ void query_cached_summary(const std::string& dsname, arki::ReadonlyDataset& ds,
                           const arki::Matcher& query, arki::Summary& summary) {
     const char* path = ::getenv(ARKIWEB_SUMMARY_CACHE_ROOT_VAR);
     if (path) {
+        std::string filename = wibble::str::joinpath(path, dsname + ".summary");
         arki::Summary s;
-        s.readFile(wibble::str::joinpath(path, dsname + ".summary"));
+        s.readFile(filename);
         summary = s.filter(query);
     } else {
         ds.querySummary(query, summary);
