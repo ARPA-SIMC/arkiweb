@@ -26,8 +26,11 @@
 #include <set>
 
 #include <arki/configfile.h>
+#include <arki/dataset.h>
+#include <arki/summary.h>
 
 #define ARKIWEB_CONFIG_VAR "ARKIWEB_CONFIG"
+#define ARKIWEB_SUMMARY_CACHE_ROOT_VAR "ARKIWEB_SUMMARY_CACHE_ROOT"
 
 namespace arkiweb {
 namespace utils {
@@ -40,6 +43,9 @@ void setToDefault(arki::ConfigFile& cfg);
  * Create a default ConfigFile, restricted to given datasets
  */
 void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter);
+
+void query_cached_summary(const std::string& dsname, arki::ReadonlyDataset& ds,
+                          const arki::Matcher& query, arki::Summary& summary);
 
 }
 }

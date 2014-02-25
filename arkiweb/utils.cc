@@ -63,5 +63,17 @@ void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter)
     }
 }
 
+void query_cached_summary(const std::string& dsname, arki::ReadonlyDataset& ds,
+                          const arki::Matcher& query, arki::Summary& summary) {
+    const char* path = ::getenv(ARKIWEB_SUMMARY_CACHE_ROOT_VAR);
+    if (path) {
+        arki::Summary s;
+        s.readFile(wibble::str::joinpath(path, dsname + ".summary"));
+        summary = s.filter(query);
+    } else {
+        ds.querySummary(query, summary);
+    }
+}
+
 }
 }
