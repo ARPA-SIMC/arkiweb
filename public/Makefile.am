@@ -2,6 +2,16 @@ publicdir = $(datarootdir)/$(PACKAGE)/public
 
 public_DATA = arkiweb.js arkiweb.min.js arkiweb.css
 
+nobase_dist_public_DATA = \
+			  lib/backbone.js \
+			  lib/jquery.blockUI.js \
+			  lib/jquery.layout.js \
+			  lib/jquery.min.js \
+			  lib/jquery-ui.js \
+			  lib/jquery-ui-timepicker-addon.js \
+			  lib/strftime.js \
+			  lib/underscore.js
+
 JS = \
      $(builddir)/arkiweb/config.js \
      $(srcdir)/arkiweb/parser.js \
