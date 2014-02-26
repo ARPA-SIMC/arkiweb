@@ -1,9 +1,9 @@
 noinst_LTLIBRARIES = libarkiweb.la
 
-libarkiweb_la_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
+libarkiweb_la_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir) $(WIBBLE_CFLAGS)
 
 libarkiweb_la_LIBADD = \
-		       $(top_builddir)/wibble/libwibble.la \
+		       $(WIBBLE_LIBS) \
 		       -larkimet
 
 libarkiweb_la_SOURCES = \
@@ -20,10 +20,10 @@ libarkiweb_la_SOURCES = \
 
 check_PROGRAMS = arkiweb-test
 
-arkiweb_test_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
+arkiweb_test_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir) $(WIBBLE_CFLAGS)
 
 arkiweb_test_LDADD = \
-		     $(top_builddir)/wibble/libwibble.la \
+		     $(WIBBLE_LIBS) \
 		     $(builddir)/libarkiweb.la \
 		     -larkimet
 

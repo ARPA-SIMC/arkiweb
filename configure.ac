@@ -4,7 +4,7 @@
 AC_PREREQ([2.63])
 AC_INIT([arkiweb], [0.15], [edigiacomo@arpa.emr.it])
 AC_CONFIG_SRCDIR([configure.ac])
-AC_CONFIG_HEADERS([config.h wibble/config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SUBDIRS([embedded/cgicc])
 
 AC_PROG_CXX
@@ -12,7 +12,7 @@ AC_PROG_CC
 AM_INIT_AUTOMAKE([foreign nostdinc subdir-objects])
 LT_INIT
 
-AM_CONDITIONAL([WIBBLE_STANDALONE], [false])
+PKG_CHECK_MODULES([WIBBLE], [libwibble >= 1.1])
 
 AC_CHECK_HEADER([arki/libconfig.h],
 		[],
@@ -34,7 +34,6 @@ AM_CONDITIONAL([HAVE_UGLIFYJS], [test x$have_uglifyjs = xyes])
 AM_CONDITIONAL([HAVE_ASCIIDOC], [test x$have_asciidoc = xyes])
 
 AC_CONFIG_FILES([Makefile
-                 wibble/Makefile
                  arkiweb/Makefile
 		 cgi-bin/Makefile
 		 httpd/Makefile
