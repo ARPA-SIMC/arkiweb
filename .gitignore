@@ -18,7 +18,6 @@ Makefile.in
 Makefile
 /wibble.tar.gz
 /wibble
-/public/lib
 /public/arkiweb/templates/*.js
 /public/arkiweb/config.js
 /public/arkiweb.min.js
