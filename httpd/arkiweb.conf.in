@@ -14,3 +14,8 @@ ScriptAlias /services/arkiweb/ @PKGLIBDIR@/
 	# AuthUserFile /etc/arkiweb.passwords
 	# require valid-user
 </Directory>
+
+Alias /arkiweb/public @PUBLICDIR@/
+<Directory "@PUBLICDIR@">
+	AllowOverride None
+</Directory>
