@@ -1,3 +1,7 @@
+2014-02-25 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* arkiweb/processor.cc (ConfigFileEmitter::process): fixed segfault
+	and enabled optional cached summary.
+	* arkiweb/utils.{h,cc) (query_cached_summary): query cached summary.
 2014-02-19 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* public/arkiweb/postprocessors/singlepoint.js: format and
 	interpolation options
