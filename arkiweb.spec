@@ -1,6 +1,6 @@
 Name:           arkiweb
 Version:        0.16
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Web support for Arkimet
 
 License:        GPLv2+
