@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.15
+Version:        0.16
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -7,7 +7,7 @@ License:        GPLv2+
 URL:            http://www.smr.arpa.emr.it
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:  libtool, pkgconfig, arkimet-devel
+BuildRequires:  libtool, pkgconfig, arkimet-devel, libwibble-devel >= 1.1
 
 %description
 Web support for Arkimet
@@ -39,5 +39,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Feb 26 2014 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.16-1%{dist}
+- Updated interface for singlepoint postprocessor
+- Optional cached summary
+- Removed embedded wibble
+
 * Wed Aug 28 2013 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.15-1%{dist}
 - First package release
