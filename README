@@ -7,11 +7,6 @@ version 0.15
 Arkiweb needs the following libraries
 
 * `wibble`:
-----
-wget http://people.debian.org/~enrico/wibble/embeddable/wibble.tar.gz
-tar zxf wibble.tar.gz
-mv wibble/wibble/* wibble/
-----
 * `arkimet`: static library and header files
 
 If you edit the Javascript or CSS files, you must install the 
