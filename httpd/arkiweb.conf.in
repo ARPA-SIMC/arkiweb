@@ -15,7 +15,7 @@ ScriptAlias /services/arkiweb/ @PKGLIBDIR@/
 	# require valid-user
 </Directory>
 
-Alias /arkiweb/public @PUBLICDIR@/
+Alias /arkiwebjs/ @PUBLICDIR@/
 <Directory "@PUBLICDIR@">
 	AllowOverride None
 </Directory>
