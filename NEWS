@@ -1,5 +1,9 @@
 = NEWS
 
+== version 0.16.1 - 2014-03-13 edigiacomo@arpa.emr.it
+
+* Fixed bug in singlepoint web interface
+
 == version 0.16 - 2014-02-26 edigiacomo@arpae.emr.it
 
 * Updated interface for singlepoint postprocessor

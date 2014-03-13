@@ -77,8 +77,8 @@
 		},
 		getCommand: function() {
 			return "singlepoint " +
-                " -f " + $(this.el).find("input[name=format]").val() +
-                " -z " + $(this.el).find("input[name=interpolation]").val() +
+                " -f " + $(this.el).find("select[name=format]").val() +
+                " -z " + $(this.el).find("select[name=interpolation]").val() +
                 " " + $(this.el).find("input[name=lon]").val() +
                 " " + $(this.el).find("input[name=lat]").val();
 		}
