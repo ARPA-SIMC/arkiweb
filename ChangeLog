@@ -1,3 +1,5 @@
+2014-03-13 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
+	* public/arkiweb/postprocessors/singlepoint.js: fixed bug.
 2014-02-25 Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
 	* arkiweb/processor.cc (ConfigFileEmitter::process): fixed segfault
 	and enabled optional cached summary.
