@@ -1,6 +1,6 @@
 Name:           arkiweb
-Version:        0.16
-Release:        2%{?dist}
+Version:        0.16.1
+Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
 License:        GPLv2+
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Thu Mar 13 2014 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.16-1%{dist}
+- Fixed bug in singlepoint web interface
+
 * Wed Feb 26 2014 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.16-1%{dist}
 - Updated interface for singlepoint postprocessor
 - Optional cached summary
