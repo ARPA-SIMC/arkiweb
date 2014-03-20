@@ -27,7 +27,15 @@ var ArkiwebParser = {
 			},
 			VM2: {
 				decode: function(i) {
-					return "VM2," + i.id;
+                    var a = "VM2," + i.id;
+                    if (i.va != undefined) {
+                        var vals = [];
+                        for (var k in i.va) {
+                            vals.push(k+"="+i.va[k]);
+                        }
+                        a = a + ":" + vals.join(",");
+                    }
+                    return a;
 				}
 			}
 		}
@@ -163,7 +171,15 @@ var ArkiwebParser = {
 			},
 			VM2: {
 				decode: function(i) {
-					return "VM2," + i.id;
+                    var p = "VM2," + i.id;
+                    if (i.va != undefined) {
+                        var vals = [];
+                        for (var k in i.va) {
+                            vals.push(k+"="+i.va[k]);
+                        }
+                        p = p + ":" + vals.join(",");
+                    }
+                    return p;
 				}
 			}
 		}
