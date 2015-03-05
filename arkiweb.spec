@@ -1,6 +1,6 @@
 Name:           arkiweb
-Version:        0.16.1
-Release:        2%{?dist}
+Version:        0.17
+Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
 License:        GPLv2+
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Thu Mar 05 2015 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.17-1%{dist}
+- Compiled against arkimet 0.80
+
 * Thu Mar 20 2014 Emanuele Di Giacomo <edigiacomo@arpa.emr.it> - 0.16.1-2%{dist}
 - Compiled against arkimet 0.75-2876
 
