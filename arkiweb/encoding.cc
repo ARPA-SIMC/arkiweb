@@ -78,7 +78,7 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 
 			for (std::vector<const arki::types::Type*>::const_iterator i = md.begin();
 					 i != md.end(); ++i) {
-				// TODO: can't find this function if (!*i->defined()) continue;
+				if (not *i) continue;
 				emitter.add((*i)->tag());
 				emitter.start_mapping();
 				if (formatter) emitter.add("desc", (*formatter)(**i));
@@ -102,14 +102,13 @@ FieldsEncoder::FieldsEncoder(arki::Emitter& emitter): BaseEncoder(emitter) {}
 void FieldsEncoder::encode(const arki::Summary& sum) {
 
 	struct Merger : public arki::summary::Visitor {
-		// std::map<std::string, std::set< arki::UItem<> > > fields;
         std::map<std::string, std::set<const arki::types::Type*> > fields;
 		arki::summary::Stats statistics;
 
         bool operator()(const std::vector<const arki::types::Type*>& md, const arki::summary::Stats& stats) {
 			for (std::vector<const arki::types::Type*>::const_iterator i = md.begin();
 					 i != md.end(); ++i) {
-				// if (!i->defined()) continue;
+				if (not *i) continue;
 				fields[(*i)->tag()].insert(*i);
 			}
 			statistics.merge(stats);
