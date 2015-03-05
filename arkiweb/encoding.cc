@@ -73,22 +73,21 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 		arki::Emitter& emitter;
 		arki::Formatter* formatter;
 		Serialiser(arki::Emitter& emitter) : emitter(emitter), formatter(arki::Formatter::create()) {}
-		bool operator()(const std::vector< arki::UItem<> >& md,
-										const arki::UItem<arki::summary::Stats>& stats) {
+        bool operator()(const std::vector<const arki::types::Type*>& md, const arki::summary::Stats& stats) {
 			emitter.start_mapping();
 
-			for (std::vector< arki::UItem<> >::const_iterator i = md.begin();
+			for (std::vector<const arki::types::Type*>::const_iterator i = md.begin();
 					 i != md.end(); ++i) {
-				if (!i->defined()) continue;
+				// TODO: can't find this function if (!*i->defined()) continue;
 				emitter.add((*i)->tag());
 				emitter.start_mapping();
-				if (formatter) emitter.add("desc", (*formatter)(*i));
+				if (formatter) emitter.add("desc", (*formatter)(**i));
 				(*i)->serialiseLocal(emitter, formatter);
 				emitter.end_mapping();
 			}
-			emitter.add(stats->tag());
+			emitter.add(stats.tag());
 			emitter.start_mapping();
-			stats->serialiseLocal(emitter, formatter);
+			stats.serialiseLocal(emitter, formatter);
 			emitter.end_mapping();
 			emitter.end_mapping();
 			return true;
@@ -103,17 +102,17 @@ FieldsEncoder::FieldsEncoder(arki::Emitter& emitter): BaseEncoder(emitter) {}
 void FieldsEncoder::encode(const arki::Summary& sum) {
 
 	struct Merger : public arki::summary::Visitor {
-		std::map<std::string, std::set< arki::UItem<> > > fields;
+		// std::map<std::string, std::set< arki::UItem<> > > fields;
+        std::map<std::string, std::set<const arki::types::Type*> > fields;
 		arki::summary::Stats statistics;
 
-		bool operator()(const std::vector< arki::UItem<> >& md,
-										const arki::UItem<arki::summary::Stats>& stats) {
-			for (std::vector< arki::UItem<> >::const_iterator i = md.begin();
+        bool operator()(const std::vector<const arki::types::Type*>& md, const arki::summary::Stats& stats) {
+			for (std::vector<const arki::types::Type*>::const_iterator i = md.begin();
 					 i != md.end(); ++i) {
-				if (!i->defined()) continue;
+				// if (!i->defined()) continue;
 				fields[(*i)->tag()].insert(*i);
 			}
-			statistics.merge(*stats);
+			statistics.merge(stats);
 			return true;
 		}
 	} merger;
@@ -125,17 +124,17 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 	emitter.start_mapping();
 	emitter.add("fields");
 	emitter.start_list();
-	for (std::map<std::string, std::set< arki::UItem<> > >::iterator i = merger.fields.begin();
+	for (std::map<std::string, std::set<const arki::types::Type*> >::const_iterator i = merger.fields.begin();
 			 i != merger.fields.end(); ++i) {
 		emitter.start_mapping();
 		emitter.add("type", i->first);
 		emitter.add("values");
 		emitter.start_list();
-		for (std::set< arki::UItem<> >::const_iterator j = i->second.begin();
+		for (std::set<const arki::types::Type*>::const_iterator j = i->second.begin();
 				 j != i->second.end(); ++j) {
 			emitter.start_mapping();
 			(*j)->serialiseLocal(emitter, formatter);
-			emitter.add("desc", (*formatter)(*j));
+			emitter.add("desc", (*formatter)(**j));
 			emitter.end_mapping();
 		}
 		emitter.end_list();

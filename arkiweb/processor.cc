@@ -118,7 +118,8 @@ void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& q
 		summary.add(s);
 	}
     using authorization::User;
-    arki::Summary filtered_summary = summary.filter(User::get().get_filter());
+    arki::Summary filtered_summary;
+    summary.filter(User::get().get_filter(), filtered_summary);
 	arkiweb::encoding::BaseEncoder(*emitter).encode(filtered_summary);
 }
 
@@ -137,7 +138,8 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 		summary.add(s);
 	}
     using authorization::User;
-    arki::Summary filtered_summary = summary.filter(User::get().get_filter());
+    arki::Summary filtered_summary;
+    summary.filter(User::get().get_filter(), filtered_summary);
 	arkiweb::encoding::FieldsEncoder(*emitter).encode(filtered_summary);
 }
 

@@ -86,7 +86,9 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 		ds->querySummary(matcher, s);
 		summary.add(s);
 	}
-    arki::Summary filtered_summary = summary.filter(get_filter());
+    arki::Summary filtered_summary;
+    summary.filter(get_filter(), filtered_summary);
+
 	if (m_maxcount > 0 && filtered_summary.count() > m_maxcount)
 		return false;
 	if (m_maxsize > 0 && filtered_summary.size() > m_maxsize)
