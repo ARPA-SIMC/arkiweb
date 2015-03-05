@@ -70,7 +70,7 @@ void query_cached_summary(const std::string& dsname, arki::ReadonlyDataset& ds,
         std::string filename = wibble::str::joinpath(path, dsname + ".summary");
         arki::Summary s;
         s.readFile(filename);
-        summary = s.filter(query);
+        s.filter(query, summary);
     } else {
         ds.querySummary(query, summary);
     }
