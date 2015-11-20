@@ -4,3 +4,4 @@
 * Clean the code: user querymacro to filter summary results (auth)
 * Summary files
 * Hide postprocessing forms
+* Disallowed datasets hidden by default
