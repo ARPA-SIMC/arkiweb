@@ -23,6 +23,7 @@
 #define ARKIWEB_EMITTER_H
 
 #include <iostream>
+#include <wibble/sys/buffer.h>
 #include <arki/emitter.h>
 #include <arki/emitter/json.h>
 
@@ -56,8 +57,6 @@ class JSONP : public arki::emitter::JSON {
 
 	virtual void add_break();
 	virtual void add_raw(const std::string& val);
-	virtual void add_raw(const wibble::sys::Buffer& val);
-
 };
 
 }

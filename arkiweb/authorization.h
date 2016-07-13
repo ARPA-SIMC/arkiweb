@@ -67,8 +67,6 @@ class User {
 	bool is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg) const;
     /// Remove unallowed datasets from configfile
 	void remove_unallowed(arki::ConfigFile& cfg) const;
-    /// Return filter matcher
-    arki::Matcher get_filter() const;
 };
 
 }

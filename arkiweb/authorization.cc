@@ -82,25 +82,15 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 		if (!is_allowed_dataset(c))
 			return false;
 		arki::Summary s;
-		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(c));
-		ds->querySummary(matcher, s);
+		std::auto_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(c));
+		ds->query_summary(matcher, s);
 		summary.add(s);
 	}
-    arki::Summary filtered_summary;
-    summary.filter(get_filter(), filtered_summary);
-
-	if (m_maxcount > 0 && filtered_summary.count() > m_maxcount)
-		return false;
-	if (m_maxsize > 0 && filtered_summary.size() > m_maxsize)
-		return false;
 	return true;
 }
 void User::remove_unallowed(arki::ConfigFile& cfg) const {
 	arki::runtime::Restrict rest(m_name);
 	rest.remove_unallowed(cfg);
-}
-arki::Matcher User::get_filter() const {
-    return arki::Matcher::parse(m_filter);
 }
 
 }

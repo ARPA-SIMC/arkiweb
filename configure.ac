@@ -6,11 +6,15 @@ AC_INIT([arkiweb], [0.17], [edigiacomo@arpa.emr.it])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SUBDIRS([embedded/cgicc])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CXX
 AC_PROG_CC
 AM_INIT_AUTOMAKE([foreign nostdinc subdir-objects])
 LT_INIT
+
+dnl Use c++11
+AX_CXX_COMPILE_STDCXX_11(noext)
 
 PKG_CHECK_MODULES([WIBBLE], [libwibble >= 1.1])
 
