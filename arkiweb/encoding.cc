@@ -71,7 +71,7 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 
 	struct Serialiser : public arki::summary::Visitor {
 		arki::Emitter& emitter;
-		arki::Formatter* formatter;
+        std::unique_ptr<arki::Formatter> formatter;
 		Serialiser(arki::Emitter& emitter) : emitter(emitter), formatter(arki::Formatter::create()) {}
         bool operator()(const std::vector<const arki::types::Type*>& md, const arki::summary::Stats& stats) {
 			emitter.start_mapping();
@@ -82,12 +82,12 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 				emitter.add((*i)->tag());
 				emitter.start_mapping();
 				if (formatter) emitter.add("desc", (*formatter)(**i));
-				(*i)->serialiseLocal(emitter, formatter);
+				(*i)->serialiseLocal(emitter, formatter.get());
 				emitter.end_mapping();
 			}
-			emitter.add(stats.tag());
+            emitter.add("summarystats");
 			emitter.start_mapping();
-			stats.serialiseLocal(emitter, formatter);
+			stats.serialiseLocal(emitter, formatter.get());
 			emitter.end_mapping();
 			emitter.end_mapping();
 			return true;
@@ -118,7 +118,7 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 
 	sum.visit(merger);
 
-	arki::Formatter* formatter = arki::Formatter::create();
+    std::unique_ptr<arki::Formatter> formatter = arki::Formatter::create();
 
 	emitter.start_mapping();
 	emitter.add("fields");
@@ -132,7 +132,7 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 		for (std::set<const arki::types::Type*>::const_iterator j = i->second.begin();
 				 j != i->second.end(); ++j) {
 			emitter.start_mapping();
-			(*j)->serialiseLocal(emitter, formatter);
+			(*j)->serialiseLocal(emitter, formatter.get());
 			emitter.add("desc", (*formatter)(**j));
 			emitter.end_mapping();
 		}
@@ -143,7 +143,7 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 
 	emitter.add("stats");
 	emitter.start_mapping();
-	merger.statistics.serialiseLocal(emitter, formatter);
+	merger.statistics.serialiseLocal(emitter, formatter.get());
 	emitter.end_mapping();
 
 	emitter.end_mapping();

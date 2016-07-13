@@ -44,7 +44,7 @@ void setToDefault(arki::ConfigFile& cfg);
  */
 void setToDefault(arki::ConfigFile& cfg, const std::set<std::string>& dsfilter);
 
-void query_cached_summary(const std::string& dsname, arki::ReadonlyDataset& ds,
+void query_cached_summary(const std::string& dsname, arki::dataset::Reader& ds,
                           const arki::Matcher& query, arki::Summary& summary);
 
 }

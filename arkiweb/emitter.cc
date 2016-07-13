@@ -89,11 +89,6 @@ void JSONP::add_raw(const std::string& val) {
 	JSON::add_raw(val);
 	end_jsonp();
 }
-void JSONP::add_raw(const wibble::sys::Buffer& val) {
-	start_jsonp();
-	JSON::add_raw(val);
-	end_jsonp();
-}
 
 }
 }

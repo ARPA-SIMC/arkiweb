@@ -21,14 +21,14 @@
  */
 #include <arkiweb/processor.h>
 
+#include <wibble/exception.h>
+
 #include <arki/summary.h>
-#include <arki/dataset.h>
 #include <arki/dataset/merged.h>
 #include <arki/emitter/json.h>
-#include <arki/metadata/consumer.h>
-#include <arki/utils/dataset.h>
 #include <arki/postprocess.h>
 #include <arki/runtime.h>
+#include <arki/utils/sys.h>
 
 #include <arkiweb/emitter.h>
 #include <arkiweb/encoding.h>
@@ -69,7 +69,8 @@ Processor* ProcessorFactory::create() {
                                                  "unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
 	} else if (target == "data") {
-		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter(std::cout);
+        auto out = arki::Stdout();
+		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter(out);
 		bde->postprocess = postprocess;
 		return bde;
 	}
@@ -92,7 +93,7 @@ void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
         // and create it.
 		for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 				 i != cfg.sectionEnd(); ++i) {
-			std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
+			std::auto_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
 			arki::Summary summary;
             utils::query_cached_summary(i->first, *ds, query, summary);
 			if (summary.count() > 0)
@@ -113,14 +114,11 @@ void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& q
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i) {
 		arki::Summary s;
-		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
-		ds->querySummary(query, s);
+		std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
+		ds->query_summary(query, s);
 		summary.add(s);
 	}
-    using authorization::User;
-    arki::Summary filtered_summary;
-    summary.filter(User::get().get_filter(), filtered_summary);
-	arkiweb::encoding::BaseEncoder(*emitter).encode(filtered_summary);
+	arkiweb::encoding::BaseEncoder(*emitter).encode(summary);
 }
 
 FieldsEmitter::FieldsEmitter(arki::Emitter* emitter) : emitter(emitter) {}
@@ -133,17 +131,15 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 			 i != cfg.sectionEnd(); ++i) {
 		arki::Summary s;
-		std::auto_ptr<arki::ReadonlyDataset> ds(arki::ReadonlyDataset::create(*i->second));
-		ds->querySummary(query, s);
+		std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
+		ds->query_summary(query, s);
 		summary.add(s);
 	}
     using authorization::User;
-    arki::Summary filtered_summary;
-    summary.filter(User::get().get_filter(), filtered_summary);
-	arkiweb::encoding::FieldsEncoder(*emitter).encode(filtered_summary);
+	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
 }
 
-BinaryDataEmitter::BinaryDataEmitter(std::ostream& out) : out(out) {}
+BinaryDataEmitter::BinaryDataEmitter(arki::utils::sys::NamedFileDescriptor& out) : out(out) {}
 
 void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
 	arki::dataset::ByteQuery q;
@@ -153,23 +149,7 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 		q.setPostprocess(query, postprocess);
 	}
     using authorization::User;
-    if (User::get().get_filter().empty()) {
-        arki::dataset::AutoMerged(cfg).queryBytes(q, out);
-    } else {
-        for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-             i != cfg.sectionEnd(); ++i) {
-            std::string qmacro = wibble::str::fmtf("dataset:%s. query:%s. filter:%s.\n",
-                                                   i->second->value("name").c_str(),
-                                                   query.toString().c_str(),
-                                                   User::get().get_filter().toString().c_str());
-            arki::ConfigFile c;
-            c.mergeInto(i->first, *i->second);
-            std::auto_ptr<arki::ReadonlyDataset> ds = arki::runtime::make_qmacro_dataset(c,
-                                                                                         "simpleauth",
-                                                                                         qmacro);
-            ds->queryBytes(q, out);
-        }
-    }
+    arki::dataset::AutoMerged(cfg).query_bytes(q, out);
 }
 
 }
