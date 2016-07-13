@@ -1,5 +1,9 @@
 = NEWS
 
+== version 0.18 - 2016-07-13 edigiacomo@arpae.it
+
+* Support arkimet 1.0
+
 == version 0.16.1 - 2014-03-13 edigiacomo@arpa.emr.it
 
 * Fixed bug in singlepoint web interface
