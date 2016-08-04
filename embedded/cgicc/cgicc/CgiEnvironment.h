@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: CgiEnvironment.h,v 1.19 2007/07/02 18:48:17 sebdiaz Exp $
+ *  $Id: CgiEnvironment.h,v 1.21 2014/04/23 20:55:03 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -41,10 +41,10 @@
 #include <vector>
 #include <cstdlib>
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/CgiUtils.h"
-#include "cgicc/CgiInput.h"
-#include "cgicc/HTTPCookie.h"
+#include "CgiDefs.h"
+#include "CgiUtils.h"
+#include "CgiInput.h"
+#include "HTTPCookie.h"
 
 namespace cgicc {
 
@@ -572,6 +572,7 @@ namespace cgicc {
     std::string 		fReferrer;
     std::string 		fCookie;
     std::vector<HTTPCookie> 	fCookies;
+    std::string                 fAcceptLanguageString; 
   };
   
 } // namespace cgicc

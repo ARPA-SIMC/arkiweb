@@ -29,21 +29,25 @@ cgicc::XHTMLDoctype::XHTMLDoctype(EDocumentType type) : fType(type) {}
 cgicc::XHTMLDoctype::~XHTMLDoctype() {}
 
 void cgicc::XHTMLDoctype::render(std::ostream &out) const {
-	out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 ";
-	
+	out << "<!DOCTYPE html";
+	bool bHTML5 = false;
+
 	switch(fType) {
-		case eStrict: out << "Strict"; break;
-		case eTransitional: out << "Transitional"; break;
-		case eFrames: out << "Frameset"; break;
+		case eStrict: out << " PUBLIC \"-//W3C//DTD XHTML 1.0  Strict"; break;
+		case eTransitional: out << " PUBLIC \"-//W3C//DTD XHTML 1.0  Transitional"; break;
+		case eFrames: out << " PUBLIC \"-//W3C//DTD XHTML 1.0  Frameset"; break;
+		case eHTML5: bHTML5 = true; break;
 	}
 	
-	out << "//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-";
+	if(bHTML5 == false)
+		out << "//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-";
 	
 	switch(fType) {
 		case eStrict: out << "strict"; break;
 		case eTransitional: out << "transitional"; break;
 		case eFrames: out << "frameset"; break;
+		case eHTML5: break;
 	}
-	
 	out << ".dtd\">";
 }
+

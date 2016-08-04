@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: XHTMLDoctype.h,v 1.1 2008/01/19 15:43:57 sebdiaz Exp $
+ *  $Id: XHTMLDoctype.h,v 1.2 2014/04/23 20:55:10 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 David Roberts
@@ -32,7 +32,7 @@
 
 #include <string>
 
-#include <cgicc/MStreamable.h>
+#include <MStreamable.h>
 
 namespace cgicc {
 
@@ -46,7 +46,8 @@ class CGICC_API XHTMLDoctype : public MStreamable {
 	enum EDocumentType {
 		eStrict,
 		eTransitional,
-		eFrames
+		eFrames,
+		eHTML5 // 11.30.14 t.o.
 	};
 	// ============================================================
     

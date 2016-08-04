@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: CgiUtils.cpp,v 1.19 2007/07/02 18:48:17 sebdiaz Exp $
+ *  $Id: CgiUtils.cpp,v 1.20 2014/04/23 20:55:03 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -31,7 +31,7 @@
 #include <iterator> 	// for distance
 #include <cctype> 	// for toupper, isxdigit
 
-#include "cgicc/CgiUtils.h"
+#include "CgiUtils.h"
 
 // case-insensitive string comparison
 // This code based on code from 

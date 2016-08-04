@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLClasses.h,v 1.16 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTMLClasses.h,v 1.17 2014/04/23 20:55:05 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -30,10 +30,10 @@
  * One class is defined for each element in the HTML 4.0 standard.
  */
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/HTMLAtomicElement.h"
-#include "cgicc/HTMLBooleanElement.h"
-#include "cgicc/HTMLDoctype.h"
+#include "CgiDefs.h"
+#include "HTMLAtomicElement.h"
+#include "HTMLBooleanElement.h"
+#include "HTMLDoctype.h"
 
 // ============================================================
 // Macros defining types of elements

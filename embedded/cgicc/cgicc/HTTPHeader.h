@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPHeader.h,v 1.9 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTTPHeader.h,v 1.10 2014/04/23 20:55:08 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -36,8 +36,8 @@
 #include <string>
 #include <vector>
 
-#include "cgicc/MStreamable.h"
-#include "cgicc/HTTPCookie.h"
+#include "MStreamable.h"
+#include "HTTPCookie.h"
 
 namespace cgicc {
   

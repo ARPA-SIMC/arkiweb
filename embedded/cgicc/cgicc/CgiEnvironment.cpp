@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: CgiEnvironment.cpp,v 1.26 2009/11/14 16:50:11 sebdiaz Exp $
+ *  $Id: CgiEnvironment.cpp,v 1.29 2014/06/11 04:43:46 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -38,7 +38,7 @@
 #  include <stdio.h>
 #endif
 
-#include "cgicc/CgiEnvironment.h"
+#include "CgiEnvironment.h"
 
 // ========== Constructor/Destructor
 
@@ -64,11 +64,16 @@ cgicc::CgiEnvironment::CgiEnvironment(CgiInput *input)
 #  endif
 #endif
      
-  if(stringsAreEqual(fRequestMethod, "post")) {
+  if(stringsAreEqual(fRequestMethod, "post") || stringsAreEqual(fRequestMethod, "put")) {
     // Don't use auto_ptr, but vector instead
     // Bug reported by shinra@j10n.org
     std::vector<char> data(fContentLength);
     
+    if(getenv("CGICC_MAX_CONTENTLENGTH")&&getContentLength()>(long unsigned int)atoi(getenv("CGICC_MAX_CONTENTLENGTH")))
+    {
+      exit(1);
+    }
+    else
     // If input is 0, use the default implementation of CgiInput
 	if ( getContentLength() )
 	{
@@ -254,6 +259,7 @@ cgicc::CgiEnvironment::readEnvironmentVariables(CgiInput *input)
   fRedirectStatus 	= input->getenv("REDIRECT_STATUS");
   fReferrer 		= input->getenv("HTTP_REFERER");
   fCookie 		= input->getenv("HTTP_COOKIE");
+  fAcceptLanguageString = input->getenv("HTTP_ACCEPT_LANGUAGE"); 
 
   // Win32 bug fix by Peter Goedtkindt 
   std::string https 	= input->getenv("HTTPS");
@@ -300,7 +306,7 @@ cgicc::CgiEnvironment::save(const std::string& filename) 	const
   writeString(file, fReferrer);
   writeString(file, fCookie);
   
-  if(stringsAreEqual(fRequestMethod, "post"))
+  if(stringsAreEqual(fRequestMethod, "post") || stringsAreEqual(fRequestMethod, "put"))
     writeString(file, fPostData);
 
   if(file.bad() || file.fail())
@@ -346,7 +352,7 @@ cgicc::CgiEnvironment::restore(const std::string& filename)
   fReferrer 		= readString(file);
   fCookie 		= readString(file);
   
-  if(stringsAreEqual(fRequestMethod, "post"))
+  if(stringsAreEqual(fRequestMethod, "post") || stringsAreEqual(fRequestMethod, "put"))
     fPostData = readString(file);
 
   file.close();

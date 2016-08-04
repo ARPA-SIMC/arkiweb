@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: FormFile.h,v 1.11 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: FormFile.h,v 1.12 2014/04/23 20:55:04 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -40,7 +40,7 @@
 #include <iostream>
 #include <string>
 
-#include "cgicc/CgiDefs.h"
+#include "CgiDefs.h"
 
 namespace cgicc {
   

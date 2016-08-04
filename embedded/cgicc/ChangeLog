@@ -1,10 +1,53 @@
-2011-10-01  Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
-	Embedded version
+2014-12-07 Sebastien DIAZ <sebastien.diaz@gmail.com>
+	Patches on 3.2.16
+	   patch #7845: HTTP PUT method support from Yury Knigin 
+	   patch #8581: Added HTML5 Support from Tim O'Neil
+
+2014-06-09 Sebastien DIAZ <sebastien.diaz@gmail.com>
+	Corrected Bugs on 3.2.15
+	   bug #34265: missing opportunity to limiy post DATA upload
+	   bug #34178: cgicc multipart/form-data timeout on binary data upload
+	   
+2014-04-23 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+	New 3.2.14
+        Remove code warnings
+        Correct Makefile.am and configure.ac
+        bug #41248: CgiDefs.h incorrectly includes config.h
+        
+2014-03-28 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+	New 3.2.13
+        Remove code warnings
+
+2014-01-01 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+        Corrected Bugs on 3.2.12
+	  bug #38141: multi-character character constant warning
+          bug #38224: incorrect soname (issue #38053) is not fixed
+          bug #40329: Wrong separator in multipart/form-data
+
+2013-12-31 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+        Corrected Bugs on 3.2.11
+	Add Mac Os compilation        
+	
+2013-01-14 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+        Corrected Bugs on 3.2.10
+        Savannah bugs:
+          bug #32742: Malformed name/value pairs not handled nicely in Cgicc.cpp
+          bug #38053, incorrect soname
+	  bug #36497, Form Variable Parsing Bug
+          bug #35285: CGICC does not return all data from HTML request header
+
+2009-11-14 Sebastien DIAZ  <sebastien.diaz@gmail.com>
+        Corrected Bugs on 3.2.10
+        UBUNTU #219307 libcgicc5-dev still missing cgicc.pc
+	Add
+	RPM support with cgicc.spec
 
 2009-11-14  Sebastien DIAZ  <sebastien.diaz@gmail.com>
 	Corrected Bugs
         #26003 : CgiEnvironment getenv
 	#26065 : save function
+	#26917 : 3.2.8 tar files has sym links to files that don't exist
+	#27681 : Make building on FreeBSD easier
 	
 2009-01-18  Sebastien DIAZ  <sebastien.diaz@gmail.com>
         Corrected Bugs

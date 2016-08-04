@@ -64,3 +64,4 @@ class XMLDeclaration : public XMLPI {
 }// namespace cgicc
 
 #endif
+

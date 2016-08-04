@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPCookie.cpp,v 1.11 2009/01/18 13:58:25 sebdiaz Exp $
+ *  $Id: HTTPCookie.cpp,v 1.12 2014/04/23 20:55:07 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -25,8 +25,8 @@
 #  pragma implementation
 #endif
 
-#include "cgicc/HTTPCookie.h"
-#include "cgicc/CgiUtils.h"
+#include "HTTPCookie.h"
+#include "CgiUtils.h"
 
 // ============================================================
 // Class HTTPCookie

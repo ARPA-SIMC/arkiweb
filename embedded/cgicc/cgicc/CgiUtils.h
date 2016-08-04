@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: CgiUtils.h,v 1.16 2009/01/03 17:12:07 sebdiaz Exp $
+ *  $Id: CgiUtils.h,v 1.17 2014/04/23 20:55:03 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -39,7 +39,7 @@
 #include <string>
 #include <fstream>
 
-#include "cgicc/CgiDefs.h"
+#include "CgiDefs.h"
 
 
 namespace cgicc {

@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: Cgicc.h,v 1.19 2009/01/03 17:12:07 sebdiaz Exp $
+ *  $Id: Cgicc.h,v 1.20 2014/04/23 20:55:04 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -43,11 +43,11 @@
 #include <vector>
 #include <string>
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/FormEntry.h"
-#include "cgicc/FormFile.h"
-#include "cgicc/CgiInput.h"
-#include "cgicc/CgiEnvironment.h"
+#include "CgiDefs.h"
+#include "FormEntry.h"
+#include "FormFile.h"
+#include "CgiInput.h"
+#include "CgiEnvironment.h"
 
 namespace cgicc {
   

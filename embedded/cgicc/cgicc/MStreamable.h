@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: MStreamable.h,v 1.12 2007/07/02 18:48:19 sebdiaz Exp $
+ *  $Id: MStreamable.h,v 1.13 2014/04/23 20:55:09 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -37,7 +37,7 @@
 
 #include <iostream>
 
-#include "cgicc/CgiDefs.h"
+#include "CgiDefs.h"
 
 namespace cgicc {
 
@@ -97,3 +97,4 @@ namespace cgicc {
 } // namespace cgicc
 
 #endif /* ! _MSTREAMABLE_H_ */
+

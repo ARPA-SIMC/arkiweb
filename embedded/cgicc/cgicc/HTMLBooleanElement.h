@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLBooleanElement.h,v 1.8 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTMLBooleanElement.h,v 1.9 2014/04/23 20:55:05 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -31,7 +31,7 @@
 
 #include <new>
 
-#include "cgicc/HTMLElement.h"
+#include "HTMLElement.h"
 
 namespace cgicc {
 

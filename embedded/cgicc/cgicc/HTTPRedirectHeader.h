@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPRedirectHeader.h,v 1.8 2009/01/18 13:58:25 sebdiaz Exp $
+ *  $Id: HTTPRedirectHeader.h,v 1.9 2014/04/23 20:55:08 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -35,7 +35,7 @@
 
 #include <string>
 
-#include "cgicc/HTTPHeader.h"
+#include "HTTPHeader.h"
 
 namespace cgicc {
   
