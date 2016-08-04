@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: FormEntry.cpp,v 1.13 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: FormEntry.cpp,v 1.14 2014/04/23 20:55:04 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -28,7 +28,7 @@
 #include <new>
 #include <cstdlib>
 
-#include "cgicc/FormEntry.h"
+#include "FormEntry.h"
 
 // local macro for integer maximum
 #define MAX(a, b) ((a) > (b) ? (a) : (b))

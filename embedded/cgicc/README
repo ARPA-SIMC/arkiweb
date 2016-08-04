@@ -15,16 +15,16 @@ Web. cgicc performs the following functions:
  - Supports HTTP file upload
  - Compatible with FastCGI
 
-Embedded version
-================
+Please send bug reports, suggestions, and comments to http://savannah.gnu.org/projects/cgicc
 
-This package provides an embedded version of cgicc, you can embed in your
-project copying this package inside your package directory, adding this line to
-your configure.ac file:
-	AC_CONFIG_SUBDIRS([cgicc])
-and adding this value to SUBDIRS in Makefile.am:
-	cgicc
-and adding this value to your program_LDADD:
-	$(top_builddir)/cgicc/cgicc/libcgicc.la
-ans this value to your program_CPPFLAGS:
-	$(top_srcdir)/cgicc
+
+This package should contain the following directories:
+
+cgicc/     The source code to the GNU cgicc library
+contrib/   Contributed non-parsed header and FastCgi examples
+demo/      Four demonstration applications using cgicc
+doc/       Complete documentation for cgicc in html format
+example/   A skeleton CGI application using cgicc and autoconf
+support/   Installation/configuration support files
+win/       Win32 project files
+

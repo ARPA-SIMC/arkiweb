@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: FormEntry.h,v 1.14 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: FormEntry.h,v 1.15 2014/04/23 20:55:04 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -43,8 +43,8 @@
 #include <climits>
 #include <cfloat>
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/CgiUtils.h"
+#include "CgiDefs.h"
+#include "CgiUtils.h"
 
 namespace cgicc {
   

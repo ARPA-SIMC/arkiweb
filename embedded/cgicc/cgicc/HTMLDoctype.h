@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLDoctype.h,v 1.8 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTMLDoctype.h,v 1.9 2014/04/23 20:55:05 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -35,7 +35,7 @@
 
 #include <string>
 
-#include "cgicc/MStreamable.h"
+#include "MStreamable.h"
 
 namespace cgicc {
   
@@ -64,7 +64,9 @@ namespace cgicc {
       /*! The HTML 4.0 Transitional DTD */
       eTransitional,
       /*! The HTML 4.0 Frameset DTD */
-      eFrames
+      eFrames,
+		/*! HTML5 (added 11.30.14 t.o.) */ 
+		eHTML5
     };
     
     
@@ -81,7 +83,7 @@ namespace cgicc {
     virtual ~HTMLDoctype();
     
     virtual void 
-    render(std::ostream& out) 			const;
+    render(std::ostream& out) const;
     
   private:
     EDocumentType fType;
@@ -90,3 +92,4 @@ namespace cgicc {
 } // namespace cgicc
 
 #endif /* ! _HTMLDOCTYPE_H_ */
+

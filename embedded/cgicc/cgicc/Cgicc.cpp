@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: Cgicc.cpp,v 1.28 2009/01/03 17:12:07 sebdiaz Exp $
+ *  $Id: Cgicc.cpp,v 1.34 2014/04/23 20:55:04 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -24,15 +24,17 @@
 #ifdef __GNUG__
 #  pragma implementation
 #endif
-
+#if HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include <new>
 #include <algorithm>
 #include <functional>
 #include <iterator>
 #include <stdexcept>
 
-#include "cgicc/CgiUtils.h"
-#include "cgicc/Cgicc.h"
+#include "CgiUtils.h"
+#include "Cgicc.h"
 
 
 namespace cgicc {
@@ -324,11 +326,11 @@ cgicc::Cgicc::findEntries(const std::string& param,
   result.clear();
 
   if(byName) {
-    copy_if(fFormData.begin(), fFormData.end(), 
+    cgicc::copy_if(fFormData.begin(), fFormData.end(), 
 	    std::back_inserter(result),FE_nameCompare(param));
   }
   else {
-    copy_if(fFormData.begin(), fFormData.end(), 
+    cgicc::copy_if(fFormData.begin(), fFormData.end(), 
 	    std::back_inserter(result), FE_valueCompare(param));
   }
 
@@ -356,19 +358,38 @@ cgicc::Cgicc::parseFormInput(const std::string& data, const std::string &content
 
     // Parse the data in one fell swoop for efficiency
     while(true) {
-      // Find the '=' separating the name from its value
-      pos = data.find_first_of('=', oldPos);
+      // Find the '=' separating the name from its value, also have to check for '&' as its a common misplaced delimiter but is a delimiter none the less
+      pos = data.find_first_of( "&=", oldPos);
       
       // If no '=', we're finished
       if(std::string::npos == pos)
 	break;
       
       // Decode the name
+	// pos == '&', that means whatever is in name is the only name/value
+      if( data.at( pos ) == '&' )
+	  {
+	  	const char * pszData = data.c_str() + oldPos;
+		while( *pszData == '&' ) // eat up extraneous '&'
+		{
+			++pszData; ++oldPos;
+		}
+		if( oldPos >= pos )
+		{ // its all &'s
+			oldPos = ++pos;
+			continue;
+		}
+		// this becomes an name with an empty value
+		name = form_urldecode(data.substr(oldPos, pos - oldPos));
+		fFormData.push_back(FormEntry(name, "" ) );
+		oldPos = ++pos;
+		continue;
+	  }
       name = form_urldecode(data.substr(oldPos, pos - oldPos));
       oldPos = ++pos;
       
-      // Find the '&' separating subsequent name/value pairs
-      pos = data.find_first_of('&', oldPos);
+      // Find the '&' or ';' separating subsequent name/value pairs
+      pos = data.find_first_of(";&", oldPos);
       
       // Even if an '&' wasn't found the rest of the string is a value
       value = form_urldecode(data.substr(oldPos, pos - oldPos));
@@ -391,12 +412,19 @@ cgicc::Cgicc::parseFormInput(const std::string& data, const std::string &content
     std::string 		bType 	= "boundary=";
     std::string::size_type 	pos 	= content_type.find(bType);
 
+    // Remove next sentence
+    std::string                 commatek=";";
+
     // generate the separators
     std::string sep1 = content_type.substr(pos + bType.length());
+    if (sep1.find(";")!=std::string::npos)
+       sep1=sep1.substr(0,sep1.find(";"));
     sep1.append("\r\n");
     sep1.insert(0, "--");
 
     std::string sep2 = content_type.substr(pos + bType.length());
+    if (sep2.find(";")!=std::string::npos)
+       sep2=sep2.substr(0,sep2.find(";"));
     sep2.append("--\r\n");
     sep2.insert(0, "--");
 

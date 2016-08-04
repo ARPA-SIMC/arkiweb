@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPStatusHeader.cpp,v 1.7 2007/07/02 18:48:19 sebdiaz Exp $
+ *  $Id: HTTPStatusHeader.cpp,v 1.8 2014/04/23 20:55:09 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -25,7 +25,7 @@
 #  pragma implementation
 #endif
 
-#include "cgicc/HTTPStatusHeader.h"
+#include "HTTPStatusHeader.h"
 
 // ============================================================
 // Class HTTPStatusHeader

@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLElement.cpp,v 1.9 2008/05/08 20:31:05 sebdiaz Exp $
+ *  $Id: HTMLElement.cpp,v 1.10 2014/04/23 20:55:05 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -27,8 +27,8 @@
 
 #include <new>
 #include <cstring>
-#include "cgicc/HTMLElement.h"
-#include "cgicc/HTMLElementList.h"
+#include "HTMLElement.h"
+#include "HTMLElementList.h"
 
 // ============================================================
 // Class HTMLElement

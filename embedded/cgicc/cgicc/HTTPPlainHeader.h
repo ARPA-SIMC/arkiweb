@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPPlainHeader.h,v 1.7 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTTPPlainHeader.h,v 1.8 2014/04/23 20:55:08 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -33,7 +33,7 @@
  * 
  */
 
-#include "cgicc/HTTPContentHeader.h"
+#include "HTTPContentHeader.h"
 
 namespace cgicc {
   

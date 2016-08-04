@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: XMLPI.h,v 1.1 2008/01/19 15:43:58 sebdiaz Exp $
+ *  $Id: XMLPI.h,v 1.2 2014/04/23 20:55:10 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 David Roberts
@@ -31,9 +31,9 @@
 
 #include <string>
 
-#include <cgicc/CgiDefs.h>
-#include <cgicc/MStreamable.h>
-#include <cgicc/HTMLAttributeList.h>
+#include "CgiDefs.h"
+#include "MStreamable.h"
+#include "HTMLAttributeList.h"
 
 namespace cgicc {
 /*! \class XMLPI XMLPI.h cgicc/XMLPI.h 

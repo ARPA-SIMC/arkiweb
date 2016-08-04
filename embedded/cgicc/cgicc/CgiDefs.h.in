@@ -1,6 +1,6 @@
 /* -*-c++-*- */
 /*
- *  $Id: CgiDefs.h.in,v 1.9 2007/07/02 18:48:17 sebdiaz Exp $
+ *  $Id: CgiDefs.h.in,v 1.10 2014/04/23 20:55:03 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -30,12 +30,12 @@
  * Platform and operating system specific macro definitions that deal
  * with namespace support and exporting of library functions.
  */
-
+/*
 // Include information from configure
 #if HAVE_CONFIG_H
 #  include "config.h"
 #endif
-
+*/
 /*! \namespace cgicc
  * \brief The namespace containing the cgicc library
  *

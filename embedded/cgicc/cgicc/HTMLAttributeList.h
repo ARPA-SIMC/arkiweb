@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLAttributeList.h,v 1.7 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTMLAttributeList.h,v 1.8 2014/04/23 20:55:05 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -38,9 +38,9 @@
 #include <iostream>
 #include <vector>
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/MStreamable.h"
-#include "cgicc/HTMLAttribute.h"
+#include "CgiDefs.h"
+#include "MStreamable.h"
+#include "HTMLAttribute.h"
 
 namespace cgicc {
 

@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTTPXHTMLHeader.h,v 1.1 2008/01/19 15:43:57 sebdiaz Exp $
+ *  $Id: HTTPXHTMLHeader.h,v 1.2 2014/04/23 20:55:09 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 David Roberts
@@ -25,7 +25,7 @@
 #define HTTPXHTMLHEADER_H
 
 
-#include "cgicc/HTTPContentHeader.h"
+#include "HTTPContentHeader.h"
 
 /*! \file HTTPXHTMLHeader.h
  * \brief Class that abstracts a XHTML Content Header

@@ -1,6 +1,6 @@
 /* -*-mode:c++; c-file-style: "gnu";-*- */
 /*
- *  $Id: HTMLElementList.h,v 1.8 2007/07/02 18:48:18 sebdiaz Exp $
+ *  $Id: HTMLElementList.h,v 1.9 2014/04/23 20:55:06 sebdiaz Exp $
  *
  *  Copyright (C) 1996 - 2004 Stephen F. Booth <sbooth@gnu.org>
  *                       2007 Sebastien DIAZ <sebastien.diaz@gmail.com>
@@ -37,10 +37,10 @@
 #include <string>
 #include <vector>
 
-#include "cgicc/CgiDefs.h"
-#include "cgicc/MStreamable.h"
-#include "cgicc/HTMLAttribute.h"
-#include "cgicc/HTMLElement.h"
+#include "CgiDefs.h"
+#include "MStreamable.h"
+#include "HTMLAttribute.h"
+#include "HTMLElement.h"
 
 namespace cgicc {
   
