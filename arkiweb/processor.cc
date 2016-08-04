@@ -21,8 +21,6 @@
  */
 #include <arkiweb/processor.h>
 
-#include <wibble/exception.h>
-
 #include <arki/summary.h>
 #include <arki/dataset/merged.h>
 #include <arki/emitter/json.h>
@@ -47,8 +45,7 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-            throw wibble::exception::Consistency("while creating processor",
-                                                 "unsupported format: " + format);
+            throw std::runtime_error("unsupported format: " + format);
 		return new processor::ConfigFileEmitter(emitter.release());
 	} else if (target == "summary") {
 		if (format == "json")
@@ -56,8 +53,7 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-			throw wibble::exception::Consistency("while creating processor",
-                                                 "unsupported format: " + format);
+            throw std::runtime_error("unsupported format: " + format);
 		return new processor::SummaryEmitter(emitter.release());
 	} else if (target == "fields") {
 		if (format == "json")
@@ -65,8 +61,7 @@ Processor* ProcessorFactory::create() {
 		else if (format == "jsonp")
 			emitter.reset(new arkiweb::emitter::JSONP(std::cout));
 		else
-			throw wibble::exception::Consistency("while creating processor",
-                                                 "unsupported format: " + format);
+            throw std::runtime_error("unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
 	} else if (target == "data") {
         auto out = arki::Stdout();
@@ -74,8 +69,7 @@ Processor* ProcessorFactory::create() {
 		bde->postprocess = postprocess;
 		return bde;
 	}
-    throw wibble::exception::Consistency("while creating processor",
-                                         "unsupported target: " + target);
+    throw std::runtime_error("unsupported target: " + target);
 }
 
 namespace processor {

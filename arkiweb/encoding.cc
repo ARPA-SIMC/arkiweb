@@ -21,12 +21,12 @@
  */
 #include <arkiweb/encoding.h>
 
-#include <wibble/string.h>
 #include <arki/formatter.h>
 #include <arki/summary.h>
 #include <arki/summary/stats.h>
 
 #include <arkiweb/authorization.h>
+#include <arkiweb/wobble/string.h>
 
 namespace arkiweb {
 namespace encoding {
@@ -43,11 +43,11 @@ void BaseEncoder::encode(arki::ConfigFile::const_section_iterator& i) {
 	emitter.add("allowed", authorization::User::get().is_allowed_dataset(config));
 	emitter.add("postprocess");
 	emitter.start_list();
-	using wibble::str::Split;
+	using wobble::str::Split;
 	Split splitter(",", config.value("postprocess"));
 	for (Split::const_iterator i = splitter.begin();
 			 i != splitter.end(); ++i) {
-		emitter.add(wibble::str::trim(*i));
+		emitter.add(arkiweb::wobble::str::strip(*i));
 	}
 	emitter.end_list();
 	emitter.end_mapping();
