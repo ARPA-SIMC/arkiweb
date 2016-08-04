@@ -82,7 +82,7 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 		if (!is_allowed_dataset(c))
 			return false;
 		arki::Summary s;
-		std::auto_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(c));
+		std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(c));
 		ds->query_summary(matcher, s);
 		summary.add(s);
 	}

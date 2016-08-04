@@ -40,7 +40,7 @@ namespace arkiweb {
 ProcessorFactory::ProcessorFactory() {}
 ProcessorFactory::~ProcessorFactory() {}
 Processor* ProcessorFactory::create() {
-	std::auto_ptr<arki::Emitter> emitter;
+	std::unique_ptr<arki::Emitter> emitter;
 	if (target == "configfile") {
 		if (format == "json")
 			emitter.reset(new arki::emitter::JSON(std::cout));
@@ -93,7 +93,7 @@ void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
         // and create it.
 		for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
 				 i != cfg.sectionEnd(); ++i) {
-			std::auto_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
+			std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
 			arki::Summary summary;
             utils::query_cached_summary(i->first, *ds, query, summary);
 			if (summary.count() > 0)
