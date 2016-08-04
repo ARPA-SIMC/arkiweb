@@ -16,8 +16,6 @@ LT_INIT
 dnl Use c++11
 AX_CXX_COMPILE_STDCXX_11(noext)
 
-PKG_CHECK_MODULES([WIBBLE], [libwibble >= 1.1])
-
 AC_CHECK_HEADER([arki/libconfig.h],
 		[],
 		[AC_MSG_ERROR([arkimet headers not found])])
