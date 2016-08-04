@@ -149,7 +149,13 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
 		q.setPostprocess(query, postprocess);
 	}
     using authorization::User;
-    arki::dataset::AutoMerged(cfg).query_bytes(q, out);
+    std::vector<std::unique_ptr<arki::dataset::Reader>> datasets;
+    arki::dataset::Merged merger;
+    for (auto i = cfg.sectionBegin(); i != cfg.sectionEnd(); ++i) {
+        datasets.push_back(arki::dataset::Reader::create(*i->second));
+        merger.addDataset(*datasets.back());
+    }
+    merger.query_bytes(q, out);
 }
 
 }
