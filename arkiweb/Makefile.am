@@ -16,7 +16,11 @@ libarkiweb_la_SOURCES = \
 			processor.cc \
 			processor.h \
 			utils.cc \
-			utils.h
+			utils.h \
+			wobble/string.cc \
+			wobble/sys.cc \
+			wobble/tests.cc \
+			wobble/tests-main.cc
 
 check_PROGRAMS = arkiweb-test
 
