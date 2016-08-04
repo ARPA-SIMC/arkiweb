@@ -20,14 +20,3 @@ libarkiweb_la_SOURCES = \
 			wobble/sys.cc \
 			wobble/tests.cc \
 			wobble/tests-main.cc
-
-check_PROGRAMS = arkiweb-test
-
-arkiweb_test_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
-
-arkiweb_test_LDADD = \
-		     $(builddir)/libarkiweb.la \
-		     -larkimet
-
-arkiweb_test_SOURCES = \
-		       arkiweb-test.cc
