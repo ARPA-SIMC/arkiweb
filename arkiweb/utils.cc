@@ -22,7 +22,7 @@
 #include <arkiweb/utils.h>
 
 #include <arki/runtime/config.h>
-#include <wibble/exception.h>
+#include <arkiweb/wobble/string.h>
 #include <arkiweb/authorization.h>
 
 namespace arkiweb {
@@ -31,8 +31,7 @@ namespace utils {
 static std::string configpath() {
   char *path = ::getenv(ARKIWEB_CONFIG_VAR);
   if (!path)
-    throw wibble::exception::Consistency("Reading " ARKIWEB_CONFIG_VAR,
-                                         ARKIWEB_CONFIG_VAR " not set");
+    throw std::runtime_error(ARKIWEB_CONFIG_VAR " not set");
   return path;
 }
 
@@ -67,7 +66,7 @@ void query_cached_summary(const std::string& dsname, arki::dataset::Reader& ds,
                           const arki::Matcher& query, arki::Summary& summary) {
     const char* path = ::getenv(ARKIWEB_SUMMARY_CACHE_ROOT_VAR);
     if (path) {
-        std::string filename = wibble::str::joinpath(path, dsname + ".summary");
+        std::string filename = wobble::str::joinpath(path, dsname + ".summary");
         arki::Summary s;
         s.readFile(filename);
         s.filter(query, summary);

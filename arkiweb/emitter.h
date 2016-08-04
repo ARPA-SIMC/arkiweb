@@ -23,7 +23,6 @@
 #define ARKIWEB_EMITTER_H
 
 #include <iostream>
-#include <wibble/sys/buffer.h>
 #include <arki/emitter.h>
 #include <arki/emitter/json.h>
 
