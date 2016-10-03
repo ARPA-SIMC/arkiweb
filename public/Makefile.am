@@ -1,6 +1,6 @@
 publicdir = $(datarootdir)/$(PACKAGE)/public
 
-public_DATA = arkiweb.js arkiweb.min.js arkiweb.css
+public_DATA = arkiweb.js arkiweb.css
 
 nobase_dist_public_DATA = \
 			  lib/backbone.js \
@@ -53,13 +53,6 @@ TEMPLATES = \
 arkiweb.js: $(JS)
 	cat $^ > $@
 
-if HAVE_UGLIFYJS
-
-arkiweb.min.js: arkiweb.js
-	$(UGLIFYJS) -o $@ $^
-
-endif
-
 SUFFIXES = .eco .js.in .js
 
 if HAVE_ECO
@@ -73,7 +66,7 @@ endif
 #	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
 
 
-EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(TEMPLATES) index.html
+EXTRA_DIST = arkiweb.js arkiweb.css $(JS) $(TEMPLATES) index.html
 
 htmlexampledir = $(docdir)/html/example
 
