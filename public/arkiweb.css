@@ -1,0 +1,109 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Arial", "Verdana", sans-serif;
+  font-size: 0.8em;
+}
+#arkiweb {
+  height: 100%;
+}
+#arkiweb .block {
+  border: none;
+  padding: 2em;
+  background-color: #000000;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  opacity: .5;
+  color: #ffffff;
+}
+#arkiweb .block .error {
+  color: red;
+  font-weight: bold;
+}
+#arkiweb .header,
+#arkiweb .footer {
+  background-color: #7d9ec0;
+  padding: 0.5em;
+}
+#arkiweb .footer {
+  text-align: center;
+}
+#arkiweb .footer a {
+  color: #424242;
+}
+#arkiweb .content .selection {
+  padding: 0.5em;
+}
+#arkiweb .content .selection .datasets table {
+  font-size: 1em;
+  width: 100%;
+  border-collapse: collapse;
+}
+#arkiweb .content .selection .datasets table thead {
+  font-weight: bold;
+}
+#arkiweb .content .selection .datasets table td {
+  border: thin solid silver;
+  padding: 0.5em;
+}
+#arkiweb .content .selection .datasets .datasets-selection-item {
+  cursor: pointer;
+}
+#arkiweb .content .selection .datasets .datasets-selection-item.disallowed {
+  color: silver;
+}
+#arkiweb .content .selection .datasets .datasets-selection-item.selected {
+  background-color: #7d9ec0;
+}
+#arkiweb .content .selection .fields .fields-selection-items table,
+#arkiweb .content .selection .summary .fields-selection-items table,
+#arkiweb .content .selection .fields .summary-items table,
+#arkiweb .content .selection .summary .summary-items table {
+  font-size: 0.9em;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+#arkiweb .content .selection .fields .fields-selection-items table thead,
+#arkiweb .content .selection .summary .fields-selection-items table thead,
+#arkiweb .content .selection .fields .summary-items table thead,
+#arkiweb .content .selection .summary .summary-items table thead {
+  font-weight: bold;
+}
+#arkiweb .content .selection .fields .fields-selection-items table td,
+#arkiweb .content .selection .summary .fields-selection-items table td,
+#arkiweb .content .selection .fields .summary-items table td,
+#arkiweb .content .selection .summary .summary-items table td {
+  border: thin solid silver;
+  padding: 0.3em;
+}
+#arkiweb .content .selection .fields .fields-selection-items table tbody tr,
+#arkiweb .content .selection .summary .fields-selection-items table tbody tr,
+#arkiweb .content .selection .fields .summary-items table tbody tr,
+#arkiweb .content .selection .summary .summary-items table tbody tr {
+  cursor: pointer;
+}
+#arkiweb .content .selection .fields .fields-selection-items table tbody tr.unparsed,
+#arkiweb .content .selection .summary .fields-selection-items table tbody tr.unparsed,
+#arkiweb .content .selection .fields .summary-items table tbody tr.unparsed,
+#arkiweb .content .selection .summary .summary-items table tbody tr.unparsed {
+  cursor: auto;
+  color: silver;
+}
+#arkiweb .content .selection .fields .fields-selection-items table tbody tr.selected,
+#arkiweb .content .selection .summary .fields-selection-items table tbody tr.selected,
+#arkiweb .content .selection .fields .summary-items table tbody tr.selected,
+#arkiweb .content .selection .summary .summary-items table tbody tr.selected {
+  background-color: #7d9ec0;
+}
+#arkiweb .content .selection .fields .fields-selection-items input,
+#arkiweb .content .selection .summary .fields-selection-items input,
+#arkiweb .content .selection .fields .summary-items input,
+#arkiweb .content .selection .summary .summary-items input {
+  font-size: 0.9em;
+}
