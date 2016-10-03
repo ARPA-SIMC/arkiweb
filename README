@@ -6,16 +6,35 @@ version 0.15
 
 Arkiweb needs the following libraries
 
-* `wibble`:
-* `arkimet`: static library and header files
+* `arkimet`: https://github.com/ARPA-SIMC/arkimet
 
-If you edit the Javascript or CSS files, you must install the 
-following programs:
+If you edit the Javascript or CSS files or compile from cloned git repo, you
+must install the following programs:
 
 * `node.js`: http://nodejs.org/
+* `npm`: https://www.npmjs.com/
 * `eco`: https://github.com/sstephenson/eco
-* `less`: http://lesscss.org/
-* `uglifyjs`: https://github.com/mishoo/UglifyJS
+
+=== Install dependencies on Fedora
+
+On Fedora, install `node` and `npm` from official repositories:
+
+----
+$ dnf install nodejs npm
+----
+
+Then, install locally `eco` package:
+
+----
+$ npm install eco
+$ export PATH=$PATH:$HOME/node_modules/eco/bin
+----
+
+or in global mode:
+
+----
+$ npm install -g eco
+----
 
 == Installation
 
