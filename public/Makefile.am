@@ -50,8 +50,6 @@ TEMPLATES = \
 	    arkiweb/templates/summary-item.eco \
 	    arkiweb/templates/postprocessor.eco
 
-LESS = css/arkiweb.less
-
 arkiweb.js: $(JS)
 	cat $^ > $@
 
@@ -59,13 +57,6 @@ if HAVE_UGLIFYJS
 
 arkiweb.min.js: arkiweb.js
 	$(UGLIFYJS) -o $@ $^
-
-endif
-
-if HAVE_LESSC
-
-arkiweb.css: $(LESS)
-	$(LESSC) $^ $@
 
 endif
 
@@ -82,7 +73,7 @@ endif
 #	sed -e "s,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g" $^ > $@
 
 
-EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(LESS) $(TEMPLATES) index.html
+EXTRA_DIST = arkiweb.js arkiweb.min.js arkiweb.css $(JS) $(TEMPLATES) index.html
 
 htmlexampledir = $(docdir)/html/example
 
