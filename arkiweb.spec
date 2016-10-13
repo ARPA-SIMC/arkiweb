@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.19
+Version:        0.20
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -7,7 +7,7 @@ License:        GPLv2+
 URL:            http://www.smr.arpa.emr.it
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:  libtool, pkgconfig, arkimet-devel >= 1.0
+BuildRequires:  libtool, pkgconfig, arkimet-devel >= 1.0, cgicc-devel
 
 %description
 Web support for Arkimet
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Thu Oct 13 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.20-1%{dist}
+- Compiled against system cgicc
+
 * Mon Oct 03 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.19-1%{dist}
 - Removed wibble
 - Removed uglifyjs and lesscss
