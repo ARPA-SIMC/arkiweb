@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.20
+Version:        0.21
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Thu Oct 13 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.21-1%{dist}
+- Header files in dist
+
 * Thu Oct 13 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.20-1%{dist}
 - Compiled against system cgicc
 
