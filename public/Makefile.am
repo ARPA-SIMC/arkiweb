@@ -68,6 +68,8 @@ endif
 
 EXTRA_DIST = arkiweb.js arkiweb.css $(JS) $(TEMPLATES) index.html
 
+CLEANFILES = arkiweb.js
+
 htmlexampledir = $(docdir)/html/example
 
 htmlexample_DATA = index.html
