@@ -24,7 +24,6 @@
 /public/arkiweb.js
 /public/arkiweb.min.js
 /public/arkiweb/config.js
-/public/arkiweb/templates/*.js
 Makefile
 Makefile.in
 aclocal.m4
