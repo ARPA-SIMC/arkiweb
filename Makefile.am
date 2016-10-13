@@ -1,4 +1,4 @@
-SUBDIRS = embedded/cgicc arkiweb cgi-bin httpd public
+SUBDIRS = arkiweb cgi-bin httpd public
 
 doc_DATA = README ChangeLog
 
