@@ -2,6 +2,7 @@
 *.lo
 *.o
 .deps
+.dirstamp
 .libs
 /README.html
 /_darcs
@@ -13,7 +14,7 @@
 /cgi-bin/fields
 /cgi-bin/summary
 /cgicc
-/embedded/cgicc/cgicc/CgiDefs.h
+/compile
 /httpd/arkiweb.conf
 /m4/libtool.m4
 /m4/ltoptions.m4
@@ -24,8 +25,6 @@
 /public/arkiweb.min.js
 /public/arkiweb/config.js
 /public/arkiweb/templates/*.js
-/wibble
-/wibble.tar.gz
 Makefile
 Makefile.in
 aclocal.m4

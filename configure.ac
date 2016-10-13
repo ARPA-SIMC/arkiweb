@@ -5,7 +5,6 @@ AC_PREREQ([2.63])
 AC_INIT([arkiweb], [0.19], [edigiacomo@arpa.emr.it])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SUBDIRS([embedded/cgicc])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CXX
@@ -29,12 +28,14 @@ test x$ASCIIDOC != x && have_asciidoc=yes || have_asciidoc=no
 AM_CONDITIONAL([HAVE_ECO], [test x$have_eco = xyes])
 AM_CONDITIONAL([HAVE_ASCIIDOC], [test x$have_asciidoc = xyes])
 
+PKG_CHECK_MODULES(CGICC, cgicc > 3.2)
+
 AC_CONFIG_FILES([Makefile
                  arkiweb/Makefile
-		 cgi-bin/Makefile
-		 httpd/Makefile
-		 public/Makefile
-		 public/arkiweb/config.js])
+                 cgi-bin/Makefile
+                 httpd/Makefile
+                 public/Makefile
+                 public/arkiweb/config.js])
 AC_OUTPUT
 
 AC_MSG_NOTICE([
