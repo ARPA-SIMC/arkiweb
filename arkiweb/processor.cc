@@ -64,8 +64,7 @@ Processor* ProcessorFactory::create() {
             throw std::runtime_error("unsupported format: " + format);
 		return new processor::FieldsEmitter(emitter.release());
 	} else if (target == "data") {
-        auto out = arki::Stdout();
-		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter(out);
+		processor::BinaryDataEmitter* bde = new processor::BinaryDataEmitter;
 		bde->postprocess = postprocess;
 		return bde;
 	}
@@ -133,9 +132,8 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
 }
 
-BinaryDataEmitter::BinaryDataEmitter(arki::utils::sys::NamedFileDescriptor& out) : out(out) {}
-
 void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
+    auto out = std::unique_ptr<arki::utils::sys::NamedFileDescriptor>(new arki::Stdout);
 	arki::dataset::ByteQuery q;
 	if (postprocess.empty()) {
 		q.setData(query);
@@ -149,7 +147,7 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
         datasets.push_back(arki::dataset::Reader::create(*i->second));
         merger.addDataset(*datasets.back());
     }
-    merger.query_bytes(q, out);
+    merger.query_bytes(q, *out);
 }
 
 }

@@ -80,13 +80,8 @@ class FieldsEmitter : public Processor {
 };
 /// Emit data
 class BinaryDataEmitter : public Processor {
- private:
-     arki::utils::sys::NamedFileDescriptor& out;
-
  public:
 	std::string postprocess;
-
-	BinaryDataEmitter(arki::utils::sys::NamedFileDescriptor& out);
 
 	virtual void process(const arki::ConfigFile& cfg, const arki::Matcher& query);
 };
