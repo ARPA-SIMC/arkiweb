@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.21
+Version:        0.22
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Nov 09 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.22-1%{dist}
+- Fix segfault on BinaryDataEmitter
+
 * Thu Oct 13 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.21-1%{dist}
 - Header files in dist
 
