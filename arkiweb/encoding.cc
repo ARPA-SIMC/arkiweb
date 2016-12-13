@@ -44,7 +44,7 @@ void BaseEncoder::encode(arki::ConfigFile::const_section_iterator& i) {
 	emitter.add("postprocess");
 	emitter.start_list();
 	using wobble::str::Split;
-	Split splitter(",", config.value("postprocess"));
+	Split splitter(config.value("postprocess"), ",");
 	for (Split::const_iterator i = splitter.begin();
 			 i != splitter.end(); ++i) {
 		emitter.add(arkiweb::wobble::str::strip(*i));
