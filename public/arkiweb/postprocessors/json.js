@@ -4,8 +4,8 @@
 		},
 		render: function() {
             $(this.el).html("format <select name='format'>" +
-                "<option value='dbajson'>Dballe JSON</option>" +
-                "<option selected value='geojson'>GeoJSON</option>" +
+                "<option selected='selected' value='dbajson'>Dballe JSON</option>" +
+                "<option value='geojson'>GeoJSON</option>" +
                 "</select>");
         },
 		events: {
