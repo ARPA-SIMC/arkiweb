@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.23
+Version:        0.24
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Dec 14 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.24-1%{dist}
+- json postprocessor with format option tag
+
 * Tue Dec 13 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.23-1%{dist}
 - Fixed postprocessor parser
 
