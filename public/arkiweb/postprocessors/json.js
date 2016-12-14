@@ -3,7 +3,11 @@
 		initialize: function(opts) {
 		},
 		render: function() {
-		},
+            $(this.el).html("format <select name='format'>" +
+                "<option value='dbajson'>Dballe JSON</option>" +
+                "<option selected value='geojson'>GeoJSON</option>" +
+                "</select>");
+        },
 		events: {
 		},
 		activate: function() {
@@ -11,7 +15,7 @@
 		deactivate: function() {
 		},
 		getCommand: function() {
-			return "json";
+			return "json " + "-f " + $(this.el).find("select[name=format]").val();
 		}
 	});
 
