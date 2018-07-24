@@ -27,6 +27,7 @@
 #include <arki/postprocess.h>
 #include <arki/runtime.h>
 #include <arki/utils/sys.h>
+#include <arki/core/file.h>
 
 #include <arkiweb/emitter.h>
 #include <arkiweb/encoding.h>
@@ -133,7 +134,7 @@ void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& qu
 }
 
 void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
-    auto out = std::unique_ptr<arki::utils::sys::NamedFileDescriptor>(new arki::Stdout);
+    auto out = std::unique_ptr<arki::utils::sys::NamedFileDescriptor>(new arki::core::Stdout);
 	arki::dataset::ByteQuery q;
 	if (postprocess.empty()) {
 		q.setData(query);
@@ -144,8 +145,7 @@ void BinaryDataEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher
     std::vector<std::unique_ptr<arki::dataset::Reader>> datasets;
     arki::dataset::Merged merger;
     for (auto i = cfg.sectionBegin(); i != cfg.sectionEnd(); ++i) {
-        datasets.push_back(arki::dataset::Reader::create(*i->second));
-        merger.addDataset(*datasets.back());
+        merger.add_dataset(*(i->second));
     }
     merger.query_bytes(q, *out);
 }

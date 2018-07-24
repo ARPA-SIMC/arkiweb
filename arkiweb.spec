@@ -1,5 +1,5 @@
 Name:           arkiweb
-Version:        0.24
+Version:        0.25
 Release:        1%{?dist}
 Summary:        Web support for Arkimet
 
@@ -7,7 +7,10 @@ License:        GPLv2+
 URL:            http://www.smr.arpa.emr.it
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:  libtool, pkgconfig, arkimet-devel >= 1.0, cgicc-devel
+BuildRequires:  libtool
+BuildRequires:  pkgconfig
+BuildRequires:  arkimet-devel >= 1.7-5
+BuildRequires:  cgicc-devel
 
 %description
 Web support for Arkimet
@@ -39,6 +42,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Tue Jul 24 2018 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.25-1
+- Using arkimet >= 1.7-5
+
 * Wed Dec 14 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.24-1%{dist}
 - json postprocessor with format option tag
 
