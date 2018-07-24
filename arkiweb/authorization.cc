@@ -24,7 +24,9 @@
 #include <cstdlib>
 
 #include <arki/runtime.h>
+#include <arki/runtime/config.h>
 #include <arki/summary.h>
+#include <arki/dataset.h>
 
 namespace arkiweb {
 namespace authorization {
@@ -89,8 +91,12 @@ bool User::is_allowed(const arki::Matcher& matcher, const arki::ConfigFile& cfg)
 	return true;
 }
 void User::remove_unallowed(arki::ConfigFile& cfg) const {
-	arki::runtime::Restrict rest(m_name);
-	rest.remove_unallowed(cfg);
+    arki::runtime::Restrict rest(m_name);
+    for (auto it = cfg.sectionBegin(); it != cfg.sectionEnd(); ++it) {
+        if (not rest.is_allowed(*(it->second))) {
+            cfg.deleteSection(it->first);
+        }
+    }
 }
 
 }
