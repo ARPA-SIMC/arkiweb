@@ -3,12 +3,14 @@ publicdir = $(datarootdir)/$(PACKAGE)/public
 public_DATA = arkiweb.js arkiweb.css
 
 nobase_dist_public_DATA = \
+			  lib/jquery-ui.css \
 			  lib/backbone.js \
 			  lib/jquery.blockUI.js \
 			  lib/jquery.layout.js \
 			  lib/jquery.min.js \
 			  lib/jquery-ui.js \
 			  lib/jquery-ui-timepicker-addon.js \
+			  lib/OpenLayers.js \
 			  lib/strftime.js \
 			  lib/underscore.js
 
