@@ -1,4 +1,4 @@
-%global releaseno 1
+%global releaseno 2
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -46,7 +46,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
-* Tue Jul 24 2018 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.25-1
+* Tue Sep 18 2018 Daniele Branchini <dbranchini@arpae.it> - 0.25-2%{dist}
+- github/travis/copr build
+
+* Tue Jul 24 2018 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.25-1%{dist}
 - Using arkimet >= 1.7-5
 
 * Wed Dec 14 2016 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.24-1%{dist}
