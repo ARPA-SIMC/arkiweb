@@ -118,10 +118,10 @@ $(document).ready(function() {
 
 | Name                                    | Description               |
 | --------------------------------------- | ------------------------- |
-| [datasets](###get-the-list-of-datasets) | Retrieve list of datasets |
-| [summary](###get-the-summary)           | Retrieve the summary      |
-| [fields](###get-the-list-of-fields)     | Retrieve list of fields   |
-| [data](###get-the-data)                 | Retrieve the data         |
+| [datasets](#get-the-list-of-datasets) | Retrieve list of datasets |
+| [summary](#get-the-summary)           | Retrieve the summary      |
+| [fields](#get-the-list-of-fields)     | Retrieve list of fields   |
+| [data](#get-the-data)                 | Retrieve the data         |
 
 ### Get the list of datasets
 
