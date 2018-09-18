@@ -1,8 +1,6 @@
-= Arkiweb
-Emanuele Di Giacomo <edigiacomo@arpa.emr.it>
-version 0.15
+# Arkiweb
 
-== Dependencies
+## Dependencies
 
 Arkiweb needs the following libraries
 
@@ -15,34 +13,34 @@ must install the following programs:
 * `npm`: https://www.npmjs.com/
 * `eco`: https://github.com/sstephenson/eco
 
-=== Install dependencies on Fedora
+### Install dependencies on Fedora
 
 On Fedora, install `node` and `npm` from official repositories:
 
-----
+```
 $ dnf install nodejs npm
-----
+```
 
 Then, install locally `eco` package:
 
-----
+```
 $ npm install eco
 $ export PATH=$PATH:$HOME/node_modules/eco/bin
-----
+```
 
 or in global mode:
 
-----
+```
 $ npm install -g eco
-----
+```
 
-== Installation
+## Installation
 
-----
+```
 $ autoreconf -ifv && ./configure && make
-----
+```
 
-=== Web services installation
+### Web services installation
 
 The web services are installed in `$libdir/arkiweb`.
 
@@ -51,11 +49,9 @@ To install the services under a web server, you must configure it.
 The environment variable `ARKIWEB_CONFIG` is mandatory. Its value is the path
 of the configuration file, created with `arki-mergeconf`.
 
-----
-include::httpd/arkiweb.conf[]
-----
+An example of Apache configuration is in `$datarootdir/arkiweb/httpd/arkiweb.conf`.
 
-==== Authentication & authorization
+#### Authentication & authorization
 
 Arkiweb comes with a very simple authorization system. When the global 
 variable `ARKIWEB_RESTRICT` is set, the service looks for the global
@@ -63,27 +59,28 @@ variable `${ARKIWEB_RESTRICT}`. The value of the variable is used for
 restricted access (similar to the `--restrict` option of the arkimet 
 commands).
 
-.Example with Apache basic authentication
-----
+Example with Apache basic authentication:
+
+```
 AuthType Basic
 AuthName "By Invitation Only"
 AuthUserFile /usr/local/apache/passwd/passwords
 Require valid-user
 SetEnv ARKIWEB_RESTRICT REMOTE_USER
-----
+```
 
 In addition, you can limit the maximum number or size of retrieved items:
 
-----
+```
 # Max 1000 items
 SetEnv ARKIWEB_MAXCOUNT MAXCOUNT
 SetEnv MAXCOUNT 1000
 # Max 1000000 bytes
 SetEnv ARKIWEB_MAXSIZE MAXSIZE
 SetEnv MAXSIZE 1000000
-----
+```
 
-=== Website installation
+### Website installation
 
 The website is installed under `$datarootdir/arkiweb/public/`.
 
@@ -91,7 +88,7 @@ The website is installed under `$datarootdir/arkiweb/public/`.
 * `arkiweb.js`: development version
 * `arkiweb.min.js`: minified version
 
-You need the following Javascript libraries:
+In the same directory you will find the following third party libraries:
 
 * `jquery`: http://jquery.com/
 * `jquery-ui`: http://jqueryui.com/
@@ -107,29 +104,27 @@ Then, you must configure and run your arkiweb application. Suppose that you
 have you web services under `/cgi-bin/arkiweb` and that you want embed arkiweb
 inside a `<div id="arkiweb">`:
 
-[source,javascript]
-----
+```javascript
 $(document).ready(function() {
 	arkiweb.run({
 		baseUrl: "/cgi-bin/arkiweb",
 		el: "#arkiweb"
 	});
 });
-----
+```
 
-== API
+See `$docdir/arkiweb/html/example/index.html` for a simple example.
 
-[options="header",cols="m,"]
-|======
-| Name                       | Description
-| <<API_datasets,/datasets>> | Retrieve list of datasets
-| <<API_summary,/summary>>   | Retrieve the summary
-| <<API_fields,/fields>>     | Retrieve list of fields
-| <<API_data,/data>>         | Retrieve the data
-|======
+## API
 
-[[API_datasets]]
-=== Get the list of datasets
+| Name                                    | Description               |
+| --------------------------------------- | ------------------------- |
+| [datasets](#get-the-list-of-datasets) | Retrieve list of datasets |
+| [summary](#get-the-summary)           | Retrieve the summary      |
+| [fields](#get-the-list-of-fields)     | Retrieve list of fields   |
+| [data](#get-the-data)                 | Retrieve the data         |
+
+### Get the list of datasets
 
 The `/datasets` returns the list of datasets in `JSON` format.
 
@@ -143,7 +138,7 @@ The parameters are:
 
 The output is a `JSON` object:
 
-----
+```
 {
   "datasets": [
     {
@@ -164,7 +159,7 @@ The output is a `JSON` object:
     ...
   ]
 }
-----
+```
 
 - `id`: id of the dataset
 - `name`: name of the dataset
@@ -173,16 +168,15 @@ The output is a `JSON` object:
 - `allowed`: `true` if the user can download data from this dataset
 - `postprocess`: array with a list of allowed postprocessors
 
-.Examples
-----
+#### Examples
+```
 # List all datasets
 $ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data'
 # List all datasets with data for today
 $ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data?query=reftime:=today'
-----
+```
 
-[[API_fields]]
-=== Get the list of fields
+### Get the list of fields
 
 The `/fields` service returns the list of the available fields (metadata) for
 the given datasets and for the (optionally) given query.
@@ -195,7 +189,7 @@ The parameters are:
 
 The output is a `JSON` object:
 
-----
+```
 {
   "fields": [
     {
@@ -228,7 +222,7 @@ The output is a `JSON` object:
     "s": 964376769120
   }
 }
-----
+```
 
 - `fields`: array with an object for each metadata type
   - `type`: the metadata type
@@ -239,14 +233,12 @@ The output is a `JSON` object:
   `c`: item count
   `s`: size in bytes
 
-[[API_summary]]
-=== Get the summary
+### Get the summary
 
 *TODO*
 
 
-[[API_data]]
-=== Get the data
+### Get the data
 
 The `/data` service returs the data.
 
@@ -255,4 +247,8 @@ The parameters are:
 - `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
   specified multiple times.
 - `query=QUERY`: filter datasets by query.
-- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset cna be specified.
+- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset can be specified.
+
+## License
+
+Arkiweb is licensed under GPLv2+.
