@@ -32,7 +32,6 @@ then
     pkgname=arkiweb-master
     mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
     cp fedora/SPECS/arkiweb.spec ~/rpmbuild/SPECS/arkiweb.spec
-    cp fedora/SOURCES/* ~/rpmbuild/SOURCES/
     git archive --prefix=$pkgname/ --format=tar HEAD | gzip -c > ~/rpmbuild/SOURCES/$pkgname.tar.gz
     rpmbuild -ba --define "srcarchivename $pkgname" ~/rpmbuild/SPECS/arkiweb.spec
     find ~/rpmbuild/{RPMS,SRPMS}/ -name "*rpm" -exec cp -v {} . \;

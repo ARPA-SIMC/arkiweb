@@ -20,10 +20,12 @@ BuildRequires:  cgicc-devel
 Web interface for Arkimet
 
 %prep
-%setup -q
-
+%setup -q -n %{srcarchivename}
 
 %build
+
+autoreconf -ifv
+
 %configure
 make %{?_smp_mflags}
 
