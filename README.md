@@ -116,12 +116,12 @@ $(document).ready(function() {
 
 ## API
 
-| Name                                     | Description               |
-| ---------------------------------------- | ------------------------- |
-| [datasets](### Get the list of datasets) | Retrieve list of datasets |
-| [summary](### Get the summary)           | Retrieve the summary      |
-| [fields](### Get the list of fields)     | Retrieve list of fields   |
-| [data](### Get the data)                 | Retrieve the data         |
+| Name                                    | Description               |
+| --------------------------------------- | ------------------------- |
+| [datasets](###get-the-list-of-datasets) | Retrieve list of datasets |
+| [summary](###get-the-summary)           | Retrieve the summary      |
+| [fields](###get-the-list-of-fields)     | Retrieve list of fields   |
+| [data](###get-the-data)                 | Retrieve the data         |
 
 ### Get the list of datasets
 
@@ -167,7 +167,7 @@ The output is a `JSON` object:
 - `allowed`: `true` if the user can download data from this dataset
 - `postprocess`: array with a list of allowed postprocessors
 
-. Examples
+#### Examples
 ```
 # List all datasets
 $ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data'
