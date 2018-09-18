@@ -20,13 +20,11 @@ AC_CHECK_HEADER([arki/libconfig.h],
 		[AC_MSG_ERROR([arkimet headers not found])])
 
 AC_PATH_PROG([ECO], [eco])
-AC_PATH_PROG([ASCIIDOC], [asciidoc])
 
 test x$ECO != x && have_eco=yes || have_eco=no
-test x$ASCIIDOC != x && have_asciidoc=yes || have_asciidoc=no
 
 AM_CONDITIONAL([HAVE_ECO], [test x$have_eco = xyes])
-AM_CONDITIONAL([HAVE_ASCIIDOC], [test x$have_asciidoc = xyes])
+
 
 PKG_CHECK_MODULES(CGICC, cgicc > 3.2)
 
@@ -42,6 +40,5 @@ AC_MSG_NOTICE([
 ===================================================================
 ${PACKAGE_STRING}
 - eco:		$have_eco (public/arkiweb/templates/*.eco compiler)
-- asciidoc:	$have_asciidoc (README -> README.html compiler)
 ===================================================================
 ])
