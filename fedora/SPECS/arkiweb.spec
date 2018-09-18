@@ -16,6 +16,7 @@ BuildRequires:  pkgconfig
 BuildRequires:  arkimet-devel >= 1.7-5
 BuildRequires:  cgicc-devel
 BuildRequires:  readline-devel
+BuildRequires:  bzip2-devel
 
 %description
 Web interface for Arkimet
