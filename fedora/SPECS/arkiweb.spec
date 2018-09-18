@@ -15,6 +15,7 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  arkimet-devel >= 1.7-5
 BuildRequires:  cgicc-devel
+BuildRequires:  readline-devel
 
 %description
 Web interface for Arkimet
