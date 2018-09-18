@@ -1,11 +1,15 @@
+%global releaseno 1
+# Note: define _srcarchivename in Travis build only.
+%{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
+
 Name:           arkiweb
 Version:        0.25
-Release:        1%{?dist}
-Summary:        Web support for Arkimet
+Release:        %{releaseno}%{dist}
+Summary:        Web interface for Arkimet
 
 License:        GPLv2+
-URL:            http://www.smr.arpa.emr.it
-Source0:        %{name}-%{version}.tar.gz
+URL:            https://github.com/arpa-simc/%{name}
+Source0:        https://github.com/arpa-simc/%{name}/archive/v%{version}-%{releaseno}.tar.gz#/%{srcarchivename}.tar.gz
 
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
@@ -13,7 +17,7 @@ BuildRequires:  arkimet-devel >= 1.7-5
 BuildRequires:  cgicc-devel
 
 %description
-Web support for Arkimet
+Web interface for Arkimet
 
 %prep
 %setup -q
