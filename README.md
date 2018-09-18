@@ -49,9 +49,7 @@ To install the services under a web server, you must configure it.
 The environment variable `ARKIWEB_CONFIG` is mandatory. Its value is the path
 of the configuration file, created with `arki-mergeconf`.
 
-```
-include::httpd/arkiweb.conf[]
-```
+An example of Apache configuration is in `$datarootdir/arkiweb/httpd/arkiweb.conf`.
 
 #### Authentication & authorization
 
@@ -61,7 +59,8 @@ variable `${ARKIWEB_RESTRICT}`. The value of the variable is used for
 restricted access (similar to the `--restrict` option of the arkimet 
 commands).
 
-.Example with Apache basic authentication
+Example with Apache basic authentication:
+
 ```
 AuthType Basic
 AuthName "By Invitation Only"
@@ -89,7 +88,7 @@ The website is installed under `$datarootdir/arkiweb/public/`.
 * `arkiweb.js`: development version
 * `arkiweb.min.js`: minified version
 
-You need the following Javascript libraries:
+In the same directory you will find the following third party libraries:
 
 * `jquery`: http://jquery.com/
 * `jquery-ui`: http://jqueryui.com/
@@ -113,6 +112,8 @@ $(document).ready(function() {
 	});
 });
 ```
+
+See `$docdir/arkiweb/html/example/index.html` for a simple example.
 
 ## API
 
@@ -246,4 +247,8 @@ The parameters are:
 - `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
   specified multiple times.
 - `query=QUERY`: filter datasets by query.
-- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset cna be specified.
+- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset can be specified.
+
+## License
+
+Arkiweb is licensed under GPLv2+.
