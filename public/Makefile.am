@@ -11,6 +11,7 @@ nobase_dist_public_DATA = \
 			  lib/jquery-ui.js \
 			  lib/jquery-ui-timepicker-addon.js \
 			  lib/OpenLayers.js \
+			  lib/theme/default/style.css \
 			  lib/strftime.js \
 			  lib/underscore.js
 
