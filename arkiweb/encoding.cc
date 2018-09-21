@@ -23,7 +23,9 @@
 
 #include <arki/formatter.h>
 #include <arki/summary.h>
+#include <arki/summary/short.h>
 #include <arki/summary/stats.h>
+#include <arki/utils/string.h>
 
 #include <arkiweb/authorization.h>
 #include <arkiweb/wobble/string.h>
@@ -100,40 +102,23 @@ void BaseEncoder::encode(const arki::Summary& sum) {
 
 FieldsEncoder::FieldsEncoder(arki::Emitter& emitter): BaseEncoder(emitter) {}
 void FieldsEncoder::encode(const arki::Summary& sum) {
-
-	struct Merger : public arki::summary::Visitor {
-        std::map<std::string, std::set<const arki::types::Type*> > fields;
-		arki::summary::Stats statistics;
-
-        bool operator()(const std::vector<const arki::types::Type*>& md, const arki::summary::Stats& stats) {
-			for (std::vector<const arki::types::Type*>::const_iterator i = md.begin();
-					 i != md.end(); ++i) {
-				if (not *i) continue;
-				fields[(*i)->tag()].insert(*i);
-			}
-			statistics.merge(stats);
-			return true;
-		}
-	} merger;
-
-	sum.visit(merger);
+    arki::summary::Short sshort;
+    sum.visit(sshort);
 
     std::unique_ptr<arki::Formatter> formatter = arki::Formatter::create();
 
 	emitter.start_mapping();
 	emitter.add("fields");
 	emitter.start_list();
-	for (std::map<std::string, std::set<const arki::types::Type*> >::const_iterator i = merger.fields.begin();
-			 i != merger.fields.end(); ++i) {
+    for (const auto& i: sshort.items) {
 		emitter.start_mapping();
-		emitter.add("type", i->first);
+		emitter.add("type", arki::utils::str::lower(arki::types::formatCode(i.first)));
 		emitter.add("values");
 		emitter.start_list();
-		for (std::set<const arki::types::Type*>::const_iterator j = i->second.begin();
-				 j != i->second.end(); ++j) {
+        for (const auto& mi: i.second) {
 			emitter.start_mapping();
-			(*j)->serialiseLocal(emitter, formatter.get());
-			emitter.add("desc", (*formatter)(**j));
+			mi->serialiseLocal(emitter, formatter.get());
+			emitter.add("desc", (*formatter)(*mi));
 			emitter.end_mapping();
 		}
 		emitter.end_list();
@@ -143,7 +128,7 @@ void FieldsEncoder::encode(const arki::Summary& sum) {
 
 	emitter.add("stats");
 	emitter.start_mapping();
-	merger.statistics.serialiseLocal(emitter, formatter.get());
+	sshort.stats.serialiseLocal(emitter, formatter.get());
 	emitter.end_mapping();
 
 	emitter.end_mapping();
