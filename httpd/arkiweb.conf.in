@@ -18,4 +18,8 @@ ScriptAlias /services/arkiweb/ @PKGLIBDIR@/
 Alias /arkiwebjs/ @PUBLICDIR@/
 <Directory "@PUBLICDIR@">
 	AllowOverride None
+        
+        # Tune it to your needs
+        # or change the syntax for apache < 2.4
+        Require all granted
 </Directory>
