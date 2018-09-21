@@ -3,7 +3,7 @@
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
 Name:           arkiweb
-Version:        0.26
+Version:        0.27
 Release:        %{releaseno}%{dist}
 Summary:        Web interface for Arkimet
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Fri Sep 21 2018 Daniele Branchini <dbranchini@arpae.it> - 0.27-1%{dist}
+- fixed metadata sorting
+
 * Fri Sep 21 2018 Daniele Branchini <dbranchini@arpae.it> - 0.26-1%{dist}
 - fixed html sample
 - fixed httpd conf sample
