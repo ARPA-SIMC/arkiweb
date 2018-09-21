@@ -1,9 +1,9 @@
-%global releaseno 2
+%global releaseno 1
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
 Name:           arkiweb
-Version:        0.25
+Version:        0.26
 Release:        %{releaseno}%{dist}
 Summary:        Web interface for Arkimet
 
@@ -50,6 +50,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Fri Sep 21 2018 Daniele Branchini <dbranchini@arpae.it> - 0.26-1%{dist}
+- fixed html sample
+- fixed httpd conf sample
+
 * Tue Sep 18 2018 Daniele Branchini <dbranchini@arpae.it> - 0.25-2%{dist}
 - github/travis/copr build
 
