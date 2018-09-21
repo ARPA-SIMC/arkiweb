@@ -98,15 +98,15 @@ The website is installed under `$datarootdir/arkiweb/public/`.
 
 In the same directory you will find the following third party libraries:
 
-* [jquery][http://jquery.com/] licensed under MIT license.
-* [jquery-ui][http://jqueryui.com/] dual licensed under MIT and GPLv2 license.
-* [jquery.layout][http://layout.jquery-dev.net/] dual licensed under the MIT and GPL licenses.
-* [jquery.blockUI][http://jquery.malsup.com/block/] dual licensed under the MIT and GPL licenses.
-* [jquery-ui-timepicker-addon][https://github.com/trentrichardson/jQuery-Timepicker-Addon] dual licensed under the MIT and GPL licenses.
-* [underscore][http://documentcloud.github.com/underscore/] licensed under MIT license.
-* [backbone][http://documentcloud.github.com/backbone/] licensed under MIT license.
-* [openlayers][http://openlayers.org/] licensed under the 2-clause BSD license.
-* [strftime][http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html] licensed under BSD license.
+* [jquery](http://jquery.com/) licensed under MIT license.
+* [jquery-ui](http://jqueryui.com/) dual licensed under MIT and GPLv2 license.
+* [jquery.layout](http://layout.jquery-dev.net/) dual licensed under the MIT and GPL licenses.
+* [jquery.blockUI](http://jquery.malsup.com/block/) dual licensed under the MIT and GPL licenses.
+* [jquery-ui-timepicker-addon](https://github.com/trentrichardson/jQuery-Timepicker-Addon) dual licensed under the MIT and GPL licenses.
+* [underscore](http://documentcloud.github.com/underscore/) licensed under MIT license.
+* [backbone](http://documentcloud.github.com/backbone/) licensed under MIT license.
+* [openlayers](http://openlayers.org/) licensed under the 2-clause BSD license.
+* [strftime](http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html) licensed under BSD license.
 
 Then, you must configure and run your arkiweb application. Suppose that you
 have you web services under `/cgi-bin/arkiweb` and that you want embed arkiweb
@@ -263,12 +263,12 @@ Arkiweb is licensed under GPLv2+.
 
 The following third party libraries are included in this package:
 
-* [jquery][http://jquery.com/] licensed under MIT license.
-* [jquery-ui][http://jqueryui.com/] dual licensed under MIT and GPLv2 license.
-* [jquery.layout][http://layout.jquery-dev.net/] dual licensed under the MIT and GPL licenses.
-* [jquery.blockUI][http://jquery.malsup.com/block/] dual licensed under the MIT and GPL licenses.
-* [jquery-ui-timepicker-addon][https://github.com/trentrichardson/jQuery-Timepicker-Addon] dual licensed under the MIT and GPL licenses.
-* [underscore][http://documentcloud.github.com/underscore/] licensed under MIT license.
-* [backbone][http://documentcloud.github.com/backbone/] licensed under MIT license.
-* [openlayers][http://openlayers.org/] licensed under the 2-clause BSD license.
-* [strftime][http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html] licensed under BSD license.
+* [jquery](http://jquery.com/) licensed under MIT license.
+* [jquery-ui](http://jqueryui.com/) dual licensed under MIT and GPLv2 license.
+* [jquery.layout](http://layout.jquery-dev.net/) dual licensed under the MIT and GPL licenses.
+* [jquery.blockUI](http://jquery.malsup.com/block/) dual licensed under the MIT and GPL licenses.
+* [jquery-ui-timepicker-addon](https://github.com/trentrichardson/jQuery-Timepicker-Addon) dual licensed under the MIT and GPL licenses.
+* [underscore](http://documentcloud.github.com/underscore/) licensed under MIT license.
+* [backbone](http://documentcloud.github.com/backbone/) licensed under MIT license.
+* [openlayers](http://openlayers.org/) licensed under the 2-clause BSD license.
+* [strftime](http://tech.bluesmoon.info/2008/04/strftime-in-javascript.html) licensed under BSD license.
