@@ -1,4 +1,4 @@
-%global releaseno 1
+%global releaseno 2
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -14,7 +14,7 @@ Source0:        https://github.com/arpa-simc/%{name}/archive/v%{version}-%{relea
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  arkimet-devel >= 1.7-5
-BuildRequires:  cgicc-devel
+BuildRequires:  cgicc-devel = 3.2.11
 BuildRequires:  readline-devel
 BuildRequires:  bzip2-devel
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Sep 26 2018 Daniele Branchini <dbranchini@arpae.it> - 0.27-2%{dist}
+- pinned buildrequires on cgicc 3.2.11 (recent versions have encoding issues) 
+
 * Fri Sep 21 2018 Daniele Branchini <dbranchini@arpae.it> - 0.27-1%{dist}
 - fixed metadata sorting
 
