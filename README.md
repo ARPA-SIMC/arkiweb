@@ -1,12 +1,17 @@
-# Arkiweb
+# Arkiweb [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=centos:7&label=centos7)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:27&label=fedora27)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:28&label=fedora28)](https://travis-ci.org/ARPA-SIMC/arkiweb)
 
-## Build status
+## Table of Contents
 
-| Environment | Status |
-| ----------- | ------ |
-| CentOS 7    | [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=centos:7&label=centos7)](https://travis-ci.org/ARPA-SIMC/arkiweb) |
-| Fedora 27   | [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:27&label=fedora27)](https://travis-ci.org/ARPA-SIMC/arkiweb) |
-| Fedora 28   | [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:28&label=fedora28)](https://travis-ci.org/ARPA-SIMC/arkiweb) |
+  - [Dependencies](#dependencies)
+    - [Install dependencies on Fedora](#install-dependencies-on-fedora)
+  - [Installation](#installation)
+    - [Web services installation](#web-services-installation)
+     - [Authentication and authorization](#authentication-and-authorization)
+    - [Website installation](#website-installation)
+  - [API](#api)
+  - [License](#license)
+
+
 
 ## Dependencies
 
@@ -59,7 +64,7 @@ of the configuration file, created with `arki-mergeconf`.
 
 An example of Apache configuration is in `$datarootdir/arkiweb/httpd/arkiweb.conf`.
 
-#### Authentication & authorization
+#### Authentication and authorization
 
 Arkiweb comes with a very simple authorization system. When the global 
 variable `ARKIWEB_RESTRICT` is set, the service looks for the global
