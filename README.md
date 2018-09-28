@@ -137,6 +137,11 @@ See `$docdir/arkiweb/html/example/index.html` for a simple example.
 | [fields](#get-the-list-of-fields)     | Retrieve list of fields   |
 | [data](#get-the-data)                 | Retrieve the data         |
 
+:warning: please note:
+ - **all the webservices works with GET parameters**
+ - **all the parameters need to be encoded** (e.g. `--data-urlencode` curl option), due to the frequent use of special characters as "[ ]" and ";"
+
+
 ### Get the list of datasets
 
 The `/datasets` returns the list of datasets in `JSON` format.
