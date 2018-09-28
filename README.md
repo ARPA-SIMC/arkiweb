@@ -184,9 +184,9 @@ The output is a `JSON` object:
 #### Examples
 ```
 # List all datasets
-$ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data'
 # List all datasets with data for today
-$ curl -g 'http://USER:PASSWORD@HOST/cgi-bin/arkiweb/data?query=reftime:=today'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data' --data-urlencode 'query=reftime:=today'
 ```
 
 ### Get the list of fields
@@ -246,10 +246,23 @@ The output is a `JSON` object:
   `c`: item count
   `s`: size in bytes
 
+#### Examples
+
+```
+# List today's metadata for datasets cosmo_5M_ita and cosmo_2I
+$ curl -G --anyauth 'http://USER:PASSWORD@HOST/services/arkiweb/fields' --data-urlencode 'datasets[]=cosmo_5M_ita' --data-urlencode 'datasets[]=lmsmr6x54' --data-urlencoede 'query=reftime:=today'
+```
+
 ### Get the summary
 
-*TODO*
+The `/summary` service returns metadata of every single file archived. It uses the same parameters of the `/fields` service.
 
+#### Examples
+
+```
+# List the number of t2m grib for today's run of cosmo_5M_ita:
+$ curl -G --anyauth 'http://USER:PASSWORD@HOST/services/arkiweb/fields' --data-urlencode 'datasets[]=cosmo_5M_ita' --data-urlencode 'query=reftime:=today 00:00; product: GRIB1,80,2,11; level: GRIB1,105,2'
+```
 
 ### Get the data
 
@@ -259,8 +272,19 @@ The parameters are:
 
 - `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
   specified multiple times.
-- `query=QUERY`: filter datasets by query.
+- `query=QUERY`: filter datasets by query. If not specified it means "all available data" and it's generally a bad idea.
 - `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset can be specified.
+
+The return data format depends on the data requested and/or on the postprocessor selected.
+
+#### Examples
+
+```
+# Extract today's cosmo_5M_ita analysis
+$ curl -G --anyauth 'http://USER:PASSWORD@HOST/services/arkiweb/data' --data-urlencode 'datasets[]=cosmo_5M_ita' --data-urlencode 'query=reftime:=today;timerange:GRIB1,0,0'
+# Extract a single point with given lat/lon coordinates from today's cosmo_5M_ita analysis using `singlepoint` postprocessor requesting json format in output
+$ curl -G --anyauth 'http://USER:PASSWORD@HOST/services/arkiweb/data' --data-urlencode 'datasets[]=cosmo_5M_ita' --data-urlencode 'query=reftime:=today;timerange:GRIB1,0,0' --data-urlencode 'postprocess=singlepoint -f JSON 12 44'
+```
 
 ## License
 
