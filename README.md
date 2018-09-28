@@ -1,5 +1,7 @@
 # Arkiweb [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=centos:7&label=centos7)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:27&label=fedora27)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:28&label=fedora28)](https://travis-ci.org/ARPA-SIMC/arkiweb)
 
+*Read this in other languages: [English](README.md), [Italiano](README.it.md).*
+
 ## Table of Contents
 
   - [Dependencies](#dependencies)
@@ -130,8 +132,8 @@ See `$docdir/arkiweb/html/example/index.html` for a simple example.
 
 ## API
 
-| Name                                    | Description               |
-| --------------------------------------- | ------------------------- |
+| Name                                  | Description               |
+| ------------------------------------- | ------------------------- |
 | [datasets](#get-the-list-of-datasets) | Retrieve list of datasets |
 | [summary](#get-the-summary)           | Retrieve the summary      |
 | [fields](#get-the-list-of-fields)     | Retrieve list of fields   |
@@ -139,12 +141,12 @@ See `$docdir/arkiweb/html/example/index.html` for a simple example.
 
 :warning: please note:
  - **all the webservices works with GET parameters**
- - **all the parameters need to be encoded** (e.g. `--data-urlencode` curl option), due to the frequent use of special characters as "[ ]" and ";"
-
+ - **all the parameters need to be encoded** (e.g. `--data-urlencode` curl
+ option), due to the frequent use of reserved characters as ";" in queries
 
 ### Get the list of datasets
 
-The `/datasets` returns the list of datasets in `JSON` format.
+The `/datasets` service returns the list of datasets in `JSON` format.
 
 The parameters are:
 
@@ -260,7 +262,8 @@ $ curl -G --anyauth 'http://USER:PASSWORD@HOST/services/arkiweb/fields' --data-u
 
 ### Get the summary
 
-The `/summary` service returns metadata of every single file archived. It uses the same parameters of the `/fields` service.
+The `/summary` service returns metadata of every single file archived. It uses
+the same parameters of the `/fields` service.
 
 #### Examples
 
@@ -275,12 +278,19 @@ The `/data` service returs the data.
 
 The parameters are:
 
-- `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can be
-  specified multiple times.
-- `query=QUERY`: filter datasets by query. If not specified it means "all available data" and it's generally a bad idea.
-- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one dataset can be specified.
+- `datasets[]=NAME`: run the service over the dataset with name `NAME`. It can
+  be specified multiple times.
+- `query=QUERY`: filter datasets by query. If not specified it means "all 
+  available data" and it's generally a bad idea.
+- `postprocess=NAME ARGS`: postprocessor. If this parameter is set, only one
+  dataset can be specified. If multiple datasets are selected the webservice
+  will return a HTTP status 400 (Bad Request).
 
-The return data format depends on the data requested and/or on the postprocessor selected.
+The return data format depends on the data requested and/or on the postprocessor
+selected.
+For additional information on postprocessor parameters please see:
+https://github.com/ARPA-SIMC/arkimet-postprocessor-suite
+
 
 #### Examples
 
