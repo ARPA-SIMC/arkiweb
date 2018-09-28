@@ -7,8 +7,8 @@
   - [Dipendenze](#dipendenze)
   - [Installazione](#installazione)
     - [Installazione dei web service](#installazione-dei-web-service)
-     - [Autenticazione e autorizzazioni](#autenticazione e autorizzazioni)
-    - [Installazione del sito web](#installazione del sito web)
+     - [Autenticazione e autorizzazioni](#autenticazione-e-autorizzazioni)
+    - [Installazione del sito web](#installazione-del-sito-web)
   - [API](#api)
   - [Licenza](#licenza)
 
@@ -45,7 +45,7 @@ Va assegnata al path del file di configurazione creato con `arki-mergeconf`.
 Un esempio di configurazione per Apache è disponibile su
 `$datarootdir/arkiweb/httpd/arkiweb.conf`.
 
-#### Authenticazione e autorizzazioni
+#### Autenticazione e autorizzazioni
 
 Quando la variabile globale `ARKIWEB_RESTRICT` è assegnata, il servizio cerca
 una variabile globale `${ARKIWEB_RESTRICT}` e ne utilizza il valore per limitare
