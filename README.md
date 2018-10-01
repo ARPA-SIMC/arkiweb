@@ -191,9 +191,9 @@ The output is a `JSON` object:
 #### Examples
 ```
 # List all datasets
-$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/datasets'
 # List all datasets with data for today
-$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data' --data-urlencode 'query=reftime:=today'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/datasets' --data-urlencode 'query=reftime:=today'
 ```
 
 ### Get the list of fields

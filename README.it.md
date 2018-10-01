@@ -173,9 +173,9 @@ L'output è un oggetto `JSON`:
 #### Esempi
 ```
 # Lista di tutti i datasets
-$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/datasets'
 # Lista di tutti i dataset con dati disponibili per la giornata di oggi
-$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/data' --data-urlencode 'query=reftime:=today'
+$ curl -G 'http://USER:PASSWORD@HOST/services/arkiweb/datasets' --data-urlencode 'query=reftime:=today'
 ```
 
 ### Elenco dei campi
