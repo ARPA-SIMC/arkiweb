@@ -1,4 +1,4 @@
-%global releaseno 2
+%global releaseno 3
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -50,8 +50,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Oct 17 2018 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.27-3
+- Compiled against eccodes 2.8.0-3
+
 * Wed Sep 26 2018 Daniele Branchini <dbranchini@arpae.it> - 0.27-2%{dist}
-- pinned buildrequires on cgicc 3.2.11 (recent versions have encoding issues) 
+- pinned buildrequires on cgicc 3.2.11 (recent versions have encoding issues)
 
 * Fri Sep 21 2018 Daniele Branchini <dbranchini@arpae.it> - 0.27-1%{dist}
 - fixed metadata sorting
