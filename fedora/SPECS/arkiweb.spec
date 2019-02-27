@@ -1,4 +1,4 @@
-%global releaseno 3
+%global releaseno 4
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Wed Feb 27 2019 Daniele Branchini <dbranchini@arpae.it> - 0.27-4
+- Compiled against new arkimet (based on dballe8 api)
+
 * Wed Oct 17 2018 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.27-3
 - Compiled against eccodes 2.8.0-3
 
