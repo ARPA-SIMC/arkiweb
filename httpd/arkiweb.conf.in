@@ -3,6 +3,11 @@ ScriptAlias /services/arkiweb/ @PKGLIBDIR@/
 	AllowOverride None
 	Options +ExecCGI
 
+    # Escape semicolons
+    RewriteEngine on
+    RewriteCond %{QUERY_STRING} ^(.*);(.*)$
+    RewriteRule ^(.*)$ $1?%1\%3B%2 [N]
+
 	# ARKIWEB_CONFIG is mandatory!
 	# SetEnv ARKIWEB_CONFIG /etc/arkiweb.config
 
