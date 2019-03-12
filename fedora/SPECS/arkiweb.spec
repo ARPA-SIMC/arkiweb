@@ -11,12 +11,13 @@ License:        GPLv2+
 URL:            https://github.com/arpa-simc/%{name}
 Source0:        https://github.com/arpa-simc/%{name}/archive/v%{version}-%{releaseno}.tar.gz#/%{srcarchivename}.tar.gz
 
-BuildRequires:  libtool
-BuildRequires:  pkgconfig
-BuildRequires:  arkimet-devel >= 1.7-5
-BuildRequires:  cgicc-devel
-BuildRequires:  readline-devel
-BuildRequires:  bzip2-devel
+BuildRequires: libtool
+BuildRequires: pkgconfig
+BuildRequires: arkimet-devel >= 1.7-5
+BuildRequires: gcc-c++
+BuildRequires: cgicc-devel
+BuildRequires: readline-devel
+BuildRequires: bzip2-devel
 
 %description
 Web interface for Arkimet
