@@ -1,4 +1,4 @@
-%global releaseno 4
+%global releaseno 5
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -14,7 +14,7 @@ Source0:        https://github.com/arpa-simc/%{name}/archive/v%{version}-%{relea
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  arkimet-devel >= 1.7-5
-BuildRequires:  cgicc-devel = 3.2.11
+BuildRequires:  cgicc-devel
 BuildRequires:  readline-devel
 BuildRequires:  bzip2-devel
 
@@ -50,6 +50,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Tue Mar 12 2019 Daniele Branchini <dbranchini@arpae.it> - 0.27-5
+- Compiled against the new cgi-cc
+- Added example apache rule for escaping semicolons
+
 * Wed Feb 27 2019 Daniele Branchini <dbranchini@arpae.it> - 0.27-4
 - Compiled against new arkimet (based on dballe8 api)
 
