@@ -1,4 +1,4 @@
-%global releaseno 5
+%global releaseno 6
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -13,11 +13,14 @@ Source0:        https://github.com/arpa-simc/%{name}/archive/v%{version}-%{relea
 
 BuildRequires: libtool
 BuildRequires: pkgconfig
-BuildRequires: arkimet-devel >= 1.7-5
+BuildRequires: arkimet == 1.14
+BuildRequires: arkimet-devel == 1.14
 BuildRequires: gcc-c++
 BuildRequires: cgicc-devel
 BuildRequires: readline-devel
 BuildRequires: bzip2-devel
+
+Requires: arkimet == 1.14
 
 %description
 Web interface for Arkimet
@@ -51,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Fri Jan 24 2020 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.27-6
+- Fixed arkimet version required
+
 * Tue Mar 12 2019 Daniele Branchini <dbranchini@arpae.it> - 0.27-5
 - Compiled against the new cgi-cc
 - Added example apache rule for escaping semicolons
