@@ -1,4 +1,4 @@
-%global releaseno 6
+%global releaseno 7
 # Note: define _srcarchivename in Travis build only.
 %{!?srcarchivename: %global srcarchivename %{name}-%{version}-%{releaseno}}
 
@@ -54,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/arkiweb/*
 
 %changelog
+* Tue Nov  9 2021 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.27-7
+- Rebuild
+
 * Fri Jan 24 2020 Emanuele Di Giacomo <edigiacomo@arpae.it> - 0.27-6
 - Fixed arkimet version required
 
