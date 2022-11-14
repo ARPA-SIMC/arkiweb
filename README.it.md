@@ -1,9 +1,12 @@
-# Arkiweb [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=centos:7&label=centos7)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:27&label=fedora27)](https://travis-ci.org/ARPA-SIMC/arkiweb)  [![Build Status](https://badges.herokuapp.com/travis/ARPA-SIMC/arkiweb?branch=master&env=DOCKER_IMAGE=fedora:28&label=fedora28)](https://travis-ci.org/ARPA-SIMC/arkiweb)
+# Arkiweb
+
+[![Build Status](https://copr.fedorainfracloud.org/coprs/simc/arkiweb/package/arkiweb/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/simc/arkiweb/package/arkiweb/)
 
 *Read this in other languages: [English](README.md), [Italiano](README.it.md).*
 
 ## Indice
 
+  - [Disclaimer] (#disclaimer)
   - [Dipendenze](#dipendenze)
   - [Installazione](#installazione)
     - [Installazione dei web service](#installazione-dei-web-service)
@@ -13,6 +16,17 @@
   - [Licenza](#licenza)
 
 
+## Disclaimer
+
+[Arkiweb](https://github.com/ARPA-SIMC/arkiweb/) recentemente è diventato
+incompatibile con le API C++ di [arkimet](https://github.com/ARPA-SIMC/arkimet/).
+Lo sviluppo di arkiweb è attualmente in stato di freeze.
+
+Per utilizzare l'ultima verisone stabile di arkiweb con le vecchie versioni di
+arkimet e dballe sono disponibili le seguenti risorse:
+* un'immagine docker: https://hub.docker.com/repository/docker/arpaesimc/arkiweb
+ (creata da https://github.com/ARPA-SIMC/arkiweb-docker-image)
+* un repository copr dedicato: https://copr.fedorainfracloud.org/coprs/simc/arkiweb/
 
 ## Dipendenze
 
