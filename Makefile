@@ -1,0 +1,24 @@
+PYTHON_ENVIRONMENT := PYTHONASYNCDEBUG=1 PYTHONDEBUG=1
+
+check: mypy pyupgrade black
+
+pyupgrade:
+	pyupgrade --exit-zero-even-if-changed --py36-plus $(shell find arkiweb -name "*.py")
+
+black:
+	black arkiweb
+
+mypy:
+	mypy arkiweb
+
+unittest:
+	$(PYTHON_ENVIRONMENT) ./manage.py test
+
+coverage:
+	$(PYTHON_ENVIRONMENT) python3 -m coverage erase
+	$(PYTHON_ENVIRONMENT) python3 -m coverage run -p ./manage.py test
+	$(PYTHON_ENVIRONMENT) python3 -m coverage combine
+	$(PYTHON_ENVIRONMENT) python3 -m coverage html
+	$(PYTHON_ENVIRONMENT) python3 -m coverage report -m
+
+.PHONY: check pyupgrade black mypy unittest coverage
