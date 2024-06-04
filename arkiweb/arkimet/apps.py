@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class ArkimetConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'arkimet'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "arkiweb.arkimet"
