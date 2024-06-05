@@ -16,6 +16,8 @@ from django.views.generic import View
 class APIView(abc.ABC, View):
     """Base class for API views."""
 
+    arkimet_session: arkimet.dataset.Session
+
     @cached_property
     def config_path(self) -> Path:
         """Return the path to the arkiweb config file."""
@@ -29,9 +31,35 @@ class APIView(abc.ABC, View):
         """Return the datasets requested."""
         return sorted(self.request.GET.getlist("datasets[]", []))
 
+    @cached_property
+    def matcher(self) -> arkimet.Matcher:
+        """Return the arkimet query."""
+        query = self.request.GET.get("query", "")
+        return self.arkimet_session.matcher(query)
+
     def error(self, message: str) -> HttpResponse:
         """Return an error response."""
         return HttpResponseServerError()
+
+    def setup(self, request: HttpRequest, *args, **kwargs) -> None:
+        """Add an arkimet session to the view."""
+        super().setup(request, *args, **kwargs)
+        self.arkimet_session = arkimet.dataset.Session()
+        self.arkimet_session.__enter__()
+
+    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        """Create an arkimet session for the duration of this request."""
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        finally:
+            self.arkimet_session.__exit__(None, None, None)
+            del self.arkimet_session
+
+    def __del__(self) -> None:
+        """Make sure arkimet_session is cleaned up."""
+        if hasattr(self, "arkimet_session"):
+            self.arkimet_session.__exit__(None, None, None)
+            del self.arkimet_session
 
 
 class DataView(APIView):
@@ -44,8 +72,6 @@ class DataView(APIView):
         # 		arki::ConfigFile config;
         # 		arkiweb::utils::setToDefault(config, datasets);
         # 		arkiweb::authorization::User::get().remove_unallowed(config);
-        #
-        # 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
         #
         # 		if (!arkiweb::authorization::User::get().is_allowed(matcher, config)) {
         # 			std::cout << cgicc::HTTPStatusHeader(403,
@@ -131,8 +157,6 @@ class DatasetsView(APIView):
 
         config = self.get_dataset_config()
 
-        # 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
-        #
         # 		arkiweb::ProcessorFactory f;
         # 		f.target = "configfile";
         # 		f.format = "json";
@@ -180,8 +204,6 @@ class FieldsView(APIView):
         # 		arki::ConfigFile config;
         # 		arkiweb::utils::setToDefault(config, datasets);
         #
-        # 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
-        #
         # 		arkiweb::ProcessorFactory f;
         # 		f.target = "fields";
         # 		f.format = "json";
@@ -216,8 +238,6 @@ class SummaryView(APIView):
         # 		std::vector<cgicc::FormEntry> forms;
         # 		arki::ConfigFile config;
         # 		arkiweb::utils::setToDefault(config, datasets);
-        #
-        # 		arki::Matcher matcher = arki::Matcher::parse(cgi("query"));
         #
         # 		arkiweb::ProcessorFactory f;
         # 		f.target = "summary";
