@@ -1,4 +1,6 @@
 import abc
+import io
+import json
 from functools import cached_property
 from pathlib import Path
 from typing import Any
@@ -67,7 +69,7 @@ class APIView(abc.ABC, View):
 
     def dataset_has_data(self, name: str) -> bool:
         """Check if a dataset has data for the current matcher."""
-        with self.arkimet_session.dataset_reader(name) as reader:
+        with self.arkimet_session.dataset_reader(name=name) as reader:
             summary = reader.query_summary(self.matcher)
         return summary.count > 0
 
@@ -215,34 +217,110 @@ class FieldsView(APIView):
 
     def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-list-of-fields
+        self.use_datasets()
 
-        # 		std::vector<cgicc::FormEntry> forms;
-        # 		arki::ConfigFile config;
-        # 		arkiweb::utils::setToDefault(config, datasets);
-        #
-        # 		arkiweb::ProcessorFactory f;
-        # 		f.target = "fields";
-        # 		f.format = "json";
-        # 		f.outfile = "";
-        # 		std::auto_ptr<arkiweb::Processor> p(f.create());
-        #
-        # 		std::cout << cgicc::HTTPContentHeader("application/json");
-        # 		p->process(config, matcher);
+        summary = arkimet.Summary()
+        for name in self.config.keys():
+            with self.arkimet_session.dataset_reader(name=name) as reader:
+                reader.query_summary(self.matcher, summary=summary)
 
-        # void FieldsEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
-        # 	arki::Summary summary;
-        # 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-        # 			 i != cfg.sectionEnd(); ++i) {
-        # 		arki::Summary s;
-        # 		std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
-        # 		ds->query_summary(query, s);
-        # 		summary.add(s);
-        # 	}
-        #     using authorization::User;
-        # 	arkiweb::encoding::FieldsEncoder(*emitter).encode(summary);
-        # }
+        with io.BytesIO() as buf:
+            summary.write_short(buf, format="json", annotate=True)
 
-        return HttpResponse("TODO:fields")
+            buf.seek(0)
+            parsed = json.load(buf)
+
+        # Convert arkimet's json format to the one expected by the API
+        NAME_MAPS: dict[str, dict[str, str]] = {
+            "origin": {
+                "style": "s",
+                "centre": "ce",
+                "subcentre": "sc",
+                "desc": "desc",
+                "process": "pr",
+                "process_type": "pt",
+                "background_process_id": "bi",
+                "process_id": "pi",
+                "wmo": "wmo",
+                "rad": "rad",
+                "plc": "plc",
+            },
+            "product": {
+                "style": "s",
+                "origin": "or",
+                "table": "ta",
+                "product": "pr",
+                "centre": "ce",
+                "discipline": "di",
+                "category": "ca",
+                "number": "no",
+                "table_version": "tv",
+                "local_table_version": "ltv",
+                "type": "ty",
+                "subtype": "st",
+                "local_subtype": "ls",
+                "value": "va",
+                "object": "ob",
+                "id": "id",
+            },
+            "level": {
+                "style": "s",
+                "type": "lt",
+                "scale": "sc",
+                "scale1": "s1",
+                "scale2": "s2",
+                "value": "va",
+                "value1": "v1",
+                "value2": "v2",
+                "l1": "l1",
+                "l2": "l2",
+                "min": "mi",
+                "max": "ma",
+            },
+            "timerange": {
+                "style": "s",
+                "type": "ty",
+                "unit": "un",
+                "p1": "p1",
+                "p2": "p2",
+                "value": "va",
+                "step_len": "sl",
+                "step_unit": "su",
+                "stat_type": "pt",
+                "stat_len": "pl",
+                "stat_unit": "pu",
+            },
+            "area": {
+                "style": "s",
+                "id": "id",
+                "value": "va",
+            },
+            "proddef": {
+                "style": "s",
+                "value": "va",
+            },
+            "run": {
+                "style": "s",
+                "value": "va",
+            },
+        }
+        fields: list[dict[str, Any]] = []
+        for name, values in parsed["items"].items():
+            if name == "summarystats":
+                continue
+            converted: list[dict[str, Any]] = []
+            for value in values:
+                converted.append({NAME_MAPS[name].get(k, k): v for k, v in value.items() if k != "type"})
+            fields.append(
+                {
+                    "type": name,
+                    "values": converted,
+                }
+            )
+
+        [stats] = [value for name, value in parsed["items"].items() if name == "summarystats"]
+
+        return JsonResponse({"fields": fields, "stats": stats})
 
 
 class SummaryView(APIView):

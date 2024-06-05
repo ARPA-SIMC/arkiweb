@@ -1,13 +1,6 @@
-import tempfile
-from contextlib import ExitStack, contextmanager
-from pathlib import Path
-from typing import Optional
-
-from django.contrib.auth.models import AnonymousUser
-from django.test import RequestFactory, TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 
-from arkiweb.arkimet.models import User
 from arkiweb.arkimet.views import DatasetsView
 
 from .utils import APITestMixin
