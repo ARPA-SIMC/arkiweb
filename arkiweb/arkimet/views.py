@@ -328,29 +328,17 @@ class SummaryView(APIView):
 
     def get(self, requoest: HttpRequest, **kwargs: Any) -> HttpResponse:
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-summary
+        self.use_datasets()
 
-        # 		std::vector<cgicc::FormEntry> forms;
-        # 		arki::ConfigFile config;
-        # 		arkiweb::utils::setToDefault(config, datasets);
-        #
-        # 		arkiweb::ProcessorFactory f;
-        # 		f.target = "summary";
-        # 		f.format = "json";
-        # 		f.outfile = "";
-        # 		std::auto_ptr<arkiweb::Processor> p(f.create());
-        #
-        # 		std::cout << cgicc::HTTPContentHeader("application/json");
-        # 		p->process(config, matcher);
+        summary = arkimet.Summary()
+        for name in self.config.keys():
+            with self.arkimet_session.dataset_reader(name=name) as reader:
+                reader.query_summary(self.matcher, summary=summary)
 
-        # void SummaryEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
-        # 	arki::Summary summary;
-        # 	for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-        # 			 i != cfg.sectionEnd(); ++i) {
-        # 		arki::Summary s;
-        # 		std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
-        # 		ds->query_summary(query, s);
-        # 		summary.add(s);
-        # 	}
-        # 	arkiweb::encoding::BaseEncoder(*emitter).encode(summary);
-        # }
-        return HttpResponse("TODO:summary")
+        with io.BytesIO() as buf:
+            summary.write(buf, format="json", annotate=True)
+
+            buf.seek(0)
+            parsed = json.load(buf)
+
+        return JsonResponse(parsed)
