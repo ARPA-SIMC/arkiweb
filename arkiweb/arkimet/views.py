@@ -8,7 +8,7 @@ from arkimet.cmdline.base import RestrictSectionFilter
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpRequest, HttpResponse, HttpResponseServerError
+from django.http import HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 
@@ -27,15 +27,69 @@ class APIView(abc.ABC, View):
         return Path(result)
 
     @cached_property
-    def dataset_names(self) -> list[str]:
+    def config(self) -> arkimet.cfg.Sections:
+        """Return the dataset configuration file."""
+        # Load configuration
+        if self.request.user.is_authenticated:
+            restrict_filter = RestrictSectionFilter(self.request.user.username)
+        else:
+            # TODO: this allows everything if not authenticated
+            #       (it looks like the behaviour of C++ arkiweb)
+            restrict_filter = RestrictSectionFilter("")
+
+        config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
+        for name, section in config.items():
+            section["id"] = name
+            section["allowed"] = "true" if restrict_filter.is_allowed(section) else "false"
+
+        # Filter config keeping only datasets named in self.dataset_names
+        names = self.dataset_names
+        if names:
+            filtered = arkimet.cfg.Sections()
+            for name, section in config.items():
+                if name not in names:
+                    continue
+                filtered[name] = section
+            config = filtered
+
+        return config
+
+    @cached_property
+    def dataset_names(self) -> frozenset[str]:
         """Return the datasets requested."""
-        return sorted(self.request.GET.getlist("datasets[]", []))
+        return frozenset(self.request.GET.getlist("datasets[]", []))
 
     @cached_property
     def matcher(self) -> arkimet.Matcher:
         """Return the arkimet query."""
         query = self.request.GET.get("query", "")
         return self.arkimet_session.matcher(query)
+
+    def dataset_has_data(self, name: str) -> bool:
+        """Check if a dataset has data for the current matcher."""
+        with self.arkimet_session.dataset_reader(name) as reader:
+            summary = reader.query_summary(self.matcher)
+        return summary.count > 0
+
+    def filter_config_by_matcher(self, config: arkimet.cfg.Sections) -> arkimet.cfg.Sections:
+        """Filter config keeping only datasets that have data for self.matcher."""
+        if self.matcher.expanded == "":  # TODO: implement matcher.empty()
+            return config
+
+        filtered = arkimet.cfg.Sections()
+        for name, section in config.items():
+            if self.dataset_has_data(name):
+                filtered[name] = section
+        return filtered
+
+    def use_datasets(self) -> None:
+        """
+        Add configured datasets to the arkimet session.
+
+        This allows to later instantiate datasets by name from the session.
+        """
+        for name, section in self.config.items():
+            self.arkimet_session.add_dataset(section)
 
     def error(self, message: str) -> HttpResponse:
         """Return an error response."""
@@ -126,67 +180,29 @@ class DatasetsView(APIView):
     to datasets that contain data for a query.
     """
 
-    def get_dataset_config(self) -> arkimet.cfg.Sections:
-        """Return configuration for the selected datasets."""
-        # Load configuration
-        if self.request.user.is_authenticated:
-            restrict_filter = RestrictSectionFilter(self.request.user.username)
-        else:
-            # TODO: this allows everything if not authenticated
-            #       (it looks like the behaviour of C++ arkiweb)
-            restrict_filter = RestrictSectionFilter("")
-
-        cfg = arkimet.cfg.Sections.parse(self.config_path.as_posix())
-        for name, section in cfg.items():
-            section["id"] = name
-            section["allowed"] = "true" if restrict_filter.is_allowed(section) else "false"
-
-        names = self.dataset_names
-        if not names:
-            return cfg
-
-        filtered = arkimet.cfg.Sections()
-        for name, section in cfg.items():
-            if name not in names:
-                continue
-            filtered[name] = section
-        return filtered
-
     def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+        """Return configuration for the selected datasets."""
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-list-of-datasets
 
-        config = self.get_dataset_config()
+        # Filter datasets by matcher
+        self.use_datasets()
+        config = self.filter_config_by_matcher(self.config)
 
-        # 		arkiweb::ProcessorFactory f;
-        # 		f.target = "configfile";
-        # 		f.format = "json";
-        # 		f.outfile = "";
-        # 		std::auto_ptr<arkiweb::Processor> p(f.create());
-        #
-        # 		std::cout << cgicc::HTTPContentHeader("application/json");
-        # 		p->process(config, matcher);
+        # Serialize dataset configurations
+        datasets: list[dict[str, Any]] = []
+        for name, section in config.items():
+            datasets.append(
+                {
+                    "id": name,
+                    "name": section.get("id", ""),
+                    "description": section.get("description", ""),
+                    "bounding": section.get("bounding", ""),
+                    "allowed": section.get("allowed"),
+                    "postprocess": [p.strip() for p in section.get("postprocess", "").split(",")],
+                }
+            )
 
-        # void ConfigFileEmitter::process(const arki::ConfigFile& cfg, const arki::Matcher& query) {
-        # 	arki::ConfigFile config;
-        # 	// If the matcher is not empty, then filter datasets
-        # 	if (!query.empty()) {
-        #         // TODO: query the summary file if exists, otherwise query the dataset
-        #         // and create it.
-        # 		for (arki::ConfigFile::const_section_iterator i = cfg.sectionBegin();
-        # 				 i != cfg.sectionEnd(); ++i) {
-        # 			std::unique_ptr<arki::dataset::Reader> ds(arki::dataset::Reader::create(*i->second));
-        # 			arki::Summary summary;
-        #             utils::query_cached_summary(i->first, *ds, query, summary);
-        # 			if (summary.count() > 0)
-        # 			    config.mergeInto(i->first, *i->second);
-        # 		}
-        # 	} else {
-        #         config.merge(cfg);
-        #     }
-        # 	arkiweb::encoding::BaseEncoder(*emitter).encode(config);
-        # }
-
-        return HttpResponse("TODO:datasets")
+        return JsonResponse({"datasets": datasets})
 
 
 class FieldsView(APIView):

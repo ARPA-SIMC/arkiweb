@@ -1,0 +1,57 @@
+import tempfile
+from contextlib import ExitStack, contextmanager
+from pathlib import Path
+from typing import Generic, Optional, Type, TypeVar
+
+from django.contrib.auth.models import AnonymousUser
+from django.test import RequestFactory, TestCase, override_settings
+from django.views.generic import View
+
+from arkiweb.arkimet.models import User
+
+VIEW = TypeVar("VIEW", bound=View)
+
+
+class APITestMixin(Generic[VIEW]):
+    view_class: Type[VIEW]
+
+    def setUp(self):
+        self.stack = ExitStack()
+        self.stack.__enter__()
+        self.addCleanup(self.stack.__exit__, None, None, None)
+        self.workdir = Path(self.stack.enter_context(tempfile.TemporaryDirectory()))
+        self.config_path = self.workdir / "arkimet.cfg"
+        self.stack.enter_context(override_settings(ARKIWEB_CONFIG=self.config_path.as_posix()))
+
+    def make_view(self, url: str = "/", user: Optional[User] = None) -> VIEW:
+        """Instantiate the test view."""
+        factory = RequestFactory()
+        request = factory.get(url)
+        if user is None:
+            request.user = AnonymousUser()
+        else:
+            request.user = user
+        view = self.view_class()
+        view.setup(request)
+        return view
+
+    def add_dataset(
+        self,
+        name: str,
+        restrict: Optional[list[str]] = None,
+        type: str = "iseg",
+        step: str = "daily",
+        format: str = "grib",
+        postprocess: Optional[list[str]] = None,
+    ) -> None:
+        """Create the given dataset and add it to the config file."""
+        with self.config_path.open("at") as fd:
+            print(f"[{name}]", file=fd)
+            print(f"name = {name}", file=fd)
+            print(f"type = {type}", file=fd)
+            print(f"step = {step}", file=fd)
+            print(f"format = {format}", file=fd)
+            if restrict:
+                print(f"restrict = {','.join(restrict)}", file=fd)
+            if postprocess:
+                print(f"postprocess = {','.join(postprocess)}", file=fd)
