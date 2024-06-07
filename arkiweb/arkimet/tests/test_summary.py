@@ -12,7 +12,7 @@ class SummaryTests(APITestMixin[SummaryView], TestCase):
     def test_get(self) -> None:
         self.add_dataset("test1")
         self.import_file("test1", "cosmo_t2m_2021_1_10_0_0_0+12.arkimet")
-        response = self.client.get(reverse("summary"))
+        response = self.client.get(reverse("arkimet:summary"))
         self.assertEqual(response.status_code, 200)
         self.maxDiff = None
         self.assertEqual(

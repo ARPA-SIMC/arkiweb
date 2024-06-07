@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{% static 'ui/lib/jquery-ui.css' %}"></link>
+		<link rel="stylesheet" href="{% static 'ui/arkiweb.css' %}"></link>
+		<script src="{% static 'ui/lib/jquery.min.js' %}"></script>
+		<script src="{% static 'ui/lib/jquery-ui.js' %}"></script>
+		<script src="{% static 'ui/lib/jquery.layout.js' %}"></script>
+		<script src="{% static 'ui/lib/jquery.blockUI.js' %}"></script>
+		<script src="{% static 'ui/lib/jquery-ui-timepicker-addon.js' %}"></script>
+		<script src="{% static 'ui/lib/underscore.js' %}"></script>
+		<script src="{% static 'ui/lib/backbone.js' %}"></script>
+		<script src="{% static 'ui/lib/OpenLayers.js' %}"></script>
+		<script src="{% static 'ui/lib/strftime.js' %}"></script>
+		<script src="{% static 'ui/arkiweb.js' %}"></script>
+		<script>
+			arkiweb.run({
+				baseUrl: '/arkimet'
+			});
+		</script>
+	</head>
+	<body>
+		<div id="arkiweb">
+		</div>
+	</body>
+</html>

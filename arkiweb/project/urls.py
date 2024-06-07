@@ -14,13 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from arkiweb.arkimet import views
+from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("data/", views.DataView.as_view(), name="data"),
-    path("datasets/", views.DatasetsView.as_view(), name="datasets"),
-    path("fields/", views.FieldsView.as_view(), name="fields"),
-    path("summary/", views.SummaryView.as_view(), name="summary"),
+    path("", include("arkiweb.ui.urls", namespace="ui")),
+    path("arkimet/", include("arkiweb.arkimet.urls", namespace="arkimet")),
 ]

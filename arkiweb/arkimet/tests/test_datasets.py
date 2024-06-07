@@ -12,7 +12,7 @@ class DatasetsTests(APITestMixin[DatasetsView], TestCase):
     def test_get(self) -> None:
         self.add_dataset("test1")
         self.add_dataset("test2", postprocess=["foo", "bar"])
-        response = self.client.get(reverse("datasets"))
+        response = self.client.get(reverse("arkimet:datasets"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),

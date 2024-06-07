@@ -1,9 +1,12 @@
-/arkiweb-*.tar.gz
-/arkiweb/arkiweb-test
+/arkiweb/project/local_settings.py
+/arkiweb/ui/static/ui/arkiweb.js
+/arkiweb/ui/static/ui/config.js
+/testdata/datasets/datasets.cfg
+/testdata/datasets/cosmo/2021/
+/testdata/datasets/cosmo/.summaries
+/testdata/datasets/ifs/2021/
+/testdata/datasets/ifs/.summaries
 /httpd/arkiweb.conf
-/public/arkiweb.js
-/public/arkiweb.min.js
-/public/arkiweb/config.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

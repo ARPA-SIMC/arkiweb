@@ -1,0 +1,5 @@
+filter=origin:GRIB1,98
+type=iseg
+format=grib
+step=daily
+replace=true

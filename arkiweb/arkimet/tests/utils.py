@@ -26,7 +26,7 @@ class APITestMixin(Generic[VIEW]):
         self.config_path = self.workdir / "arkimet.cfg"
         self.datasets_path = self.workdir / "datasets"
         self.stack.enter_context(override_settings(ARKIWEB_CONFIG=self.config_path.as_posix()))
-        self.testdata_path = Path(sys.argv[0]).parent / "testdata"
+        self.testdata_path = Path(sys.argv[0]).parent / "testdata" / "data"
 
     def make_view(self, url: str = "/", user: Optional[User] = None) -> VIEW:
         """Instantiate the test view."""

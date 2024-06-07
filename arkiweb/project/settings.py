@@ -127,3 +127,8 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "arkimet.User"
+
+try:
+    from arkiweb.project.local_settings import *
+except ModuleNotFoundError:
+    pass

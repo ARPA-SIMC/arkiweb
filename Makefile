@@ -21,4 +21,15 @@ coverage:
 	$(PYTHON_ENVIRONMENT) python3 -m coverage html
 	$(PYTHON_ENVIRONMENT) python3 -m coverage report -m
 
-.PHONY: check pyupgrade black mypy unittest coverage
+# Set up a development environment
+devel:
+	$(MAKE) -C arkiweb/ui/static/ui/
+	$(MAKE) dispatch -C testdata/datasets
+	echo 'ARKIWEB_CONFIG = "testdata/datasets/datasets.cfg"' > arkiweb/project/local_settings.py
+
+clean:
+	$(MAKE) clean -C arkiweb/ui/static/ui/
+	$(MAKE) clean -C testdata/datasets
+	rm -f arkiweb/project/local_settings.py
+
+.PHONY: check pyupgrade black mypy unittest coverage devel clean
