@@ -16,7 +16,7 @@ class Data(APITestMixin[DataView], TestCase):
         self.add_dataset("test1")
         self.import_file("test1", "cosmo_t2m_2021_1_10_0_0_0+12.arkimet")
         with mock.patch(
-            "arkiweb.arkimet.views.DataView.build_commandline", autospec=True, return_value=["seq", "1", "3"]
+            "arkiweb.arkimet.views.DataView.build_commandline", autospec=True, return_value=["/bin/seq", "1", "3"]
         ):
             response = await client.get(reverse("arkimet:data") + "?datasets%5B%5D=cosmo")
             self.assertEqual(response.status_code, 200)
