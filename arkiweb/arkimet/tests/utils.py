@@ -15,9 +15,7 @@ from arkiweb.arkimet.models import User
 VIEW = TypeVar("VIEW", bound=View)
 
 
-class APITestMixin(Generic[VIEW]):
-    view_class: Type[VIEW]
-
+class TestMixin:
     def setUp(self):
         self.stack = ExitStack()
         self.stack.__enter__()
@@ -27,18 +25,6 @@ class APITestMixin(Generic[VIEW]):
         self.datasets_path = self.workdir / "datasets"
         self.stack.enter_context(override_settings(ARKIWEB_CONFIG=self.config_path.as_posix()))
         self.testdata_path = Path(sys.argv[0]).parent / "testdata" / "data"
-
-    def make_view(self, url: str = "/", user: Optional[User] = None) -> VIEW:
-        """Instantiate the test view."""
-        factory = RequestFactory()
-        request = factory.get(url)
-        if user is None:
-            request.user = AnonymousUser()
-        else:
-            request.user = user
-        view = self.view_class()
-        view.setup(request)
-        return view
 
     def add_dataset(
         self,
@@ -75,3 +61,19 @@ class APITestMixin(Generic[VIEW]):
 
             with session.dataset_writer(cfg=ds_config) as writer:
                 writer.acquire_batch(batch)
+
+
+class APITestMixin(TestMixin, Generic[VIEW]):
+    view_class: Type[VIEW]
+
+    def make_view(self, url: str = "/", user: Optional[User] = None) -> VIEW:
+        """Instantiate the test view."""
+        factory = RequestFactory()
+        request = factory.get(url)
+        if user is None:
+            request.user = AnonymousUser()
+        else:
+            request.user = user
+        view = self.view_class()
+        view.setup(request)
+        return view
