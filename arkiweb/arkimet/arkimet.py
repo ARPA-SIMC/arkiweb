@@ -49,7 +49,7 @@ class Arkimet(contextlib.ExitStack):
 
         # Filter config keeping only datasets named in self.dataset_names
         names = self.dataset_names
-        if names:
+        if names is not None:
             filtered = arkimet.cfg.Sections()
             for name, section in config.items():
                 if name not in names:
