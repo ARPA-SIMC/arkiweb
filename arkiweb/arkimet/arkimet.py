@@ -35,13 +35,7 @@ class Arkimet(contextlib.ExitStack):
     def config(self) -> arkimet.cfg.Sections:
         """Return the dataset configuration file."""
         # Load configuration
-        if self.request.user.is_authenticated:
-            restrict_filter = RestrictSectionFilter(self.request.user.username)
-        else:
-            # TODO: this allows everything if not authenticated
-            #       (it looks like the behaviour of C++ arkiweb)
-            restrict_filter = RestrictSectionFilter("")
-
+        restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict)
         config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
         for name, section in config.items():
             section["id"] = name
