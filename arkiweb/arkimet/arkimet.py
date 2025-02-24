@@ -1,65 +1,41 @@
 import contextlib
 from functools import cached_property
 from pathlib import Path
+from typing import Callable
 
 import arkimet
 from arkimet.cmdline.base import RestrictSectionFilter
+
+from asgiref.sync import sync_to_async
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest
 
 
-class RestrictForAnonymous:
-    def is_allowed(self, section: arkimet.cfg.Section) -> bool:
-        return False
-
-
 class Arkimet(contextlib.ExitStack):
     """Access arkimet datasets."""
+
+    request: HttpRequest
+    session: arkimet.dataset.Session
+    #: Path to the arkiweb config file
+    config_path: Path
+    #: Dataset configuration file
+    config: arkimet.cfg.Sections
 
     def __init__(self, request: HttpRequest) -> None:
         super().__init__()
         self.request = request
         self.session = arkimet.dataset.Session()
 
+        if (path := getattr(settings, "ARKIWEB_CONFIG", None)) is None:
+            raise ImproperlyConfigured("missing settings.ARKIWEB_CONFIG")
+        self.config_path = Path(path)
+
     def __enter__(self) -> "Arkimet":
         super().__enter__()
         self.enter_context(self.session)
         return self
-
-    @cached_property
-    def config_path(self) -> Path:
-        """Return the path to the arkiweb config file."""
-        result = getattr(settings, "ARKIWEB_CONFIG", None)
-        if result is None:
-            raise ImproperlyConfigured("missing settings.ARKIWEB_CONFIG")
-        return Path(result)
-
-    @cached_property
-    def config(self) -> arkimet.cfg.Sections:
-        """Return the dataset configuration file."""
-        # Load configuration
-        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
-            restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict)
-        else:
-            restrict_filter = RestrictForAnonymous()
-        config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
-        for name, section in config.items():
-            section["id"] = name
-            section["allowed"] = "true" if restrict_filter.is_allowed(section) else "false"
-
-        # Filter config keeping only datasets named in self.dataset_names
-        names = self.dataset_names
-        if names:
-            filtered = arkimet.cfg.Sections()
-            for name, section in config.items():
-                if name not in names:
-                    continue
-                filtered[name] = section
-            config = filtered
-
-        return config
 
     @cached_property
     def config_allowed(self) -> arkimet.cfg.Sections:
@@ -106,3 +82,46 @@ class Arkimet(contextlib.ExitStack):
         """
         for name, section in self.config.items():
             self.session.add_dataset(section)
+
+    def _set_config(self, section_is_allowed: Callable[["arkimet.config.Section"], bool]) -> None:
+        config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
+        for name, section in config.items():
+            section["id"] = name
+            section["allowed"] = "true" if section_is_allowed(section) else "false"
+
+        # Filter config keeping only datasets named in self.dataset_names
+        names = self.dataset_names
+        if names:
+            filtered = arkimet.cfg.Sections()
+            for name, section in config.items():
+                if name not in names:
+                    continue
+                filtered[name] = section
+            config = filtered
+
+        self.config = config
+
+
+class SyncArkimet(Arkimet):
+    def init(self) -> None:
+        # Load configuration
+        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
+            restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict).is_allowed
+        else:
+            restrict_filter = lambda x: False
+        self._set_config(restrict_filter)
+
+
+class AsyncArkimet(Arkimet):
+    async def init(self) -> None:
+        # Ugly hack to resolve the lazy user object in an async context.
+        # One could use auser() from django 5.0, but we are not there yet.
+        # See https://code.djangoproject.com/ticket/31920
+        await sync_to_async(bool)(self.request.user)
+
+        # Load configuration
+        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
+            restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict).is_allowed
+        else:
+            restrict_filter = lambda x: False
+        self._set_config(restrict_filter)

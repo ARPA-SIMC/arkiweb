@@ -5,11 +5,14 @@ import json
 import shutil
 import subprocess
 import tempfile
+from contextlib import ExitStack
 from functools import cached_property
 from pathlib import Path
 from typing import Any, Optional
 
 import arkimet
+
+from asgiref.sync import sync_to_async
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -17,6 +20,7 @@ from django.http import (
     HttpRequest,
     HttpResponse,
     HttpResponseBase,
+    HttpResponseForbidden,
     HttpResponseServerError,
     JsonResponse,
     StreamingHttpResponse,
@@ -24,7 +28,7 @@ from django.http import (
 from django.shortcuts import render
 from django.views.generic import View
 
-from .arkimet import Arkimet
+from .arkimet import AsyncArkimet, SyncArkimet
 from .consts import NAME_MAPS
 
 import logging
@@ -32,19 +36,49 @@ import logging
 log = logging.getLogger("arkimet")
 
 
-class APIView(abc.ABC, View):
-    """Base class for API views."""
+class APIViewBase(View):
+    """Base for all API views."""
 
-    def arkimet(self) -> Arkimet:
-        """Return an Arkimet object for this request."""
-        return Arkimet(self.request)
+    #: Manage lifetime of per-request resources
+    resources: ExitStack
+
+    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponseBase:
+        self.resources = ExitStack()
+        with self.resources:
+            return super().dispatch(request, *args, **kwargs)
+
+    def permission_denied(self, message: str) -> HttpResponse:
+        """Return a permission denied error message."""
+        return HttpResponseForbidden(message, content_type="text/plain")
 
     def error(self, message: str) -> HttpResponse:
         """Return an error response."""
         return HttpResponseServerError(message)
 
 
-class DataView(APIView):
+class AsyncAPIView(APIViewBase):
+    """Base class for Async API views."""
+
+    async def arkimet(self) -> AsyncArkimet:
+        """Create the Arkimet object for this request."""
+        res = AsyncArkimet(self.request)
+        await res.init()
+        self.resources.enter_context(res)
+        return res
+
+
+class SyncAPIView(APIViewBase):
+    """Base class for Sync API views."""
+
+    def arkimet(self) -> SyncArkimet:
+        """Create the Arkimet object for this request."""
+        res = SyncArkimet(self.request)
+        res.init()
+        self.resources.enter_context(res)
+        return res
+
+
+class DataView(AsyncAPIView):
     """data/ API endpoint."""
 
     @cached_property
@@ -68,9 +102,13 @@ class DataView(APIView):
         if self.arki_query is None:
             return self.error("arki-query not installed")
 
-        with self.arkimet() as arki:
+        with await self.arkimet() as arki:
+            config = arki.config_allowed
+            if len(config) == 0:
+                return self.permission_denied("you do not have the right credentials to download data")
+
             postprocess = self.request.GET.get("postprocess", "")
-            if postprocess and arki.config.size() > 1:
+            if postprocess and len(config) > 1:
                 return self.error("Only one dataset is allowed when postprocess parameter is set")
 
             matcher = arki.matcher.expanded
@@ -83,10 +121,13 @@ class DataView(APIView):
                     log.warning("arki-query: %s", line.rstrip())
 
             async def generate():
-                # Note: this is run after get ends, and the arkimet session has
-                # been closed
-                with tempfile.NamedTemporaryFile() as cfg:
-                    arki.config.write(cfg)
+                with (
+                    tempfile.NamedTemporaryFile() as cfg,
+                    # Transfer ownership of resources to the generator function, so
+                    # they do not get closed when the view ends
+                    self.resources.pop_all(),
+                ):
+                    config.write(cfg)
                     cfg.flush()
                     cmd = self.build_commandline(Path(cfg.name), matcher, postprocess)
                     proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -120,7 +161,7 @@ class DataView(APIView):
             return StreamingHttpResponse(generate(), content_type="application/binary")
 
 
-class DatasetsView(APIView):
+class DatasetsView(SyncAPIView):
     """
     datasets/ API endpoint.
 
@@ -153,7 +194,7 @@ class DatasetsView(APIView):
         return JsonResponse({"datasets": datasets})
 
 
-class FieldsView(APIView):
+class FieldsView(SyncAPIView):
     """
     fields/ API endpoint.
 
@@ -196,7 +237,7 @@ class FieldsView(APIView):
         return JsonResponse({"fields": fields, "stats": stats})
 
 
-class SummaryView(APIView):
+class SummaryView(SyncAPIView):
     """summary/ API endpoint."""
 
     def get(self, requoest: HttpRequest, **kwargs: Any) -> HttpResponse:

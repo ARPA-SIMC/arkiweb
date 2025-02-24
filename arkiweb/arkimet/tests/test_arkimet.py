@@ -9,7 +9,7 @@ from django.http import HttpRequest
 from django.test import RequestFactory, TestCase, override_settings
 
 from arkiweb.arkimet.models import User
-from arkiweb.arkimet.arkimet import Arkimet
+from arkiweb.arkimet.arkimet import Arkimet, SyncArkimet
 
 from .utils import TestMixin
 
@@ -23,7 +23,9 @@ class ArkimetTests(TestMixin, TestCase):
             request.user = AnonymousUser()
         else:
             request.user = user
-        return Arkimet(request)
+        res = SyncArkimet(request)
+        res.init()
+        return res
 
     def test_session_lifetime(self) -> None:
         with mock.patch("arkimet.dataset.Session", autospec=True):
@@ -40,16 +42,17 @@ class ArkimetTests(TestMixin, TestCase):
             session.__exit__.assert_called_once()
 
     def test_config_path(self) -> None:
-        with override_settings(ARKIWEB_CONFIG="test"):
+        test = self.workdir / "test.cfg"
+        test.write_text("")
+        with override_settings(ARKIWEB_CONFIG=test.as_posix()):
             with self.arkimet() as arki:
-                self.assertEqual(arki.config_path, Path("test"))
+                self.assertEqual(arki.config_path, test)
 
         with override_settings():
             if hasattr(settings, "ARKIWEB_CONFIG"):
                 del settings.ARKIWEB_CONFIG
-            with self.arkimet() as arki:
-                with self.assertRaisesRegexp(ImproperlyConfigured, "missing settings.ARKIWEB_CONFIG"):
-                    arki.config_path
+            with self.assertRaisesRegexp(ImproperlyConfigured, "missing settings.ARKIWEB_CONFIG"):
+                self.arkimet()
 
     def test_config(self) -> None:
         # Anonymous user always has allowed=False

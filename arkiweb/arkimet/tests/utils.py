@@ -22,6 +22,7 @@ class TestMixin:
         self.addCleanup(self.stack.__exit__, None, None, None)
         self.workdir = Path(self.stack.enter_context(tempfile.TemporaryDirectory()))
         self.config_path = self.workdir / "arkimet.cfg"
+        self.config_path.write_text("")
         self.datasets_path = self.workdir / "datasets"
         self.stack.enter_context(override_settings(ARKIWEB_CONFIG=self.config_path.as_posix()))
         self.testdata_path = Path(sys.argv[0]).parent / "testdata" / "data"
