@@ -10,6 +10,11 @@ from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest
 
 
+class RestrictForAnonymous:
+    def is_allowed(self, section: arkimet.cfg.Section) -> bool:
+        return False
+
+
 class Arkimet(contextlib.ExitStack):
     """Access arkimet datasets."""
 
@@ -35,7 +40,10 @@ class Arkimet(contextlib.ExitStack):
     def config(self) -> arkimet.cfg.Sections:
         """Return the dataset configuration file."""
         # Load configuration
-        restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict)
+        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
+            restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict)
+        else:
+            restrict_filter = RestrictForAnonymous()
         config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
         for name, section in config.items():
             section["id"] = name

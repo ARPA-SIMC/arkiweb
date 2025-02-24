@@ -21,7 +21,7 @@ class DatasetsTests(APITestMixin[DatasetsView], TestCase):
                     {
                         "id": "test1",
                         "name": "test1",
-                        "allowed": "true",
+                        "allowed": "false",
                         "bounding": "",
                         "description": "",
                         "postprocess": [""],
@@ -29,7 +29,7 @@ class DatasetsTests(APITestMixin[DatasetsView], TestCase):
                     {
                         "id": "test2",
                         "name": "test2",
-                        "allowed": "true",
+                        "allowed": "false",
                         "bounding": "",
                         "description": "",
                         "postprocess": ["foo", "bar"],

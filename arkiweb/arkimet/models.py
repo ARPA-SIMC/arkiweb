@@ -5,4 +5,5 @@ from django.db.models import UniqueConstraint
 
 class User(AbstractUser):
     """Arkiweb user."""
-    arkimet_restrict = models.CharField(max_length=255, blank=True, null=True)
+
+    arkimet_restrict = models.CharField(max_length=255, blank=True, null=False)

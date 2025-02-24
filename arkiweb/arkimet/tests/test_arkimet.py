@@ -52,20 +52,22 @@ class ArkimetTests(TestMixin, TestCase):
                     arki.config_path
 
     def test_config(self) -> None:
+        # Anonymous user always has allowed=False
         self.add_dataset("test1")
         self.add_dataset("test2")
         with self.arkimet() as arki:
             cfg = arki.config
             self.assertEqual(cfg["test1"]["id"], "test1")
-            self.assertEqual(cfg["test1"]["allowed"], "true")
+            self.assertEqual(cfg["test1"]["allowed"], "false")
             self.assertEqual(cfg["test2"]["id"], "test2")
-            self.assertEqual(cfg["test2"]["allowed"], "true")
+            self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
     def test_config_restricted(self) -> None:
-        self.add_dataset("test1", restrict=["user"])
+        # Authenticated user applies restrict
+        self.add_dataset("test1", restrict=["myorg"])
         self.add_dataset("test2")
-        with self.arkimet(user=User(username="user")) as arki:
+        with self.arkimet(user=User(username="user", arkimet_restrict="myorg")) as arki:
             cfg = arki.config
             self.assertEqual(cfg["test1"]["id"], "test1")
             self.assertEqual(cfg["test1"]["allowed"], "true")
@@ -79,7 +81,7 @@ class ArkimetTests(TestMixin, TestCase):
         with self.arkimet("/datasets?datasets%5B%5D=test1") as arki:
             cfg = arki.config
             self.assertEqual(cfg["test1"]["id"], "test1")
-            self.assertEqual(cfg["test1"]["allowed"], "true")
+            self.assertEqual(cfg["test1"]["allowed"], "false")
             self.assertEqual(len(cfg), 1)
 
     def test_dataset_names(self) -> None:
