@@ -62,6 +62,15 @@ class Arkimet(contextlib.ExitStack):
         return config
 
     @cached_property
+    def config_allowed(self) -> arkimet.cfg.Sections:
+        """Return configuration with allowed=True."""
+        res = arkimet.cfg.Sections()
+        for name, section in self.config.items():
+            if section["allowed"] == "true":
+                res[name] = section
+        return res
+
+    @cached_property
     def dataset_names(self) -> frozenset[str]:
         """Return the datasets requested."""
         return frozenset(self.request.GET.getlist("datasets[]", []))

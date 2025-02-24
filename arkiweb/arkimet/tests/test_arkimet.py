@@ -63,6 +63,9 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
+            filtered = arki.config_allowed
+            self.assertEqual(filtered.keys(), ())
+
     def test_config_restricted(self) -> None:
         # Authenticated user applies restrict
         self.add_dataset("test1", restrict=["myorg"])
@@ -75,6 +78,9 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
+            filtered = arki.config_allowed
+            self.assertEqual(filtered.keys(), ("test1",))
+
     def test_config_empty_restrict(self) -> None:
         # Authenticated user with empty restrict is like anonymous
         self.add_dataset("test1", restrict=["myorg"])
@@ -86,6 +92,9 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["id"], "test2")
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
+
+            filtered = arki.config_allowed
+            self.assertEqual(filtered.keys(), ())
 
     def test_config_filtered(self) -> None:
         self.add_dataset("test1")
