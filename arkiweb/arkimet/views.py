@@ -57,6 +57,7 @@ class DataView(APIView):
 
     def build_commandline(self, config: Path, matcher: str, postprocess: str) -> list[str]:
         """Build an arki-query commandline."""
+        assert self.arki_query is not None
         cmd = [self.arki_query.as_posix(), "--data", "-C", config.as_posix(), matcher]
         if postprocess:
             cmd += ["--postproc", postprocess]
