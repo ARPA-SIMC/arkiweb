@@ -126,13 +126,27 @@ class Arkimet(contextlib.ExitStack):
         self.config = config
 
 
+def allow_all(section: "arkimet.config.Section") -> bool:
+    """Restrict filter allowing all datasets."""
+    return True
+
+
+def deny_all(section: "arkimet.config.Section") -> bool:
+    """Restrict filter denying all datasets."""
+    return False
+
+
 class SyncArkimet(Arkimet):
     def init(self) -> None:
         # Load configuration
-        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
+        if not self.request.user.is_authenticated:
+            restrict_filter = deny_all
+        elif self.request.user.skip_dataset_restrictions:
+            restrict_filter = allow_all
+        elif self.request.user.arkimet_restrict:
             restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict).is_allowed
         else:
-            restrict_filter = lambda x: False
+            restrict_filter = deny_all
         self._set_config(restrict_filter)
 
 
@@ -144,8 +158,12 @@ class AsyncArkimet(Arkimet):
         await sync_to_async(bool)(self.request.user)
 
         # Load configuration
-        if self.request.user.is_authenticated and self.request.user.arkimet_restrict:
+        if not self.request.user.is_authenticated:
+            restrict_filter = deny_all
+        elif self.request.user.skip_dataset_restrictions:
+            restrict_filter = allow_all
+        elif self.request.user.arkimet_restrict:
             restrict_filter = RestrictSectionFilter(self.request.user.arkimet_restrict).is_allowed
         else:
-            restrict_filter = lambda x: False
+            restrict_filter = deny_all
         self._set_config(restrict_filter)

@@ -90,6 +90,18 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
+    def test_config_skip_dataset_restrictions(self) -> None:
+        # Anonymous user always has allowed=False
+        self.add_dataset("test1")
+        self.add_dataset("test2")
+        with self.arkimet(user=User(username="user", is_superuser=True)) as arki:
+            cfg = arki.config
+            self.assertEqual(cfg["test1"]["id"], "test1")
+            self.assertEqual(cfg["test1"]["allowed"], "true")
+            self.assertEqual(cfg["test2"]["id"], "test2")
+            self.assertEqual(cfg["test2"]["allowed"], "true")
+            self.assertEqual(len(cfg), 2)
+
     def test_select_datasets_none_allowed(self) -> None:
         self.add_dataset("test1")
         self.add_dataset("test2")
