@@ -9,12 +9,18 @@ from .utils import APITestMixin
 class SummaryTests(APITestMixin[SummaryView], TestCase):
     view_class = SummaryView
 
-    def test_get_anonymous(self) -> None:
+    def test_get_anonymous_unfiltered(self) -> None:
         self.add_dataset("test1")
         self.import_file("test1", "cosmo_t2m_2021_1_10_0_0_0+12.arkimet")
         response = self.client.get(reverse("arkimet:summary"))
         self.assertEqual(response.status_code, 200)
-        self.maxDiff = None
+        self.assertEqual(response.json(), {"items": []})
+
+    def test_get_anonymous(self) -> None:
+        self.add_dataset("test1")
+        self.import_file("test1", "cosmo_t2m_2021_1_10_0_0_0+12.arkimet")
+        response = self.client.get(reverse("arkimet:summary") + "?" + self.datasets_qs(["test1"]))
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {

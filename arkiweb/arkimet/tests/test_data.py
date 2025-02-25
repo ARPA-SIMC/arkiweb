@@ -24,7 +24,15 @@ class Data(APITestMixin[DataView], TestCase):
 
     def test_get_not_authenticated(self) -> None:
         self.add_dataset("test1")
-        response = self.client.get(reverse("arkimet:data") + "?datasets%5B%5D=cosmo")
+        response = self.client.get(reverse("arkimet:data") + "?" + self.datasets_qs(["test1"]))
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.headers["content-type"], "text/plain")
+        self.assertEqual(response.content.decode(), "you do not have the right credentials to download data")
+
+    def test_get_unfiltered(self) -> None:
+        self.client.force_login(self.user)
+        self.add_dataset("test1", restrict=["mygroup"])
+        response = self.client.get(reverse("arkimet:data"))
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.headers["content-type"], "text/plain")
         self.assertEqual(response.content.decode(), "you do not have the right credentials to download data")
@@ -35,7 +43,7 @@ class Data(APITestMixin[DataView], TestCase):
         with mock.patch(
             "arkiweb.arkimet.views.DataView.build_commandline", autospec=True, return_value=["/bin/seq", "1", "3"]
         ):
-            response = await self.user_asyncclient.get(reverse("arkimet:data") + "?datasets%5B%5D=test1")
+            response = await self.user_asyncclient.get(reverse("arkimet:data") + "?" + self.datasets_qs(["test1"]))
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.headers["content-type"], "application/binary")
 

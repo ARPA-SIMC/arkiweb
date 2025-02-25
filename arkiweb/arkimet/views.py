@@ -28,7 +28,7 @@ from django.http import (
 from django.shortcuts import render
 from django.views.generic import View
 
-from .arkimet import AsyncArkimet, SyncArkimet
+from .arkimet import AsyncArkimet, SyncArkimet, SelectMode
 from .consts import NAME_MAPS
 
 import logging
@@ -103,7 +103,7 @@ class DataView(AsyncAPIView):
             return self.error("arki-query not installed")
 
         with await self.arkimet() as arki:
-            config = arki.config_allowed
+            config = arki.select_datasets(only_allowed=True, select=SelectMode.USER_DEFAULT_NONE)
             if len(config) == 0:
                 return self.permission_denied("you do not have the right credentials to download data")
 
@@ -174,8 +174,9 @@ class DatasetsView(SyncAPIView):
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-list-of-datasets
         with self.arkimet() as arki:
             # Filter datasets by matcher
-            arki.use_datasets()
-            config = arki.filter_config_by_matcher(arki.config)
+            config = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_ALL)
+            arki.use_datasets(config)
+            config = arki.filter_config_by_matcher(config)
 
             # Serialize dataset configurations
             datasets: list[dict[str, Any]] = []
@@ -205,10 +206,11 @@ class FieldsView(SyncAPIView):
     def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-list-of-fields
         with self.arkimet() as arki:
-            arki.use_datasets()
+            config = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_NONE)
+            arki.use_datasets(config)
 
             summary = arkimet.Summary()
-            for name in arki.config.keys():
+            for name in config.keys():
                 with arki.session.dataset_reader(name=name) as reader:
                     reader.query_summary(arki.matcher, summary=summary)
 
@@ -243,10 +245,11 @@ class SummaryView(SyncAPIView):
     def get(self, requoest: HttpRequest, **kwargs: Any) -> HttpResponse:
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-summary
         with self.arkimet() as arki:
-            arki.use_datasets()
+            config = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_NONE)
+            arki.use_datasets(config)
 
             summary = arkimet.Summary()
-            for name in arki.config.keys():
+            for name in config.keys():
                 with arki.session.dataset_reader(name=name) as reader:
                     reader.query_summary(arki.matcher, summary=summary)
 

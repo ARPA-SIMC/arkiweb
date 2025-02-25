@@ -10,7 +10,7 @@ from .utils import APITestMixin
 class DatasetsTests(APITestMixin[DatasetsView], TestCase):
     view_class = DatasetsView
 
-    def test_get_anonymous(self) -> None:
+    def test_get_anonymous_unfiltered(self) -> None:
         self.add_dataset("test1")
         self.add_dataset("test2", postprocess=["foo", "bar"])
         response = self.client.get(reverse("arkimet:datasets"))
@@ -34,6 +34,27 @@ class DatasetsTests(APITestMixin[DatasetsView], TestCase):
                         "bounding": "",
                         "description": "",
                         "postprocess": ["foo", "bar"],
+                    },
+                ]
+            },
+        )
+
+    def test_get_anonymous_filtered(self) -> None:
+        self.add_dataset("test1")
+        self.add_dataset("test2", postprocess=["foo", "bar"])
+        response = self.client.get(reverse("arkimet:datasets") + "?" + self.datasets_qs(["test1"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "datasets": [
+                    {
+                        "id": "test1",
+                        "name": "test1",
+                        "allowed": "false",
+                        "bounding": "",
+                        "description": "",
+                        "postprocess": [""],
                     },
                 ]
             },

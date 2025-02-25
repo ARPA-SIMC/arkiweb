@@ -9,7 +9,7 @@ from django.http import HttpRequest
 from django.test import RequestFactory, TestCase, override_settings
 
 from arkiweb.arkimet.models import User
-from arkiweb.arkimet.arkimet import Arkimet, SyncArkimet
+from arkiweb.arkimet.arkimet import Arkimet, SyncArkimet, SelectMode
 
 from .utils import TestMixin
 
@@ -66,9 +66,6 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
-            filtered = arki.config_allowed
-            self.assertEqual(filtered.keys(), ())
-
     def test_config_restricted(self) -> None:
         # Authenticated user applies restrict
         self.add_dataset("test1", restrict=["myorg"])
@@ -80,9 +77,6 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["id"], "test2")
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
-
-            filtered = arki.config_allowed
-            self.assertEqual(filtered.keys(), ("test1",))
 
     def test_config_empty_restrict(self) -> None:
         # Authenticated user with empty restrict is like anonymous
@@ -96,21 +90,66 @@ class ArkimetTests(TestMixin, TestCase):
             self.assertEqual(cfg["test2"]["allowed"], "false")
             self.assertEqual(len(cfg), 2)
 
-            filtered = arki.config_allowed
-            self.assertEqual(filtered.keys(), ())
-
-    def test_config_filtered(self) -> None:
+    def test_select_datasets_none_allowed(self) -> None:
         self.add_dataset("test1")
         self.add_dataset("test2")
-        with self.arkimet("/datasets?datasets%5B%5D=test1") as arki:
-            cfg = arki.config
-            self.assertEqual(cfg["test1"]["id"], "test1")
-            self.assertEqual(cfg["test1"]["allowed"], "false")
-            self.assertEqual(len(cfg), 1)
+        with self.arkimet() as arki:
+            cfg = arki.select_datasets(only_allowed=True)
+            self.assertEqual(cfg.keys(), ())
 
-    def test_dataset_names(self) -> None:
-        with self.arkimet("/fields?datasets%5B%5D=foo&datasets%5B%5D=bar") as arki:
-            self.assertEqual(arki.dataset_names, {"bar", "foo"})
+    def test_select_datasets_some_allowed(self) -> None:
+        self.add_dataset("test1", restrict=["myorg"])
+        self.add_dataset("test2")
+        with self.arkimet(user=User(username="user", arkimet_restrict="myorg")) as arki:
+            cfg = arki.select_datasets(only_allowed=True)
+            self.assertEqual(cfg.keys(), ("test1",))
+
+    def test_select_datasets_all(self) -> None:
+        self.add_dataset("test1")
+        self.add_dataset("test2")
+        with self.arkimet("/datasets?" + self.datasets_qs(["test1"])) as arki:
+            cfg = arki.select_datasets(only_allowed=False, select=SelectMode.ALL)
+            self.assertEqual(cfg.keys(), ("test1", "test2"))
+
+    def test_select_datasets_default_all(self) -> None:
+        self.add_dataset("test1")
+        self.add_dataset("test2")
+        with self.arkimet("/datasets") as arki:
+            cfg = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_ALL)
+            self.assertEqual(cfg.keys(), ("test1", "test2"))
+
+        with self.arkimet("/datasets?" + self.datasets_qs(["test1"])) as arki:
+            cfg = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_ALL)
+            self.assertEqual(cfg.keys(), ("test1",))
+
+    def test_select_datasets_default_none(self) -> None:
+        self.add_dataset("test1")
+        self.add_dataset("test2")
+        with self.arkimet("/datasets") as arki:
+            cfg = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_NONE)
+            self.assertEqual(cfg.keys(), ())
+
+        with self.arkimet("/datasets?" + self.datasets_qs(["test1"])) as arki:
+            cfg = arki.select_datasets(only_allowed=False, select=SelectMode.USER_DEFAULT_NONE)
+            self.assertEqual(cfg.keys(), ("test1",))
+
+    def test_get_user_allowlist(self) -> None:
+        self.add_dataset("test1")
+        self.add_dataset("test2")
+
+        for qs, mode, expected in (
+            ("", SelectMode.ALL, ["test1", "test2"]),
+            (self.datasets_qs(["test1"]), SelectMode.ALL, ["test1", "test2"]),
+            ("", SelectMode.USER_DEFAULT_ALL, ["test1", "test2"]),
+            (self.datasets_qs(["test1"]), SelectMode.USER_DEFAULT_ALL, ["test1"]),
+            (self.datasets_qs(["test2"]), SelectMode.USER_DEFAULT_ALL, ["test2"]),
+            ("", SelectMode.USER_DEFAULT_NONE, []),
+            (self.datasets_qs(["test1"]), SelectMode.USER_DEFAULT_NONE, ["test1"]),
+            (self.datasets_qs(["test2"]), SelectMode.USER_DEFAULT_NONE, ["test2"]),
+        ):
+            with self.subTest(qs=qs, mode=mode):
+                with self.arkimet(f"/datasets?{qs}") as arki:
+                    self.assertEqual(arki.get_user_allowlist(mode), frozenset(expected))
 
     def test_matcher(self) -> None:
         with self.arkimet() as arki:

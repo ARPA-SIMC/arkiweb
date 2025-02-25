@@ -3,6 +3,7 @@ import tempfile
 from contextlib import ExitStack, contextmanager
 from pathlib import Path
 from typing import Generic, Optional, Type, TypeVar
+from urllib.parse import urlencode
 
 import arkimet
 
@@ -62,6 +63,10 @@ class TestMixin:
 
             with session.dataset_writer(cfg=ds_config) as writer:
                 writer.acquire_batch(batch)
+
+    def datasets_qs(self, names: list[str]) -> str:
+        """Builds a ?datasets[]= query string."""
+        return "&".join(urlencode({"datasets[]": name}) for name in names)
 
 
 class APITestMixin(TestMixin, Generic[VIEW]):
