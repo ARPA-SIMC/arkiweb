@@ -125,7 +125,7 @@ class Arkimet(contextlib.ExitStack):
         for name, section in config.items():
             self.session.add_dataset(section)
 
-    def _set_config(self, section_is_allowed: Callable[["arkimet.config.Section"], bool]) -> None:
+    def _set_config(self, section_is_allowed: Callable[[arkimet.cfg.Section], bool]) -> None:
         config = arkimet.cfg.Sections.parse(self.config_path.as_posix())
         for name, section in config.items():
             section["id"] = name
@@ -133,12 +133,12 @@ class Arkimet(contextlib.ExitStack):
         self.config = config
 
 
-def allow_all(section: "arkimet.config.Section") -> bool:
+def allow_all(section: arkimet.cfg.Section) -> bool:
     """Restrict filter allowing all datasets."""
     return True
 
 
-def deny_all(section: "arkimet.config.Section") -> bool:
+def deny_all(section: arkimet.cfg.Section) -> bool:
     """Restrict filter denying all datasets."""
     return False
 
@@ -177,13 +177,14 @@ class AsyncArkimet(Arkimet):
 
 
 class DataQuery:
-    def __init__(self, config: "arkimet.config.Sections", matcher: arkimet.Matcher, postprocess: str = "") -> None:
+    def __init__(self, config: arkimet.cfg.Sections, matcher: arkimet.Matcher, postprocess: str = "") -> None:
         self.config = config
         self.matcher = matcher
         self.postprocess = postprocess
         self.arki_query: Optional[Path] = None
         if (arki_query := shutil.which("arki-query")) is not None:
             self.arki_query = Path(arki_query)
+        self.proc = None
 
     def build_commandline(self, config: Path) -> list[str]:
         """Build an arki-query commandline."""
@@ -198,16 +199,23 @@ class DataQuery:
             line = await stderr.readline()
             if not line:
                 break
-            log.warning("arki-query: %s", line.rstrip())
+            log.warning("arki-query: %s", line.rstrip().decode(errors="replace"))
+
+    async def shutdown(self) -> None:
+        if self.proc is None:
+            return
+        res = await self.proc.wait()
+        if res != 0:
+            log.warning("arki-query returned with code %d", res)
 
     async def generate_data(self) -> AsyncGenerator[bytes, None]:
         with tempfile.NamedTemporaryFile() as cfg:
             self.config.write(cfg)
             cfg.flush()
             cmd = self.build_commandline(Path(cfg.name))
-            proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-            do_log_stderr = asyncio.create_task(self.log_stderr(proc.stderr))
+            do_log_stderr = asyncio.create_task(self.log_stderr(self.proc.stderr))
             streaming = True
 
             while True:
@@ -215,7 +223,7 @@ class DataQuery:
                 if do_log_stderr is not None:
                     tasks.append(do_log_stderr)
                 if streaming:
-                    tasks.append(proc.stdout.read())
+                    tasks.append(self.proc.stdout.read())
                 if not tasks:
                     break
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
@@ -228,7 +236,3 @@ class DataQuery:
                             yield buffer
                         else:
                             streaming = False
-
-            res = await proc.wait()
-            if res != 0:
-                log.warning("arki-query returned with code %d", res)

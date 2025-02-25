@@ -1,4 +1,5 @@
 from unittest import mock
+from typing import Any, AsyncGenerator
 
 from asgiref.sync import sync_to_async
 
@@ -6,9 +7,24 @@ from django.test import AsyncClient, TestCase
 from django.urls import reverse
 
 from arkiweb.arkimet.models import User
-from arkiweb.arkimet.views import DataView
+from arkiweb.arkimet.views import DataView, StreamingAdapter
 
 from .utils import APITestMixin
+
+
+class MockQuery:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.arki_query = "dummy"
+        self.shutdown_called = False
+        self.gen_count = 0
+
+    async def generate_data(self) -> AsyncGenerator[bytes, None]:
+        for i in range(10):
+            self.gen_count += 1
+            yield b"data"
+
+    async def shutdown(self) -> None:
+        self.shutdown_called = True
 
 
 class Data(APITestMixin[DataView], TestCase):
@@ -52,3 +68,44 @@ class Data(APITestMixin[DataView], TestCase):
                 buf += chunk
 
             self.assertEqual(buf, b"1\n2\n3\n")
+
+    async def test_stream(self) -> None:
+        self.add_dataset("test1", restrict=["mygroup"])
+        with mock.patch("arkiweb.arkimet.views.DataQuery", new=MockQuery):
+            response = await self.user_asyncclient.get(reverse("arkimet:data") + "?" + self.datasets_qs(["test1"]))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers["content-type"], "application/binary")
+
+            count = 0
+            async for chunk in response.streaming_content:
+                self.assertEqual(chunk, b"data")
+                count += 1
+            self.assertEqual(count, 10)
+
+    async def test_stream_closed(self) -> None:
+        self.add_dataset("test1", restrict=["mygroup"])
+        with mock.patch("arkiweb.arkimet.views.DataQuery", new=MockQuery) as query:
+            response = await self.user_asyncclient.get(reverse("arkimet:data") + "?" + self.datasets_qs(["test1"]))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers["content-type"], "application/binary")
+
+            # Dig out the MockQuery object that has been created
+            for closer in response._resource_closers:
+                if (cself := getattr(closer, "__self__", None)) is None:
+                    continue
+                if cself.__class__ == StreamingAdapter:
+                    adapter = cself
+                    mock_query = cself.query
+                    break
+            else:
+                self.fail("could not find the MockQuery object in the response")
+
+            async for chunk in response.streaming_content:
+                self.assertEqual(chunk, b"data")
+                break
+            response.close()
+
+            await adapter.shutdown_coro
+
+            self.assertTrue(mock_query.shutdown_called)
+            self.assertEqual(mock_query.gen_count, 1)

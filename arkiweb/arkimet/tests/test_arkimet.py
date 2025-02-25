@@ -1,6 +1,11 @@
+import shutil
+import sys
+import textwrap
 from pathlib import Path
 from typing import Optional
 from unittest import mock
+
+import arkimet
 
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
@@ -9,7 +14,7 @@ from django.http import HttpRequest
 from django.test import RequestFactory, TestCase, override_settings
 
 from arkiweb.arkimet.models import User
-from arkiweb.arkimet.arkimet import Arkimet, SyncArkimet, SelectMode
+from arkiweb.arkimet.arkimet import Arkimet, SyncArkimet, SelectMode, DataQuery
 
 from .utils import TestMixin
 
@@ -195,3 +200,109 @@ class ArkimetTests(TestMixin, TestCase):
 #            if self.dataset_has_data(name):
 #                filtered[name] = section
 #        return filtered
+
+
+class TestDataQuery(TestMixin, TestCase):
+    async def test_simple(self) -> None:
+        with mock.patch.object(
+            DataQuery, "build_commandline", autospec=True, return_value=[shutil.which("seq"), "1", "3"]
+        ):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            async for el in query.generate_data():
+                data.append(el)
+            await query.shutdown()
+            self.assertEqual(data, [b"1\n2\n3\n"])
+
+    async def test_log_error_code(self) -> None:
+        with mock.patch.object(DataQuery, "build_commandline", autospec=True, return_value=[shutil.which("false")]):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            with self.assertLogs() as lg:
+                async for el in query.generate_data():
+                    data.append(el)
+                await query.shutdown()
+            self.assertEqual(data, [])
+            self.assertEqual(lg.output, ["WARNING:arkimet:arki-query returned with code 1"])
+
+    async def test_log_stderr(self) -> None:
+        with mock.patch.object(DataQuery, "build_commandline", autospec=True, return_value=[shutil.which("tar")]):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            with self.assertLogs() as lg:
+                async for el in query.generate_data():
+                    data.append(el)
+                await query.shutdown()
+            self.assertEqual(data, [])
+            self.assertRegexpMatches(lg.output[0], r"WARNING:arkimet:arki-query: .+/tar: You must specify one of the")
+            self.assertEqual(lg.output[-1], "WARNING:arkimet:arki-query returned with code 2")
+
+    async def test_close_stdout_write_stderr(self) -> None:
+        script = self.workdir / "script.py"
+        script.write_text(
+            textwrap.dedent(
+                f"""
+                import sys
+                sys.stdout.write("out")
+                sys.stdout.close()
+                sys.stderr.write("err")
+                sys.stderr.close()
+                raise SystemExit(0)
+                """
+            )
+        )
+        with mock.patch.object(
+            DataQuery, "build_commandline", autospec=True, return_value=[sys.executable, script.as_posix()]
+        ):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            with self.assertLogs() as lg:
+                async for el in query.generate_data():
+                    data.append(el)
+                await query.shutdown()
+            self.assertEqual(data, [b"out"])
+            self.assertEqual(lg.output, ["WARNING:arkimet:arki-query: err"])
+
+    async def test_write_stdout_close_stderr(self) -> None:
+        script = self.workdir / "script.py"
+        script.write_text(
+            textwrap.dedent(
+                f"""
+                import sys
+                sys.stderr.close()
+                sys.stdout.write("out")
+                raise SystemExit(0)
+                """
+            )
+        )
+        with mock.patch.object(
+            DataQuery, "build_commandline", autospec=True, return_value=[sys.executable, script.as_posix()]
+        ):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            async for el in query.generate_data():
+                data.append(el)
+            await query.shutdown()
+            self.assertEqual(data, [b"out"])
+
+    async def test_close_stdout_close_stderr(self) -> None:
+        script = self.workdir / "script.py"
+        script.write_text(
+            textwrap.dedent(
+                f"""
+                import sys
+                sys.stderr.close()
+                sys.stdout.close()
+                raise SystemExit(0)
+                """
+            )
+        )
+        with mock.patch.object(
+            DataQuery, "build_commandline", autospec=True, return_value=[sys.executable, script.as_posix()]
+        ):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            async for el in query.generate_data():
+                data.append(el)
+            await query.shutdown()
+            self.assertEqual(data, [])

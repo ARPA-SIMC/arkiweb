@@ -78,6 +78,36 @@ class SyncAPIView(APIViewBase):
         return res
 
 
+class StreamingAdapter:
+    """Wrap an asynchronous iterator with"""
+
+    def __init__(
+        self,
+        resources: ExitStack,
+        query: DataQuery,
+    ) -> None:
+        self.resources = resources
+        self.query = query
+        self.shutdown_coro = None
+
+    async def __aiter__(self):
+        async for chunk in self.query.generate_data():
+            yield chunk
+
+    async def close_async(self):
+        await self.query.shutdown()
+        self.resources.close()
+
+    def close(self):
+        self.shutdown_coro = self.close_async
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            asyncio.run(self.shutdown_coro)
+        else:
+            self.shutdown_coro = loop.create_task(self.shutdown_coro())
+
+
 class DataView(AsyncAPIView):
     """data/ API endpoint."""
 
@@ -96,14 +126,11 @@ class DataView(AsyncAPIView):
             if query.arki_query is None:
                 return self.error("arki-query not installed")
 
-            async def generate():
-                # Transfer ownership of resources to the generator function, so
-                # they do not get closed when the view ends
-                with self.resources.pop_all():
-                    async for chunk in query.generate_data():
-                        yield chunk
-
-            return StreamingHttpResponse(generate(), content_type="application/binary")
+            # Transfer ownership of resources to the generator function, so
+            # they do not get closed when the view ends
+            return StreamingHttpResponse(
+                StreamingAdapter(self.resources.pop_all(), query), content_type="application/binary"
+            )
 
 
 class DatasetsView(SyncAPIView):
