@@ -1,8 +1,12 @@
+import asyncio
 import contextlib
+import shutil
+import subprocess
+import tempfile
 from enum import Enum, auto
 from functools import cached_property
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Optional, AsyncGenerator
 
 import arkimet
 from arkimet.cmdline.base import RestrictSectionFilter
@@ -12,6 +16,9 @@ from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest
+import logging
+
+log = logging.getLogger("arkimet")
 
 
 class SelectMode(Enum):
@@ -167,3 +174,61 @@ class AsyncArkimet(Arkimet):
         else:
             restrict_filter = deny_all
         self._set_config(restrict_filter)
+
+
+class DataQuery:
+    def __init__(self, config: "arkimet.config.Sections", matcher: arkimet.Matcher, postprocess: str = "") -> None:
+        self.config = config
+        self.matcher = matcher
+        self.postprocess = postprocess
+        self.arki_query: Optional[Path] = None
+        if (arki_query := shutil.which("arki-query")) is not None:
+            self.arki_query = Path(arki_query)
+
+    def build_commandline(self, config: Path) -> list[str]:
+        """Build an arki-query commandline."""
+        assert self.arki_query is not None
+        cmd = [self.arki_query.as_posix(), "--data", "-C", config.as_posix(), self.matcher]
+        if self.postprocess:
+            cmd += ["--postproc", self.postprocess]
+        return cmd
+
+    async def log_stderr(self, stderr):
+        while True:
+            line = await stderr.readline()
+            if not line:
+                break
+            log.warning("arki-query: %s", line.rstrip())
+
+    async def generate_data(self) -> AsyncGenerator[bytes, None]:
+        with tempfile.NamedTemporaryFile() as cfg:
+            self.config.write(cfg)
+            cfg.flush()
+            cmd = self.build_commandline(Path(cfg.name))
+            proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+            do_log_stderr = asyncio.create_task(self.log_stderr(proc.stderr))
+            streaming = True
+
+            while True:
+                tasks = []
+                if do_log_stderr is not None:
+                    tasks.append(do_log_stderr)
+                if streaming:
+                    tasks.append(proc.stdout.read())
+                if not tasks:
+                    break
+                done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+                for task in done:
+                    if task == do_log_stderr:
+                        do_log_stderr = None
+                    else:
+                        buffer = await task
+                        if buffer:
+                            yield buffer
+                        else:
+                            streaming = False
+
+            res = await proc.wait()
+            if res != 0:
+                log.warning("arki-query returned with code %d", res)

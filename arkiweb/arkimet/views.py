@@ -28,7 +28,7 @@ from django.http import (
 from django.shortcuts import render
 from django.views.generic import View
 
-from .arkimet import AsyncArkimet, SyncArkimet, SelectMode
+from .arkimet import AsyncArkimet, SyncArkimet, SelectMode, DataQuery
 from .consts import NAME_MAPS
 
 import logging
@@ -81,27 +81,8 @@ class SyncAPIView(APIViewBase):
 class DataView(AsyncAPIView):
     """data/ API endpoint."""
 
-    @cached_property
-    def arki_query(self) -> Optional[Path]:
-        """Return the path to arki_query."""
-        arki_query = shutil.which("arki-query")
-        if arki_query is None:
-            return None
-        return Path(arki_query)
-
-    def build_commandline(self, config: Path, matcher: str, postprocess: str) -> list[str]:
-        """Build an arki-query commandline."""
-        assert self.arki_query is not None
-        cmd = [self.arki_query.as_posix(), "--data", "-C", config.as_posix(), matcher]
-        if postprocess:
-            cmd += ["--postproc", postprocess]
-        return cmd
-
     async def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponseBase:
         # https://github.com/ARPA-SIMC/arkiweb?tab=readme-ov-file#get-the-data
-        if self.arki_query is None:
-            return self.error("arki-query not installed")
-
         with await self.arkimet() as arki:
             config = arki.select_datasets(only_allowed=True, select=SelectMode.USER_DEFAULT_NONE)
             if len(config) == 0:
@@ -111,52 +92,16 @@ class DataView(AsyncAPIView):
             if postprocess and len(config) > 1:
                 return self.error("Only one dataset is allowed when postprocess parameter is set")
 
-            matcher = arki.matcher.expanded
-
-            async def log_stderr(stderr):
-                while True:
-                    line = await stderr.readline()
-                    if not line:
-                        break
-                    log.warning("arki-query: %s", line.rstrip())
+            query = DataQuery(config, arki.matcher.expanded, postprocess)
+            if query.arki_query is None:
+                return self.error("arki-query not installed")
 
             async def generate():
-                with (
-                    tempfile.NamedTemporaryFile() as cfg,
-                    # Transfer ownership of resources to the generator function, so
-                    # they do not get closed when the view ends
-                    self.resources.pop_all(),
-                ):
-                    config.write(cfg)
-                    cfg.flush()
-                    cmd = self.build_commandline(Path(cfg.name), matcher, postprocess)
-                    proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-                    do_log_stderr = asyncio.create_task(log_stderr(proc.stderr))
-                    streaming = True
-
-                    while True:
-                        tasks = []
-                        if do_log_stderr is not None:
-                            tasks.append(do_log_stderr)
-                        if streaming:
-                            tasks.append(proc.stdout.read())
-                        if not tasks:
-                            break
-                        done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-                        for task in done:
-                            if task == do_log_stderr:
-                                do_log_stderr = None
-                            else:
-                                buffer = await task
-                                if buffer:
-                                    yield buffer
-                                else:
-                                    streaming = False
-
-                    res = await proc.wait()
-                    if res != 0:
-                        log.warning("arki-query returned with code %d", res)
+                # Transfer ownership of resources to the generator function, so
+                # they do not get closed when the view ends
+                with self.resources.pop_all():
+                    async for chunk in query.generate_data():
+                        yield chunk
 
             return StreamingHttpResponse(generate(), content_type="application/binary")
 
