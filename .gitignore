@@ -1,6 +1,4 @@
 /arkiweb/project/local_settings.py
-/arkiweb/ui/static/ui/arkiweb.js
-/arkiweb/ui/static/ui/config.js
 /testdata/datasets/datasets.cfg
 /testdata/datasets/cosmo/2021/
 /testdata/datasets/cosmo/.summaries
@@ -24,7 +22,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/

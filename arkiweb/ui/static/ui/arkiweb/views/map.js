@@ -3,7 +3,7 @@
 		initialize: function(opts) {
 			this.map = new OpenLayers.Map();
 
-			this.map.addLayer(new OpenLayers.Layer.WMS("OpenLayers", "http://vmap0.tiles.osgeo.org/wms/vmap0", { layers: 'basic' }));
+			this.map.addLayer(new OpenLayers.Layer.WMS("OpenLayers", "https://ows.mundialis.de/services/service", { layers: "OSM-WMS-no-labels" }));
 			this.map.addControl(new OpenLayers.Control.MousePosition());
 
 			if (opts.datasets) {
