@@ -189,9 +189,15 @@ class DataQuery:
     def build_commandline(self, config: Path) -> list[str]:
         """Build an arki-query commandline."""
         assert self.arki_query is not None
-        cmd = [self.arki_query.as_posix(), "--data", "-C", config.as_posix(), self.matcher]
+        cmd = [self.arki_query.as_posix()]
+
         if self.postprocess:
             cmd += ["--postproc", self.postprocess]
+        else:
+            cmd += ["--data"]
+
+        cmd += ["-C", config.as_posix(), self.matcher]
+
         return cmd
 
     async def log_stderr(self, stderr):
