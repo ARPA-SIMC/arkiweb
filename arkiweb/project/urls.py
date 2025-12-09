@@ -19,5 +19,5 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("arkiweb.ui.urls", namespace="ui")),
-    path("arkimet/", include("arkiweb.arkimet.urls", namespace="arkimet")),
+    path("services/arkiweb/", include("arkiweb.arkimet.urls", namespace="arkimet")),
 ]
