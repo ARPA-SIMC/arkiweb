@@ -18,6 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("arkiweb.ui.urls", namespace="ui")),
+    path("arkiweb/", include("arkiweb.ui.urls", namespace="ui")),
     path("services/arkiweb/", include("arkiweb.arkimet.urls", namespace="arkimet")),
 ]
