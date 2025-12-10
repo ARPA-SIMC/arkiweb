@@ -56,7 +56,7 @@ class ArkimetTests(TestMixin, TestCase):
         with override_settings():
             if hasattr(settings, "ARKIWEB_CONFIG"):
                 del settings.ARKIWEB_CONFIG
-            with self.assertRaisesRegexp(ImproperlyConfigured, "missing settings.ARKIWEB_CONFIG"):
+            with self.assertRaisesRegex(ImproperlyConfigured, "missing settings.ARKIWEB_CONFIG"):
                 self.arkimet()
 
     def test_config(self) -> None:
@@ -234,14 +234,14 @@ class TestDataQuery(TestMixin, TestCase):
                     data.append(el)
                 await query.shutdown()
             self.assertEqual(data, [])
-            self.assertRegexpMatches(lg.output[0], r"WARNING:arkimet:arki-query: .+/tar: You must specify one of the")
+            self.assertRegex(lg.output[0], r"WARNING:arkimet:arki-query: .+/tar: You must specify one of the")
             self.assertEqual(lg.output[-1], "WARNING:arkimet:arki-query returned with code 2")
 
     async def test_close_stdout_write_stderr(self) -> None:
         script = self.workdir / "script.py"
         script.write_text(
             textwrap.dedent(
-                f"""
+                """
                 import sys
                 sys.stdout.write("out")
                 sys.stdout.close()
@@ -267,7 +267,7 @@ class TestDataQuery(TestMixin, TestCase):
         script = self.workdir / "script.py"
         script.write_text(
             textwrap.dedent(
-                f"""
+                """
                 import sys
                 sys.stderr.close()
                 sys.stdout.write("out")
@@ -289,7 +289,7 @@ class TestDataQuery(TestMixin, TestCase):
         script = self.workdir / "script.py"
         script.write_text(
             textwrap.dedent(
-                f"""
+                """
                 import sys
                 sys.stderr.close()
                 sys.stdout.close()

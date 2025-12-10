@@ -184,7 +184,7 @@ class DataQuery:
         self.arki_query: Optional[Path] = None
         if (arki_query := shutil.which("arki-query")) is not None:
             self.arki_query = Path(arki_query)
-        self.proc = None
+        self.proc: asyncio.subprocess.Process | None = None
 
     def build_commandline(self, config: Path) -> list[str]:
         """Build an arki-query commandline."""
@@ -200,7 +200,7 @@ class DataQuery:
 
         return cmd
 
-    async def log_stderr(self, stderr):
+    async def log_stderr(self, stderr) -> None:
         while True:
             line = await stderr.readline()
             if not line:
@@ -220,8 +220,11 @@ class DataQuery:
             cfg.flush()
             cmd = self.build_commandline(Path(cfg.name))
             self.proc = await asyncio.create_subprocess_exec(*cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            assert self.proc is not None
+            assert self.proc.stdout is not None
+            assert self.proc.stderr is not None
 
-            do_log_stderr = asyncio.create_task(self.log_stderr(self.proc.stderr))
+            do_log_stderr: asyncio.Task | None = asyncio.create_task(self.log_stderr(self.proc.stderr))
             streaming = True
 
             while True:
