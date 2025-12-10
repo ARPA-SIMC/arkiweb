@@ -224,24 +224,13 @@ class DataQuery:
             assert self.proc.stdout is not None
             assert self.proc.stderr is not None
 
-            do_log_stderr: asyncio.Task | None = asyncio.create_task(self.log_stderr(self.proc.stderr))
-            streaming = True
+            do_log_stderr = asyncio.create_task(self.log_stderr(self.proc.stderr))
 
             while True:
-                tasks = []
-                if do_log_stderr is not None:
-                    tasks.append(do_log_stderr)
-                if streaming:
-                    tasks.append(self.proc.stdout.read())
-                if not tasks:
+                chunk = await self.proc.stdout.read()
+                if chunk:
+                    yield chunk
+                else:
                     break
-                done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-                for task in done:
-                    if task == do_log_stderr:
-                        do_log_stderr = None
-                    else:
-                        buffer = await task
-                        if buffer:
-                            yield buffer
-                        else:
-                            streaming = False
+
+            await do_log_stderr

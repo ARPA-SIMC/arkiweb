@@ -306,3 +306,28 @@ class TestDataQuery(TestMixin, TestCase):
                 data.append(el)
             await query.shutdown()
             self.assertEqual(data, [])
+
+    async def test_subprocess_multiple_reads(self) -> None:
+        script = self.workdir / "script.py"
+        script.write_text(
+            textwrap.dedent(
+                """
+                import sys
+                sys.stderr.close()
+                print("test")
+                """
+            )
+        )
+
+        async def mock_log_stderr(stderr) -> None:
+            return
+
+        with mock.patch.object(
+            DataQuery, "build_commandline", autospec=True, return_value=[sys.executable, "-u", script.as_posix()]
+        ), mock.patch.object(DataQuery, "log_stderr", side_effect=mock_log_stderr):
+            query = DataQuery(arkimet.cfg.Sections(), None, "")
+            data = []
+            async for el in query.generate_data():
+                data.append(el)
+            await query.shutdown()
+            self.assertEqual(data, ["test\n"])
