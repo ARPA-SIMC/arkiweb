@@ -159,7 +159,7 @@ class DatasetsView(SyncAPIView):
                         "name": section.get("id", ""),
                         "description": section.get("description", ""),
                         "bounding": section.get("bounding", ""),
-                        "allowed": False if section.get("allowed") is False else True,
+                        "allowed": True if section.get("allowed") == "true" else False,
                         "postprocess": [p.strip() for p in section.get("postprocess", "").split(",")],
                     }
                 )
