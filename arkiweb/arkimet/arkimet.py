@@ -227,7 +227,7 @@ class DataQuery:
             do_log_stderr = asyncio.create_task(self.log_stderr(self.proc.stderr))
 
             while True:
-                chunk = await self.proc.stdout.read()
+                chunk = await self.proc.stdout.read(5 * 1024 * 1024)
                 if chunk:
                     yield chunk
                 else:
